@@ -1,0 +1,92 @@
+$pColor: #008fff;
+$sColor: #2ac37d;
+$whiteColor: #fff;
+$commonColor1: #5b5b5b;
+$commonColor2: #ebebeb;
+
+@mixin transform($property) {
+    -webkit-transform: $property;
+    -ms-transform: $property;
+    transform: $property;
+}
+@mixin transition($prop) {
+    -webkit-transition: $prop;
+    -moz-transition: $prop;
+    -ms-transition: $prop;
+    -o-transition: $prop;
+    transition: $prop;
+}
+img{
+    vertical-align: middle;
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+*,
+*:before,
+*:after{
+    box-sizing: border-box;
+}
+body{
+    font-family: Montserrat, sans-serif;
+    font-weight: 400;
+}
+a{
+    text-decoration: none;
+}
+ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.col-2{
+    width: 16.66666667%;
+}
+.col-3{
+    width: 25%;
+}
+.col-4{
+    width: 33.33333333%
+}
+.col-6{
+    width: 50%;
+}
+.col-8{
+    width: 66.66666667%;
+}
+.col-9{
+    width: 75%;
+}
+.col-10{
+   width: 83.33333333%;
+}
+.col-12{
+    width: 100%;
+}
+.flex{
+    display: flex;
+    display: -webkit-box;
+    display: -ms-flexbox;
+}
+.f-wrap{
+    flex-wrap: wrap;
+}
+.jf-al-center{
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.jf-end{
+    justify-content: flex-end;
+}
+.plr-15{
+    padding: 0px 15px;
+}
+.container-fluid{
+    position: relative;
+    max-width: 1170px;
+    margin: 0 auto;
+}
