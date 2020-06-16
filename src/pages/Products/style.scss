@@ -1,0 +1,78 @@
+@import './../../commons/style.scss';
+
+.products{
+    &-main{
+        width: 75%;
+        padding-left: 15px;
+        .category-header{
+            border-bottom: none;
+            padding: 10px;
+            background: $commonColor2;
+            margin-bottom: 20px;
+            #sortBar{
+                margin-left: auto;
+                width: 150px;
+                position: relative;
+                font-size: 13px;
+                &::before{
+                    position: absolute;
+                    content: "Sắp xếp";
+                    left: -55px;
+                    font-size: 13px;
+                    top: 50%;
+                    @include transform(translateY(-50%));
+                }
+                select#sortPagi{
+                    width: 100%;
+                    height: 40px;
+                    border: transparent 1px solid !important;
+                    outline: none;
+                    padding: 0 15px;
+                    color: $commonColor1;
+                    option{
+                        border: transparent 1px solid !important;
+                        outline: none;
+                    }
+                }
+            }
+        }
+        .products-main-content{
+            margin: 0 -15px;
+        }
+    }
+    &-sidebar{
+        width: 25%;
+        padding-right: 15px;
+        background-color: seagreen;
+    }
+}
+@media screen and (max-width:991px){
+    .products{
+        &-main{
+            width: 100%;
+            padding: 0;
+            .products-main-content{
+                flex-wrap: wrap;
+            }
+        }
+        &-sidebar{
+            display: none;
+        }
+    }
+}
+
+@media screen and (max-width: 767px){
+    .products{
+        &-main{
+            .category-header{
+                #sortBar{
+                    margin-left: 0;
+                    width: 100%;
+                    &::before{
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+}

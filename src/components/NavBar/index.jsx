@@ -289,63 +289,63 @@ function NavBar(props) {
                                             <ul className="flex f-wrap">
                                                 <li className="mega-item flex jf-al-center col-3" >
                                                     <h4 className="mega-item-title">
-                                                        <Link className="mega-item-url" to="/giay-adidas-chinh-hang">
+                                                        <Link className="mega-item-url" to="/products/adidas">
                                                             <span>Adidas</span>
                                                         </Link>
                                                     </h4>
                                                 </li>
                                                 <li className="mega-item flex jf-al-center col-3" >
                                                     <h4 className="mega-item-title">
-                                                        <Link className="mega-item-url" to="/nike">
+                                                        <Link className="mega-item-url" to="/products/nike">
                                                             <span>Nike</span>
                                                         </Link>
                                                     </h4>
                                                 </li>
                                                 <li className="mega-item flex jf-al-center col-3" >
                                                     <h4 className="mega-item-title">
-                                                        <Link className="mega-item-url" to="/vans">
+                                                        <Link className="mega-item-url" to="/products/vans">
                                                             <span>Vans</span>
                                                         </Link>
                                                     </h4>
                                                 </li>
                                                 <li className="mega-item flex jf-al-center col-3" >
                                                     <h4 className="mega-item-title">
-                                                        <Link className="mega-item-url" to="/converse">
+                                                        <Link className="mega-item-url" to="/products/converse">
                                                             <span>Converse</span>
                                                         </Link>
                                                     </h4>
                                                 </li>
                                                 <li className="mega-item flex jf-al-center col-3" >
                                                     <h4 className="mega-item-title">
-                                                        <Link className="mega-item-url" to="/fila">
+                                                        <Link className="mega-item-url" to="/products/fila">
                                                             <span>Fila</span>
                                                         </Link>
                                                     </h4>
                                                 </li>
                                                 <li className="mega-item flex jf-al-center col-3" >
                                                     <h4 className="mega-item-title">
-                                                        <Link className="mega-item-url" to="/reebok">
+                                                        <Link className="mega-item-url" to="/products/reebok">
                                                             <span>Reebok</span>
                                                         </Link>
                                                     </h4>
                                                 </li>
                                                 <li className="mega-item flex jf-al-center col-3" >
                                                     <h4 className="mega-item-title">
-                                                        <Link className="mega-item-url" to="/puma">
+                                                        <Link className="mega-item-url" to="/products/puma">
                                                             <span>Puma</span>
                                                         </Link>
                                                     </h4>
                                                 </li>
                                                 <li className="mega-item flex jf-al-center col-3" >
                                                     <h4 className="mega-item-title">
-                                                        <Link className="mega-item-url" to="/domba">
+                                                        <Link className="mega-item-url" to="/products/domba">
                                                             <span>Domba</span>
                                                         </Link>
                                                     </h4>
                                                 </li>
                                                 <li className="mega-item flex jf-al-center col-3" >
                                                     <h4 className="mega-item-title">
-                                                        <Link className="mega-item-url" to="/asic">
+                                                        <Link className="mega-item-url" to="/products/asic">
                                                             <span>Asic</span>
                                                         </Link>
                                                     </h4>

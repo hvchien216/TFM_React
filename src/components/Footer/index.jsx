@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
 import './style.scss';
 import logoFooter from './../../assets/logo_footer.png';
 import { Link } from 'react-router-dom';
+import BackToTop from '../BackToTop';
 function Footer(props) {
     const [email, setEmail] = useState('');
 
@@ -184,13 +184,9 @@ function Footer(props) {
                 <span>|</span>
                 <span>Clone by <strong style={{ color: '#00a0d1' }}>Chiến Royal</strong></span>
             </div>
+            <BackToTop />
         </>
     )
 }
-
-Footer.propTypes = {
-
-}
-
 export default Footer
 

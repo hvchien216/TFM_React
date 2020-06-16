@@ -10,6 +10,7 @@ import store from './redux/store';
 import CheckOut from './pages/CheckOut';
 import { ThemeProvider } from '@material-ui/core';
 import theme from './commons/theme';
+import Products from './pages/Products';
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -18,7 +19,7 @@ function App() {
           <NavBar />
           <Switch>
             <Route path="/" exact component={Home} />
-            {/* <Route path="/product-list" exact component={Products} /> */}
+            <Route exact path="/products/:maBrand" component={Products} />
             {/* <Route path="/product-detail/:maSP" exact component={ProductDetail} /> */}
             <Route path="/cart" exact component={Cart} />
             <Route path="/checkout" exact component={CheckOut} />

@@ -1,0 +1,14 @@
+@import './../../commons/style.scss';
+
+#back-to-top{
+    display: none;
+    position: fixed;
+    right: 10px;
+    bottom: 135px;
+    top: unset !important;
+    font-size: 30px;
+    color: #3dc8f6;
+    line-height: 1;
+    z-index: 10;
+    cursor: pointer;
+}
