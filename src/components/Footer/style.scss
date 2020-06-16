@@ -1,6 +1,7 @@
-@import './../../common/style.scss';
+@import './../../commons/style.scss';
 
 .footer{
+    margin-top: 40px;
     width: 100%;
     position: relative;
     overflow: hidden;
@@ -235,6 +236,9 @@
     .footer{
         &__content{
             padding: 0px 10px;
+            .footer-top__info{
+                margin-top: 40px;
+            }
             .footer-widget{
                 &-item{
                     width: 100%;

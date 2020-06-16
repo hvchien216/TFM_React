@@ -1,4 +1,4 @@
-@import './../../common/style.scss';
+@import './../../commons/style.scss';
 .nav-mb{
     display: none;
     width: 100%;
@@ -255,9 +255,8 @@
                 align-items: center;
             }
             .search-bar{
-                margin-left: 83.33333333%;
+                margin-left: 81%;
                 &-contain{
-                    max-width: 100%;
                     position: relative;
                     .input-control{
                             position: relative;
@@ -461,6 +460,26 @@
         }
         &__main{
             &__content{
+                display: flex;
+                flex-wrap: wrap;
+                .logo,.search-bar{
+                    width: 100%;
+                    position: relative;
+                }
+                .search-bar{
+                    margin-left: 0;
+                    padding: 20px;
+                    &-contain{
+                        width: 100%;
+                        .input-control{
+                            width: 100%;
+                            padding: 14px 55px 14px 30px;
+                        }
+                    }
+                }
+                .menu-pc{
+                    display: none;
+                }
                 .menu-bar{
                     display: block;
                 }
@@ -498,25 +517,25 @@
         }
         &__main{
             &__content{
-                display: flex;
-                flex-wrap: wrap;
+                // display: flex;
+                // flex-wrap: wrap;
                 .logo,.search-bar{
                     width: 100%;
                     position: relative;
                 }
                 .search-bar{
-                    margin-left: 0;
-                    padding: 20px;
+                    // margin-left: 0;
+                    // padding: 20px;
                     &-contain{
-                        width: 100%;
+                        // width: 100%;
                         .input-control{
-                            width: 100%;
-                            padding: 14px 55px 14px 30px;
+                            // width: 100%;
+                            // padding: 14px 55px 14px 30px;
                         }
                     }
                 }
                 .menu-pc{
-                    display: none;
+                    // display: none;
                 }
                 .menu-bar{
                     display: block;

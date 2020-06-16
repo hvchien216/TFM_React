@@ -1,13 +1,20 @@
 import React, { useState } from 'react'
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
 import './style.scss';
 import { Link } from 'react-router-dom';
 import iconAcc from './../../assets/icon_account.png';
 import iconCart from './../../assets/icon_cart___empty.png';
 import logo from './../../assets/logo.png';
+import { connect } from 'react-redux';
 function NavBar(props) {
 
     const [query, setQuery] = useState('');
+
+    const totalQuantity = () => {
+        return props.cart.cart.reduce((total, item) => {
+            return (total + item.quantity);
+        }, 0);
+    }
 
     const handleSearchQuery = e => {
         setQuery(e.target.value);
@@ -50,6 +57,9 @@ function NavBar(props) {
         document.getElementById(tabName).style.display = "block";
         e.currentTarget.className += " active";
     }
+
+    const totalItemCart = totalQuantity();
+
     return (
         <>
             <div className="nav-mb" id="nav-mobile">
@@ -189,7 +199,7 @@ function NavBar(props) {
                             <div className="panel-cart">
                                 <div className="cart-contain">
                                     <div className="cart-count flex jf-al-center">
-                                        0
+                                        {totalItemCart}
                                     </div>
                                     <div className="cart-img">
                                         <Link to="/cart">
@@ -363,11 +373,12 @@ function NavBar(props) {
 }
 
 NavBar.propTypes = {
-    // cart: PropTypes.object.isRequired,
-    // removeItemFromCart: PropTypes.func.isRequired,
-    // changeQuantityItemCart: PropTypes.func.isRequired,
-    // removeAllItemCart: PropTypes.func.isRequired,
+    cart: PropTypes.object.isRequired,
 }
-
-export default NavBar
+const mapStateToProps = (state) => {
+    return {
+        cart: state.cart
+    }
+}
+export default connect(mapStateToProps, null)(NavBar);
 

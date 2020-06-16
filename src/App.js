@@ -1,17 +1,33 @@
 import React from 'react';
-import './common/style.scss';
-// import './App.css';
-import NavBar from './components/NavBar';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import './commons/style.scss';
 import Footer from './components/Footer';
+import NavBar from './components/NavBar';
+import Cart from './pages/Cart';
+import Home from './pages/Home';
+import store from './redux/store';
+import CheckOut from './pages/CheckOut';
+import { ThemeProvider } from '@material-ui/core';
+import theme from './commons/theme';
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <NavBar />
-        <Footer />
-      </div>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <Router>
+          <NavBar />
+          <Switch>
+            <Route path="/" exact component={Home} />
+            {/* <Route path="/product-list" exact component={Products} /> */}
+            {/* <Route path="/product-detail/:maSP" exact component={ProductDetail} /> */}
+            <Route path="/cart" exact component={Cart} />
+            <Route path="/checkout" exact component={CheckOut} />
+            {/* <Route component={NotFound} /> */}
+          </Switch>
+          <Footer />
+        </Router>
+      </Provider>
+    </ThemeProvider>
   );
 }
 

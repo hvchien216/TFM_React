@@ -1,5 +1,6 @@
 $pColor: #008fff;
 $sColor: #2ac37d;
+$tColor: #3dc8f6;
 $whiteColor: #fff;
 $commonColor1: #5b5b5b;
 $commonColor2: #ebebeb;
@@ -31,6 +32,8 @@ body{
     overflow-x: hidden;
     font-family: Montserrat, sans-serif;
     font-weight: 400;
+    font-size: 14px;
+    color: $commonColor1;
 }
 a{
     text-decoration: none;
@@ -80,14 +83,43 @@ ul{
     -ms-flex-align: center;
     align-items: center;
 }
+.jf-center{
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
 .jf-end{
     justify-content: flex-end;
 }
 .plr-15{
     padding: 0px 15px;
 }
+.mr-15{
+    margin-right: 15px;
+}
+
 .container-fluid{
     position: relative;
-    max-width: 1170px;
     margin: 0 auto;
+    padding: 0 15px;
 }
+
+@media (min-width: 768px){
+    .container-fluid{
+        width: 750px;
+    }
+}
+
+@media (min-width: 992px){
+    .container-fluid{
+        width: 970px;
+    }
+}
+
+@media (min-width: 1200px){
+    .container-fluid{
+        width: 1170px;
+    }
+}
+
+
