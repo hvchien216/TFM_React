@@ -1,0 +1,58 @@
+@import './../../commons/style.scss';
+
+.container-custom-checkbox {
+    display: block;
+    position: relative;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: $commonColor1;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    &:hover input ~ .checkmark {
+        background-color: #ccc;
+    }
+
+    input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+
+        &:checked ~ .checkmark {
+            background-color: #2196F3;
+        }
+        &:checked ~ .checkmark:after {
+            display: block;
+        }
+    }
+    .checkmark {
+        position: relative;
+        display: inline-block;
+        height: 15px;
+        width: 15px;
+        border-radius: 50%;
+        background-color: #eee;
+        margin-right: 5px;
+        &:after {
+            content: "";
+            position: absolute;
+            display: none;
+            }
+        &:after {
+            left: 5px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+    }
+}

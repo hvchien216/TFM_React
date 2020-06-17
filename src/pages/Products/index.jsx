@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import './style.scss';
-import { API_PRODUCT, SORT_PAGI } from './../../commons/constant';
+import { API_PRODUCT, SORT_PAGI, FILTER_BY } from './../../commons/constant';
 import ProductItem from '../../components/ProductItem';
+import CheckBox from '../../components/CheckBox';
 function Products(props) {
 
     const [products, setProducts] = useState([]);
@@ -28,7 +29,6 @@ function Products(props) {
 
     const handleChangeSelect = (e) => {
         setSort(e.target.value);
-        console.log(e.target.value)
         switch (e.target.value) {
             case '1': {
                 console.log("1", products);
@@ -59,12 +59,49 @@ function Products(props) {
         setProducts(API_PRODUCT);
     }, [])
 
+    const handleChangeChecked = (e) => {
+        console.log(e.target.checked, e.target.name);
+    }
+
+    const mapSidebarFilter = FILTER_BY.map(item => {
+        return (
+            <div className="sidebar-item" key={'sibebarItem' + item.id}>
+                <div className="sidebar-item-title">
+                    <h2 className="title-head">
+                        {item.title}
+                    </h2>
+                </div>
+                <div className="sidebar-item-content">
+                    <div className="filter-group">
+                        <ul className="filter-list">
+                            {item.items.map(ele => {
+                                return (
+                                    <li key={"li" + item.name + ele.id}>
+                                        <CheckBox
+                                            name={"checkbox" + item.name + ele.id}
+                                            title={ele.name}
+                                            handleChange={handleChangeChecked}
+                                            value={ele.value ? ele.value : ''}
+                                        />
+                                    </li>
+                                )
+                            })}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        )
+    })
+
+
 
     return (
         <>
             <div className="products container-fluid flex">
                 <aside className="products-sidebar">
-                    1
+                    <div className="products-sidebar-content">
+                        {mapSidebarFilter}
+                    </div>
                 </aside>
                 <section className="products-main">
                     <div className="category-header">

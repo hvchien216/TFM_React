@@ -4,13 +4,10 @@ import SelectQuan from '../SelectQuan';
 import { Link } from 'react-router-dom';
 function CartItem(props) {
     const { id, img, name, quantity, price, variantInfo, removeItem, changeQuantity, mobile } = props;
-    const handleChangeQuan = (quan) => {
-        changeQuantity(id, quan)
-    }
     if (mobile) {
         return (
             <>
-                <div className="product-item-mb flex">
+                <div className="product-item-mb flex ">
                     <div className="product-item-mb-thumb">
                         <Link
                             to={name}
@@ -32,8 +29,8 @@ function CartItem(props) {
                     <div className="product-item-mb-select-quan">
                         <SelectQuan
                             quantity={quantity}
-                            handleIncre={() => handleChangeQuan(1)}
-                            handleDescre={() => handleChangeQuan(-1)}
+                            handleIncre={() => changeQuantity(id, 1)}
+                            handleDescre={() => changeQuantity(id, -1)}
                         />
                     </div>
                 </div>
@@ -62,8 +59,8 @@ function CartItem(props) {
             <div style={{ width: '14%' }} className="flex jf-al-center">
                 <SelectQuan
                     quantity={quantity}
-                    handleIncre={() => handleChangeQuan(1)}
-                    handleDescre={() => handleChangeQuan(-1)}
+                    handleIncre={() => changeQuantity(id, 1)}
+                    handleDescre={() => changeQuantity(id, -1)}
                 />
             </div>
             <div style={{ width: '20%' }} className="flex jf-al-center">

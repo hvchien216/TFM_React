@@ -41,9 +41,50 @@
         }
     }
     &-sidebar{
+        background: #fff;
         width: 25%;
         padding-right: 15px;
-        background-color: seagreen;
+        &-content{
+            .sidebar-item{
+                margin: 0 0 30px;
+                border: $commonColor2 1px solid;
+                &-title{
+                    padding: 0 15px;
+                    background: $commonColor2;
+                    border: 1px solid $commonColor2;
+                    .title-head{
+                        padding-right: 35px;
+                        font-size: 16px;
+                        position: relative;
+                        font-weight: 700;
+                        color: $commonColor1;
+                    }
+                }
+                &-content{
+                    padding: 10px 15px;
+                    .filter-group{
+                        .filter-list{
+                            max-height: 140px;
+                            overflow-y: auto;
+                            &::-webkit-scrollbar {
+                                width: 6px;
+                                background-color: #F5F5F5;
+                            }
+                            &::-webkit-scrollbar-track {
+                                -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+                                background-color: #F5F5F5;
+                                border-radius: 10px;
+                            }
+                            &::-webkit-scrollbar-thumb {
+                                background-color: $commonColor1;
+                                border-radius: 10px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
     }
 }
 @media screen and (max-width:991px){
@@ -56,7 +97,20 @@
             }
         }
         &-sidebar{
-            display: none;
+            padding-right: 0;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            z-index: 170;
+            background: #00000080;
+            &-content{
+                background: #fff;
+                margin-left: auto;
+                width: 320px;
+                height: 100vh;
+                overflow: auto;
+            }
         }
     }
 }

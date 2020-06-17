@@ -11,6 +11,7 @@ import CheckOut from './pages/CheckOut';
 import { ThemeProvider } from '@material-ui/core';
 import theme from './commons/theme';
 import Products from './pages/Products';
+import ProductDetail from './pages/ProductDetail';
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -20,7 +21,7 @@ function App() {
           <Switch>
             <Route path="/" exact component={Home} />
             <Route exact path="/products/:maBrand" component={Products} />
-            {/* <Route path="/product-detail/:maSP" exact component={ProductDetail} /> */}
+            <Route path="/product-detail/:maSP" exact component={ProductDetail} />
             <Route path="/cart" exact component={Cart} />
             <Route path="/checkout" exact component={CheckOut} />
             {/* <Route component={NotFound} /> */}

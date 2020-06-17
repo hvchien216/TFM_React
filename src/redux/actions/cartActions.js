@@ -1,4 +1,5 @@
 import { ADD_TO_CART, REMOVE_FROM_CART, UPDATE_CART_ITEM, REMOVE_ALL_CART } from './../types';
+import { dataJsonProvince } from '../../commons/utils';
 
 // export const loginUser = (userData) => (dispatch) => {
 //     dispatch({ type: LOADING_UI });
@@ -18,6 +19,13 @@ import { ADD_TO_CART, REMOVE_FROM_CART, UPDATE_CART_ITEM, REMOVE_ALL_CART } from
 //             })
 //         });
 // }
+
+export const addToCart = (data) => (dispatch) => {
+    dispatch({
+        type: ADD_TO_CART,
+        payload: data
+    })
+}
 
 export const removeItemFromCart = (id) => (dispatch) => {
     dispatch({

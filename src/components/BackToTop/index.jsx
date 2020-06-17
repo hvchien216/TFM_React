@@ -5,7 +5,7 @@ function BackToTop() {
     const handleScroll = () => {
         const backToTop = document.getElementById("back-to-top");
 
-        if (window.scrollY / document.body.scrollWidth > 0.45) {
+        if (window.scrollY / document.body.scrollWidth > 0.2) {
             backToTop.style.display = "block";
         }
         else {
