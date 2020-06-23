@@ -27,7 +27,7 @@ function Products(props) {
         )
     })
 
-    const handleChangeSelect = (e) => {
+    const handleChangeSort = (e) => {
         setSort(e.target.value);
         switch (e.target.value) {
             case '1': {
@@ -106,7 +106,7 @@ function Products(props) {
                 <section className="products-main">
                     <div className="category-header">
                         <div id="sortBar">
-                            <select onChange={handleChangeSelect} value={sort} name="sortPagi" id="sortPagi">
+                            <select onChange={handleChangeSort} value={sort} name="sortPagi" id="sortPagi">
                                 {mapOption}
                             </select>
                         </div>

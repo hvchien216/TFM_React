@@ -1,103 +1,135 @@
-import React, { useState } from 'react'
+import React, { useState, useReducer } from 'react'
 // import PropTypes from 'prop-types'
-import { Container, Typography, Grid, TextField, MenuItem } from '@material-ui/core';
-
+import { Container, Typography, Grid } from '@material-ui/core';
+import PurchaseInfoForm from '../../components/PurchaseInfoForm';
+import './style.scss';
+import { connect } from 'react-redux';
+import CartItem from '../../components/CartItem';
+import { Link } from 'react-router-dom';
+import { formatCurrency } from '../../commons/utils';
+import { CHECKOUT_MAIN_FIELDS, ANOTHER_ADDRESS } from './../../commons/constant';
 function CheckOut(props) {
-    const [emailBuy, setEmailBuy] = useState('');
-    const [nameBuy, setNameBuy] = useState('');
-    const [phoneBuy, setPhoneBuy] = useState('');
-    const [addressBuy, setAddressBuy] = useState('');
-    const [cityBuy, setCityBuy] = useState('');
+    const { cart } = props;
+    const totalPrice = cart ? cart.cart.reduce((total, item) => {
+        return (total = total + item.price * item.quantity);
+    }, 0) : null;
 
-    // useEffect(() => {
-    //     axios.get('https://api.mysupership.vn/v1/partner/areas/district?province=79', {
-    //         headers: {
-    //             "Access-Control-Allow-Origin": "*",
-    //             "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-    //             "Accept": "application/json",
-    //             "Content-Type": "application/json"
-    //         }
-    //     })
-    //         .then((res) => console.log(res))
-    //         .catch(err => console.log(err))
+    const initValue = (inputs) => {
+        const initialValues = {};
 
-    // }, [])
-
-    const handleChange = (e) => {
-        switch (e.target.name) {
-            case 'emailBuy':
-                return setEmailBuy(e.target.value);
-
-            case 'nameBuy':
-                return setNameBuy(e.target.value);
-
-            case 'phoneBuy':
-                return setPhoneBuy(e.target.value);
-
-            case 'addressBuy':
-                return setAddressBuy(e.target.value);
-
-            default: return;
-        }
+        inputs.forEach(field => {
+            if (!initialValues[field.name]) {
+                initialValues[field.name] = field.value;
+            }
+        });
+        return initialValues;
     }
+
+    const stateForm = initValue(CHECKOUT_MAIN_FIELDS);
+    const stateFormAnotherAddress = initValue(ANOTHER_ADDRESS);
+
+    const [formValues, setFormValues] = useReducer(
+        (state, newState) => ({ ...state, ...newState }),
+        {
+            email: '',
+            name: '',
+            phone: '',
+            address: '',
+            anotherAddress: false,
+            note: '',
+        }
+    );
+
+
+
+    const handleChangeFormValues = event => {
+        const { name, value, checked, type } = event.target;
+        if (type === 'checkbox') {
+            if (checked) {
+                setFormValues({ [name]: checked, ...stateFormAnotherAddress });
+            }
+            else {
+                console.log("Qq")
+                const newState = { ...formValues };
+                delete newState['nameReceive'];
+                delete newState['addressReceive'];
+                delete newState['phoneReceive'];
+                newState[name] = checked;
+                console.log("clqjj==>", newState)
+                setFormValues({ ...newState });
+            }
+            return;
+        }
+        setFormValues({ [name]: value });
+    };
+    const mapCartToUI = (checkout) => {
+        return (
+            cart.cart.map(ele => {
+                return (
+                    <CartItem
+                        key={"cartItem" + ele.id}
+                        id={ele.id}
+                        img={ele.img}
+                        name={ele.name}
+                        price={ele.price}
+                        quantity={ele.quantity}
+                        checkout={checkout}
+                    />
+                )
+            })
+        )
+    }
+
+    const handleSubmitOrder = () => {
+        console.log("haha");
+        console.log("state here==>", formValues)
+    }
+    console.log("haha==>", formValues)
     return (
         <>
             <Container maxWidth="lg" component="main">
                 <Grid container spacing={5}>
-                    <Grid item sm={false} md={4}>
+                    <Grid item xs={12} md={4}>
                         <Typography variant='h5'>
                             Thông tin mua hàng
                         </Typography>
-                        <TextField
-                            required
-                            id="emailBuy"
-                            name="emailBuy"
-                            label="Email"
-                            value={emailBuy}
-                            onChange={handleChange}
-                            fullWidth
-                        />
-                        <TextField
-                            required
-                            id="nameBuy"
-                            name="nameBuy"
-                            label="Họ và tên"
-                            value={nameBuy}
-                            onChange={handleChange}
-                            fullWidth
-                        />
-                        <TextField
-                            required
-                            id="phoneBuy"
-                            name="phoneBuy"
-                            label="Số điện thoại"
-                            value={phoneBuy}
-                            onChange={handleChange}
-                            fullWidth
-                        />
-                        <TextField
-                            required
-                            id="addressBuy"
-                            name="addressBuy"
-                            label="Địa chỉ"
-                            value={addressBuy}
-                            onChange={handleChange}
-                            fullWidth
-                        />
-                        <TextField
-                            id="outlined-textarea"
-                            label="Multiline Placeholder"
-                            placeholder="Placeholder"
-                            multiline
-                            fullWidth
-                            variant="outlined"
+                        <PurchaseInfoForm
+                            initialValues={formValues}
+                            handleChangeState={handleChangeFormValues}
+                            fields={CHECKOUT_MAIN_FIELDS}
                         />
                     </Grid>
-                    <Grid item sm={false} md={4}>
-                        <Typography component="div" style={{ backgroundColor: 'red', height: '100vh' }} />
+                    <Grid item xs={false} md={4}>
+                        {/* <Typography component="div" style={{ height: '100vh' }} /> */}
                     </Grid>
-                    <Grid item sm={false} md={4}>
-                        <Typography component="div" style={{ backgroundColor: 'green', height: '100vh' }} />
+                    <Grid item xs={12} md={4}>
+                        <div className="panel-order">
+                            <div className="panel-order__header">
+                                <h2>Đơn hàng (2 sản phẩm    )</h2>
+                            </div>
+                            <div className="panel-order__content">
+                                <div className="panel-order__list">
+                                    {mapCartToUI(true)}
+                                </div>
+                                <div className="panel-order__temp-price__content">
+                                    <p>
+                                        <span>Tạm tính:</span><span>{formatCurrency(totalPrice, '₫')}</span>
+                                    </p>
+                                    <p>
+                                        <span>Phí vận chuyển:</span><span>{formatCurrency(0, '₫')}</span>
+                                    </p>
+                                </div>
+                                <p className="panel-order__total-price">
+                                    <span>Tổng cộng:</span><span>{formatCurrency(totalPrice, '₫')}</span>
+                                </p>
+                                <div className="panel-order__action">
+                                    <Link to="/cart"><i className="fas fa-chevron-left"></i> <span>Quay về giỏ hàng</span> </Link>
+                                    <button onClick={handleSubmitOrder} type="button" className="btn-order-products">
+                                        ĐẶT HÀNG
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </Grid>
                 </Grid>
             </Container>
@@ -109,5 +141,10 @@ CheckOut.propTypes = {
 
 }
 
-export default CheckOut
+const mapStateToProps = state => {
+    return {
+        cart: state.cart
+    };
+};
+export default connect(mapStateToProps, null)(CheckOut)
 

@@ -1,22 +1,24 @@
+import { ThemeProvider } from '@material-ui/core';
 import React from 'react';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './commons/style.scss';
+import theme from './commons/theme';
 import Footer from './components/Footer';
 import NavBar from './components/NavBar';
 import Cart from './pages/Cart';
-import Home from './pages/Home';
-import store from './redux/store';
 import CheckOut from './pages/CheckOut';
-import { ThemeProvider } from '@material-ui/core';
-import theme from './commons/theme';
-import Products from './pages/Products';
+import Home from './pages/Home';
 import ProductDetail from './pages/ProductDetail';
+import Products from './pages/Products';
+import store from './redux/store';
+import ScrollToTop from './components/ScrollToTop';
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <Router>
+          <ScrollToTop />
           <NavBar />
           <Switch>
             <Route path="/" exact component={Home} />

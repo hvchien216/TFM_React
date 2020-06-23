@@ -3,9 +3,11 @@ import PropTypes from 'prop-types'
 import './style.scss';
 import { Link } from 'react-router-dom';
 import iconAcc from './../../assets/icon_account.png';
-import iconCart from './../../assets/icon_cart___empty.png';
+import iconCartEmpty from './../../assets/icon_cart___empty.png';
+import iconCartFull from './../..//assets/icon_cart___full.png';
 import logo from './../../assets/logo.png';
 import { connect } from 'react-redux';
+import RingRing from '../RingRing';
 function NavBar(props) {
 
     const [query, setQuery] = useState('');
@@ -203,7 +205,9 @@ function NavBar(props) {
                                     </div>
                                     <div className="cart-img">
                                         <Link to="/cart">
-                                            <img src={iconCart} alt="" />
+                                            {props.cart.cart.length > 0
+                                                ? <img src={iconCartFull} alt="" />
+                                                : <img src={iconCartEmpty} alt="" />}
                                         </Link>
                                     </div>
 
@@ -368,6 +372,7 @@ function NavBar(props) {
                     </div>
                 </div>
             </header>
+            <RingRing />
         </>
     )
 }

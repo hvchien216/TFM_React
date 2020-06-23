@@ -1,0 +1,49 @@
+@import './../../commons/style.scss';
+
+.product-item-checkout{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    justify-content: space-between;
+    &-thumb{
+        border-radius: 8px;
+        position: relative;
+        width: 50px;
+        height: 50px;
+        margin-right: 5px;
+        img{
+        border-radius: 8px;
+        }
+        &:after{
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            border-radius: 8px;
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.1) inset;
+            z-index: 2;
+        }
+        .thumb-badge{
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: blue;
+            padding: 4px 8px;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 8px;
+            color: #fff;
+            @include transform(translate(50%,-50%));
+        }
+    }
+    &-title{
+        color:  #4b4b4b;
+        font-size: 12px;
+    }
+
+    &-price{
+        color:  #4b4b4b;
+    }
+}

@@ -24,6 +24,18 @@ $commonColor2: #ebebeb;
     background: -o-linear-gradient(left, $tColor 0%, $sColor 100%);
     background: linear-gradient(to right, $tColor 0%, $sColor 100%);
 }
+@mixin animation($prop) {
+    -webkit-animation: $prop;
+    -moz-animation: $prop;
+    -ms-animation: $prop;
+    -o-animation: $prop;
+    animation: $prop;
+}
+@mixin borderRadius($prop) {
+    -webkit-border-radius: $prop;
+    -moz-border-radius: $prop;
+    border-radius: $prop;
+}
 img{
     vertical-align: middle;
     max-width: 100%;

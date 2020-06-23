@@ -58,6 +58,41 @@
         text-align: center;
     }
 }
+.box-pick-quan{
+    margin-left: 5px;
+    .items-change-quan{
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        float: left;
+        padding: 0;
+        display: block;
+        text-align: center;
+        margin: 0 auto;
+        border: none;
+        outline:none;
+        font-size: 1.28571em;
+        background: #ebebeb;
+        -webkit-border-radius: 50%;
+        border-radius: 50%;
+        @include transition(all ease .3s);
+        cursor: pointer;
+        &:hover{
+            background: $sColor;
+        }
+    }
+    .number-quan{
+        box-shadow: none;
+        text-align: center;
+        min-height: 1px;
+        height: 30px;
+        padding: 0;
+        outline:none;
+        line-height: 30px;
+        border: none;
+        width: 30px;
+    }
+}
 @media only  screen and (max-width: 767px){
     .input_qty_pr{
         .number-sidebar{

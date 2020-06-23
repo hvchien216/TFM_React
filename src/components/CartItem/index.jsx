@@ -2,8 +2,9 @@ import React from 'react'
 import { formatCurrency } from '../../commons/utils';
 import SelectQuan from '../SelectQuan';
 import { Link } from 'react-router-dom';
+import './style.scss';
 function CartItem(props) {
-    const { id, img, name, quantity, price, variantInfo, removeItem, changeQuantity, mobile } = props;
+    const { id, img, name, quantity, price, variantInfo, removeItem, changeQuantity, mobile, checkout } = props;
     if (mobile) {
         return (
             <>
@@ -37,6 +38,32 @@ function CartItem(props) {
             </>
         )
     }
+
+    if (checkout) {
+        return (
+            <>
+                <div className="product-item-checkout flex ">
+                    <div className="product-item-checkout-thumb">
+                        <img
+                            alt={name}
+                            src={img} />
+                        <div className="thumb-badge">
+                            <span>{quantity}</span>
+                        </div>
+                    </div>
+                    <div className="product-item-checkout-title">
+                        <h4>
+                            {name}
+                        </h4>
+                    </div>
+                    <div className="product-item-checkout-price">
+                        <p>{formatCurrency(price, '₫')}</p>
+                    </div>
+                </div>
+            </>
+        )
+    }
+
     return (
         <div className="item-cart flex">
             <div style={{ width: '17%' }} className="flex jf-al-center image">

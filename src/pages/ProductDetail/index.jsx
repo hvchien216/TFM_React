@@ -17,6 +17,7 @@ function ProductDetail(props) {
         const pro = API_PRODUCT.filter((ele, index) => {
             return ele.id == props.match.params.maSP;
         })
+
         setProduct(pro[0]);
     }, [])
 
@@ -107,6 +108,7 @@ function ProductDetail(props) {
                             <div className="pro-details-quantity">
                                 <label>Số lượng: </label>
                                 <SelectQuan
+                                    detail={true}
                                     quantity={quantity}
                                     handleIncre={() => handleChangeQuan(1)}
                                     handleDescre={() => handleChangeQuan(-1)}

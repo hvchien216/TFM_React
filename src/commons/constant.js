@@ -83,3 +83,18 @@ export const FILTER_BY = [
         ]
     }
 ]
+
+export const CHECKOUT_MAIN_FIELDS = [
+    { label: 'Email', type: 'input', name: 'email', value: '' },
+    { label: 'Họ và tên', type: 'input', name: 'name', value: '' },
+    { label: 'Số điện thoại', type: 'input', name: 'phone', value: '' },
+    { label: 'Địa chỉ', type: 'input', name: 'address', value: '' },
+    { label: 'Giao hàng đến địa chỉ khác', type: 'checkbox', name: 'anotherAddress', value: false },
+    { label: 'Ghi chú', type: 'textarea', name: 'note', value: '' },
+]
+
+export const ANOTHER_ADDRESS = [
+    { label: 'Họ và tên', type: 'input', name: 'nameReceive', value: '' },
+    { label: 'Địa chỉ', type: 'input', name: 'addressReceive', value: '' },
+    { label: 'Số điện thoại', type: 'input', name: 'phoneReceive', value: '' },
+]
