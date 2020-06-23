@@ -47,7 +47,7 @@ function InputField(props) {
         field, form,
         type, label, disabled, onChange
     } = props;
-    const { name } = field;
+    const { name, onChange: onChangeOfField } = field;
     const { errors, touched } = form;
     const isError = errors[name] && touched[name];
     return (
@@ -66,7 +66,7 @@ function InputField(props) {
                 error={isError}
                 helperText={errors[name]}
 
-                onChange={onChange}
+                onChange={onChange || onChangeOfField}
                 label={label && label}
                 type={type}
                 disabled={disabled}

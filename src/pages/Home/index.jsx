@@ -7,6 +7,8 @@ import './style.scss';
 function Home(props) {
     return (
         <section className="home">
+
+            <h2 className="title__banner">THƯƠNG HIỆU NỔI BẬT</h2>
             <section className="sec__banner flex">
                 <div className="sec__banner__item">
                     <Link to="/"><img src={banner1} alt="" /></Link>

@@ -9,10 +9,13 @@ import NavBar from './components/NavBar';
 import Cart from './pages/Cart';
 import CheckOut from './pages/CheckOut';
 import Home from './pages/Home';
+import NotFound from './pages/NotFound';
 import ProductDetail from './pages/ProductDetail';
 import Products from './pages/Products';
 import store from './redux/store';
 import ScrollToTop from './components/ScrollToTop';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -26,7 +29,9 @@ function App() {
             <Route path="/product-detail/:maSP" exact component={ProductDetail} />
             <Route path="/cart" exact component={Cart} />
             <Route path="/checkout" exact component={CheckOut} />
-            {/* <Route component={NotFound} /> */}
+            <Route path="/signin" exact component={SignIn} />
+            <Route path="/signup" exact component={SignUp} />
+            <Route component={NotFound} />
           </Switch>
           <Footer />
         </Router>

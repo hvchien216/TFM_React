@@ -1,0 +1,11 @@
+@import './../../commons/style.scss';
+
+.signup-link{
+    color: $commonColor1;
+    text-decoration: underline;
+    margin-left: 20px;
+    font-size: 16px;
+    &:hover{
+        color: $tColor;
+    }
+}
