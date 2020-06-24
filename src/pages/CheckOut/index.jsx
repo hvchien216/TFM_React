@@ -5,7 +5,7 @@ import PurchaseInfoForm from '../../components/PurchaseInfoForm';
 import './style.scss';
 import { connect } from 'react-redux';
 import CartItem from '../../components/CartItem';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { formatCurrency } from '../../commons/utils';
 import { CHECKOUT_MAIN_FIELDS, ANOTHER_ADDRESS } from './../../commons/constant';
 function CheckOut(props) {
@@ -84,7 +84,10 @@ function CheckOut(props) {
         console.log("haha");
         console.log("state here==>", formValues)
     }
-    console.log("haha==>", formValues)
+
+    if (cart.cart.length <= 0) {
+        return <Redirect to='/cart' />;
+    }
     return (
         <>
             <Container maxWidth="lg" component="main">

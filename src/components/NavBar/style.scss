@@ -1,12 +1,14 @@
 @import './../../commons/style.scss';
 .nav-mb{
-    display: none;
-    width: 100%;
+    // display: none;
+    width: 0;
+    overflow: hidden;
     height: 100vh;
     position: fixed;
+    background: transparent;
     z-index: 0;
-    background: rgba(179, 179, 179,.4);
     color: rgba(0,0,0,.75);
+    @include transition((background-color 0s ease .8s));
     &-overlay{
         position: relative;
         width: 80%;
@@ -113,7 +115,10 @@
         }
     }
     &#nav-mobile.active {
-        display: block;
+        // display: block;
+        left: -80%;
+        width: 100%;
+        background: rgba(179, 179, 179,.4);
         z-index: 120;
     }
 }

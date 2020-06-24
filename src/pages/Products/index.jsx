@@ -8,6 +8,9 @@ function Products(props) {
 
     const [products, setProducts] = useState([]);
     const [sort, setSort] = useState(1);
+    const handleChangeChecked = (e) => {
+        console.log(e.target.checked, e.target.name);
+    }
     const mapOption = SORT_PAGI.map((item) => {
         return (
             <option key={'sort' + item.name} value={item.value}>{item.name}</option>
@@ -26,42 +29,6 @@ function Products(props) {
             />
         )
     })
-
-    const handleChangeSort = (e) => {
-        setSort(e.target.value);
-        switch (e.target.value) {
-            case '1': {
-                console.log("1", products);
-                const arrNew = [...products].sort((a, b) => a.name.localeCompare(b.name));
-                console.log("2", arrNew)
-                return setProducts(arrNew);
-            }
-            case '2': {
-                const arrNew = [...products].sort((a, b) => b.name.localeCompare(a.name));
-                return setProducts(arrNew);
-            }
-            case '3': {
-                const arrNew = [...products].sort((a, b) => (a.price - (a.price * (a.discount / 100))) - (b.price - (b.price * (b.discount / 100))));
-                return setProducts(arrNew);
-            }
-            case '4': {
-                const arrNew = [...products].sort((a, b) => (b.price - (b.price * (b.discount / 100))) - (a.price - (a.price * (a.discount / 100))));
-                return setProducts(arrNew);
-            }
-            default: return;
-        }
-    }
-
-    useEffect(() => {
-        // const data = API_PRODUCT.filter((item, index) => {
-        //     return item.brand === props.match.params.maBrand;
-        // })
-        setProducts(API_PRODUCT);
-    }, [])
-
-    const handleChangeChecked = (e) => {
-        console.log(e.target.checked, e.target.name);
-    }
 
     const mapSidebarFilter = FILTER_BY.map(item => {
         return (
@@ -93,15 +60,57 @@ function Products(props) {
         )
     })
 
+    const handleChangeSort = (e) => {
+        setSort(e.target.value);
+        switch (e.target.value) {
+            case '1': {
+                // console.log("1", products);
+                const arrNew = [...products].sort((a, b) => a.name.localeCompare(b.name));
+                // console.log("2", arrNew)
+                return setProducts(arrNew);
+            }
+            case '2': {
+                const arrNew = [...products].sort((a, b) => b.name.localeCompare(a.name));
+                return setProducts(arrNew);
+            }
+            case '3': {
+                const arrNew = [...products].sort((a, b) => (a.price - (a.price * (a.discount / 100))) - (b.price - (b.price * (b.discount / 100))));
+                return setProducts(arrNew);
+            }
+            case '4': {
+                const arrNew = [...products].sort((a, b) => (b.price - (b.price * (b.discount / 100))) - (a.price - (a.price * (a.discount / 100))));
+                return setProducts(arrNew);
+            }
+            default: return;
+        }
+    }
 
+    useEffect(() => {
+        // const data = API_PRODUCT.filter((item, index) => {
+        //     return item.brand === props.match.params.maBrand;
+        // })
+        setProducts(API_PRODUCT);
+    }, [])
+
+
+
+    const handleToggleSidebar = () => {
+        const sideBar = document.querySelector(".products-sidebar");
+        sideBar.classList.toggle('open-sidebar');
+    }
 
     return (
         <>
             <div className="products container-fluid flex">
-                <aside className="products-sidebar">
+                <aside className="products-sidebar" >
                     <div className="products-sidebar-content">
                         {mapSidebarFilter}
+                        <div onClick={handleToggleSidebar} className="icon-filter">
+                            <i class="fas fa-filter open-sidebar"></i>
+                            <i class="fas fa-times close-sidebar"></i>
+                        </div>
                     </div>
+
                 </aside>
                 <section className="products-main">
                     <div className="category-header">

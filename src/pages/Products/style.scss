@@ -45,6 +45,7 @@
         width: 25%;
         padding-right: 15px;
         &-content{
+            position: relative;
             .sidebar-item{
                 margin: 0 0 30px;
                 border: $commonColor2 1px solid;
@@ -83,9 +84,34 @@
                     }
                 }
             }
+            .icon-filter{
+                display: none;
+                position: fixed;
+                top: 50%;
+                right: 0;
+                background: $tColor;
+                border: none;
+                outline: none;
+                color: #fff;
+                padding: 6px 10px;
+                cursor: pointer;
+                font-size: 18px;
+                border-radius: 5px 0px 0px 5px;
+                z-index: 9999;
+                -webkit-box-shadow: #2AC37D 0 0 10px;
+                box-shadow: #2AC37D 0 0 10px;
+                .open-sidebar{
+                    display: block;
+                }
+                .close-sidebar{
+                    display: none;
+                }
+
+            }
         }
         
     }
+
 }
 @media screen and (max-width:991px){
     .products{
@@ -101,15 +127,39 @@
             position: fixed;
             top: 0;
             right: 0;
-            width: 100%;
+            width: 0%;
             z-index: 170;
             background: #00000080;
+
+            &.open-sidebar{
+                width: 100%;
+            }
+
             &-content{
                 background: #fff;
                 margin-left: auto;
-                width: 320px;
+                max-width: 0;
                 height: 100vh;
-                overflow: auto;
+                overflow-y: auto;
+                @include transition(all .35s ease);
+
+                .icon-filter{
+                    display: block;
+                    @include transition(all .35s ease);
+                }
+            }
+
+            &.open-sidebar &-content{
+                max-width: 320px;
+                .icon-filter{
+                    right: 320px;
+                    .open-sidebar{
+                        display: none;
+                    }
+                    .close-sidebar{
+                        display: block;
+                    }
+                }
             }
         }
     }

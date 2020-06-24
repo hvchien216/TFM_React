@@ -1,12 +1,14 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import './style.scss';
 import { FastField, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import InputField from '../../custom-fields/InpuField';
-import { Container, Grid, Button } from '@material-ui/core';
+import { Container, Grid, Button, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
-
+import { Link, useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { signIn } from './../../redux/actions/userActions';
 const useStyles = makeStyles((theme) => ({
     form: {
         width: '100%',
@@ -17,14 +19,15 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function SignIn() {
+function SignIn(props) {
     const classes = useStyles();
-
+    const history = useHistory();
     const validationSchemaSignIn = Yup.object().shape({
         email: Yup.string().required('Vui lòng nhập email'),
 
         password: Yup.string().required('Vui lòng nhập mật khẩu'),
     })
+
     return (
         <>
             <Container maxWidth="lg" component="main">
@@ -37,9 +40,10 @@ function SignIn() {
                         <Formik
                             initialValues={{ email: '', password: '' }}
                             validationSchema={validationSchemaSignIn}
-                            onSubmit={values => console.log("submit==>", values)}
+                            onSubmit={values => props.signIn(values, history)}
                         >
                             {formikProps => {
+                                const { isSubmitting } = formikProps;
                                 return (
                                     <Form className={classes.form}>
                                         <FastField
@@ -55,8 +59,8 @@ function SignIn() {
                                             label="Mật khẩu"
                                         />
                                         <Grid item xs={12} md={6} className={classes.submitBox}>
-                                            <Button type="submit" variant="contained" color="primary">
-                                                Đăng nhập
+                                            <Button type="submit" disabled={isSubmitting} variant="contained" color="primary">
+                                                {isSubmitting ? <CircularProgress size={23} /> : 'Đăng nhập'}
                                             </Button>
                                             <Link to='/signup' className="signup-link">
                                                 Đăng ký
@@ -101,8 +105,10 @@ function SignIn() {
 }
 
 SignIn.propTypes = {
-
+    signIn: PropTypes.func.isRequired,
 }
-
-export default SignIn
+const mapDispatchToProps = {
+    signIn
+}
+export default connect(null, mapDispatchToProps)(SignIn);
 

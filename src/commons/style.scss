@@ -5,6 +5,8 @@ $whiteColor: #fff;
 $commonColor1: #5b5b5b;
 $commonColor2: #ebebeb;
 
+
+
 @mixin transform($property) {
     -webkit-transform: $property;
     -ms-transform: $property;
@@ -41,6 +43,12 @@ img{
     max-width: 100%;
     height: auto;
     object-fit: cover;
+}
+#root{
+    @include transition(transform 1s ease) ;
+    &.active{
+       @include transform(translateX(80%));
+    }
 }
 *,
 *:before,
@@ -116,7 +124,9 @@ ul{
 .mr-15{
     margin-right: 15px;
 }
-
+.mt-20{
+    margin-top: 20px;
+}
 .container-fluid{
     position: relative;
     margin: 0 auto;

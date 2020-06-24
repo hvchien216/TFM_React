@@ -22,6 +22,7 @@ function Cart(props) {
         props.removeItemFromCart(id);
     }
     const mapCartToUI = (mobile) => {
+
         return (
             cart.cart.map(ele => {
                 return (
@@ -40,22 +41,23 @@ function Cart(props) {
             })
         )
     }
-    return (
-        <section className="cart ">
-            <section className="cart-nav" >
-                <div className="container-fluid">
-                    <ul className="cart-nav-list flex">
-                        <li className="home">
-                            <a href="/"><span>Trang chủ</span></a>
-                        </li>
 
-                        <li>
-                            <strong>Giỏ hàng</strong>
-                        </li>
-                    </ul>
+    const disabledLink = (e) => {
+        if (cart.cart.length <= 0) {
+            e.preventDefault();
+        }
+    }
+
+    const showSummaryCart = () => {
+        if (cart.cart.length <= 0) {
+            return (
+                <div className="container-fluid">
+                    <span>Không có sản phẩm nào trong giỏ hàng. Quay lại <Link style={{ color: '#3dc8f6' }} to="/">cửa hàng</Link> để tiếp tục mua sắm.</span>
                 </div>
-            </section>
-            <section className="main-cart-page">
+            )
+        }
+        return (
+            <>
                 <div className="cart-main container-fluid">
                     <div className="list-product-of-cart">
                         <div className="cart-thead flex">
@@ -86,6 +88,7 @@ function Cart(props) {
                                 className="btn-proceed-checkout libra-sport___button"
                                 title="Tiến hành đặt hàng"
                                 to="/checkout"
+                                onClick={disabledLink}
                             >
                                 <span>Tiến hành đặt hàng</span>
                             </Link>
@@ -116,12 +119,33 @@ function Cart(props) {
                                 className="btn-proceed btn-checkout"
                                 title="Tiến hành đặt hàng"
                                 to="/checkout"
+                                onClick={disabledLink}
                             >
                                 <span>Tiến hành thanh toán</span>
                             </Link>
                         </div>
                     </div>
                 </div>
+            </>
+        )
+    }
+    return (
+        <section className="cart ">
+            <section className="cart-nav" >
+                <div className="container-fluid">
+                    <ul className="cart-nav-list flex">
+                        <li className="home">
+                            <a href="/"><span>Trang chủ</span></a>
+                        </li>
+
+                        <li>
+                            <strong>Giỏ hàng</strong>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            <section className="main-cart-page mt-20">
+                {showSummaryCart()}
             </section>
         </section >
     )

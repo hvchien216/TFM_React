@@ -31,8 +31,11 @@ function NavBar(props) {
         e.stopPropagation();
         const iconMenu = document.getElementById("menu-ham");
         const navMb = document.getElementById("nav-mobile");
+        const root = document.querySelector("#root");
         iconMenu.classList.toggle("active");
         navMb.classList.toggle("active");
+        root.classList.toggle("active");
+        // root.style.transform = 'translateX(80%)';
     }
 
     const handleToggleSubMenuMobile = (e, id) => {
