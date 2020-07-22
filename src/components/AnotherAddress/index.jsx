@@ -1,17 +1,10 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from "react";
+import PropTypes from "prop-types";
 
 function AnotherAddress(props) {
-    return (
-        <div>
-
-        </div>
-    )
+  return <div></div>;
 }
 
-AnotherAddress.propTypes = {
+AnotherAddress.propTypes = {};
 
-}
-
-export default AnotherAddress
-
+export default AnotherAddress;

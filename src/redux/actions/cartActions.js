@@ -21,29 +21,29 @@ import { dataJsonProvince } from '../../commons/utils';
 // }
 
 export const addToCart = (data) => (dispatch) => {
-    dispatch({
-        type: ADD_TO_CART,
-        payload: data
-    })
+	dispatch({
+		type: ADD_TO_CART,
+		payload: data
+	})
 }
 
 export const removeItemFromCart = (id) => (dispatch) => {
-    dispatch({
-        type: REMOVE_FROM_CART,
-        id
-    })
+	dispatch({
+		type: REMOVE_FROM_CART,
+		id
+	})
 }
 
 export const changeQuantityItemCart = (id, quan) => dispatch => {
-    dispatch({
-        type: UPDATE_CART_ITEM,
-        id,
-        quan
-    })
+	dispatch({
+		type: UPDATE_CART_ITEM,
+		id,
+		quan
+	})
 }
 
 export const removeAllItemCart = () => dispatch => {
-    dispatch({
-        type: REMOVE_ALL_CART
-    })
+	dispatch({
+		type: REMOVE_ALL_CART
+	})
 }

@@ -16,6 +16,7 @@ import store from './redux/store';
 import ScrollToTop from './components/ScrollToTop';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import AuthRoute from './components/AuthRoute';
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -29,8 +30,8 @@ function App() {
             <Route path="/product-detail/:maSP" exact component={ProductDetail} />
             <Route path="/cart" exact component={Cart} />
             <Route path="/checkout" exact component={CheckOut} />
-            <Route path="/signin" exact component={SignIn} />
-            <Route path="/signup" exact component={SignUp} />
+            <AuthRoute exact path="/signin" component={SignIn} />
+            <AuthRoute exact path="/signup" component={SignUp} />
             <Route component={NotFound} />
           </Switch>
           <Footer />

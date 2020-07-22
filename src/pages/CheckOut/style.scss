@@ -1,98 +1,94 @@
-@import './../../commons/style.scss';
+@import "./../../commons/style.scss";
 
-.panel-order{
-    border-left: 1px solid lightgray;
-    background-color: #fafafa;
-    width: 100%;
-    &__header{
-        border-bottom: 1px solid lightgray;
-        padding-left: 30px;
-        h2{
-            margin: 0 0 20px;
-            font-size: 18px;
-        }
+.panel-order {
+  border-left: 1px solid lightgray;
+  background-color: #fafafa;
+  width: 100%;
+  &__header {
+    border-bottom: 1px solid lightgray;
+    padding-left: 30px;
+    h2 {
+      margin: 0 0 20px;
+      font-size: 18px;
     }
-    &__content{
-        padding-left: 30px;
-        .panel-order__list{
-            padding: 12px 0;
-            border-bottom: 1px solid lightgray;
-        }
-        .panel-order__temp-price__content{
-            border-bottom: 1px solid lightgray;
-            p{
-                display: flex;
-                justify-content: space-between;
-            }
-        }
-        .panel-order__total-price{
-            font-weight: 700;
-            font-size: 16px;
-        }
-        .panel-order__total-price,.panel-order__action{
-            display: flex;
-            justify-content: space-between;
-            color: #4b4b4b;
-            
-        }
-        .panel-order__action{
-            align-items: center;
-            a{
-                color: $pColor;
-            }
-            .btn-order-products{
-                outline: none;
-                border: none;
-                color: #fff;
-                font-weight: 700;
-                font-size: 18px;
-                background: $pColor;
-                border-radius: 4px;
-                padding: 10px 30px;
-                cursor: pointer;
-            }
-        }
+  }
+  &__content {
+    padding-left: 30px;
+    .panel-order__list {
+      padding: 12px 0;
+      border-bottom: 1px solid lightgray;
     }
+    .panel-order__temp-price__content {
+      border-bottom: 1px solid lightgray;
+      p {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+    .panel-order__total-price {
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .panel-order__total-price,
+    .panel-order__action {
+      display: flex;
+      justify-content: space-between;
+      color: #4b4b4b;
+    }
+    .panel-order__action {
+      align-items: center;
+      a {
+        color: $pColor;
+      }
+      .btn-order-products {
+        outline: none;
+        border: none;
+        color: #fff;
+        font-weight: 700;
+        font-size: 18px;
+        background: $pColor;
+        border-radius: 4px;
+        padding: 10px 30px;
+        cursor: pointer;
+      }
+    }
+  }
 }
 
-@media only  screen and (max-width: 991px){
-    .panel-order{
-        border: none;
-        &__header{
-            padding: 0;
-            h2{
-             
-            }
-        }
-        &__content{
-            padding: 0;
-            .panel-order__list{
-               
-            }
-            .panel-order__temp-price__content{
-                p{
-                   
-                }
-            }
-            .panel-order__total-price{
-                
-            }
-            .panel-order__total-price,.panel-order__action{
-              
-            }
-            .panel-order__action{
-                flex-wrap: wrap;
-                a{
-                    order : 2;
-                    display: block;
-                    margin: 20px auto;
-                }
-                .btn-order-products{
-                    order : 1;
-                    margin-top: 10px;
-                    width: 100%;
-                }
-            }
-        }
+@media only screen and (max-width: 991px) {
+  .panel-order {
+    border: none;
+    &__header {
+      padding: 0;
+      h2 {
+      }
     }
+    &__content {
+      padding: 0;
+      .panel-order__list {
+      }
+      .panel-order__temp-price__content {
+        p {
+        }
+      }
+      .panel-order__total-price {
+      }
+      .panel-order__total-price,
+      .panel-order__action {
+      }
+      .panel-order__action {
+        flex-wrap: wrap;
+        a {
+          order: 2;
+          display: block;
+          margin: 20px auto;
+        }
+        .btn-order-products {
+          order: 1;
+          margin-top: 10px;
+          width: 100%;
+        }
+      }
+    }
+  }
 }

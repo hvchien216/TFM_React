@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import CartItem from '../../components/CartItem';
 import { Link, Redirect } from 'react-router-dom';
 import { formatCurrency } from '../../commons/utils';
-import { CHECKOUT_MAIN_FIELDS, ANOTHER_ADDRESS } from './../../commons/constant';
+import { CHECKOUT_MAIN_FIELDS } from './../../commons/constant';
 function CheckOut(props) {
     const { cart } = props;
     const totalPrice = cart ? cart.cart.reduce((total, item) => {
@@ -26,17 +26,11 @@ function CheckOut(props) {
     }
 
     const stateForm = initValue(CHECKOUT_MAIN_FIELDS);
-    const stateFormAnotherAddress = initValue(ANOTHER_ADDRESS);
 
     const [formValues, setFormValues] = useReducer(
         (state, newState) => ({ ...state, ...newState }),
         {
-            email: '',
-            name: '',
-            phone: '',
-            address: '',
-            anotherAddress: false,
-            note: '',
+            ...stateForm
         }
     );
 
@@ -45,23 +39,12 @@ function CheckOut(props) {
     const handleChangeFormValues = event => {
         const { name, value, checked, type } = event.target;
         if (type === 'checkbox') {
-            if (checked) {
-                setFormValues({ [name]: checked, ...stateFormAnotherAddress });
-            }
-            else {
-                console.log("Qq")
-                const newState = { ...formValues };
-                delete newState['nameReceive'];
-                delete newState['addressReceive'];
-                delete newState['phoneReceive'];
-                newState[name] = checked;
-                console.log("clqjj==>", newState)
-                setFormValues({ ...newState });
-            }
+            setFormValues({ [name]: checked });
             return;
-        }
+        };
         setFormValues({ [name]: value });
-    };
+
+    }
     const mapCartToUI = (checkout) => {
         return (
             cart.cart.map(ele => {
@@ -81,7 +64,6 @@ function CheckOut(props) {
     }
 
     const handleSubmitOrder = () => {
-        console.log("haha");
         console.log("state here==>", formValues)
     }
 

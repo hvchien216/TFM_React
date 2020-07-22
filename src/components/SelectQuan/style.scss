@@ -1,105 +1,104 @@
-@import './../../commons/style.scss';
-.input_qty_pr{
-    width: 100%;
-    display: flex;
-    .items-count{
-        outline: none;
-        background: #ebebeb;
-        height: 24px;
-        width: 24px;
-        border: none;
-        -webkit-border-radius: 50%;
-        border-radius: 50%;
-        cursor: pointer;
-        @include transition(all ease .3s);
-        &:hover{
-            background: $sColor;
-        }
+@import "./../../commons/style.scss";
+.input_qty_pr {
+  width: 100%;
+  display: flex;
+  .items-count {
+    outline: none;
+    background: #ebebeb;
+    height: 24px;
+    width: 24px;
+    border: none;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    cursor: pointer;
+    @include transition(all ease 0.3s);
+    &:hover {
+      background: $sColor;
     }
-    .number-sidebar{
-        outline: none;
-        border: none;
-        height: 24px;
-        text-align: center;
-        width: 30px;
-    }
+  }
+  .number-sidebar {
+    outline: none;
+    border: none;
+    height: 24px;
+    text-align: center;
+    width: 30px;
+  }
 }
-.product-item-mb{
-    padding: 15px 15px;
-    min-height: 100px;
-    border-bottom: solid 1px #ebebeb;
-    overflow: hidden;
-    &-thumb{
-        margin-right: 10px;
-        width: 80px;
-        max-height: 80px;
+.product-item-mb {
+  padding: 15px 15px;
+  min-height: 100px;
+  border-bottom: solid 1px #ebebeb;
+  overflow: hidden;
+  &-thumb {
+    margin-right: 10px;
+    width: 80px;
+    max-height: 80px;
+  }
+  &-title {
+    width: calc(100% - 130px);
+    margin-right: 10px;
+    h3 {
+      width: 100%;
+      margin: 0 0 10px;
+      font-size: 13px;
+      font-weight: 400;
+      a {
+        color: inherit;
+      }
     }
-    &-title{
-        width: calc(100% - 130px);
-        margin-right: 10px;
-        h3{
-            width: 100%;
-            margin: 0 0 10px;
-            font-size: 13px;
-            font-weight: 400;
-            a{
-                color: inherit;
-            }
-        }
-        p.price{
-            font-size: 13px;
-            span{
-                color: $tColor;
-            }
-        }
+    p.price {
+      font-size: 13px;
+      span {
+        color: $tColor;
+      }
     }
-    &-select-quan{
-        width: auto;
-        text-align: center;
-    }
+  }
+  &-select-quan {
+    width: auto;
+    text-align: center;
+  }
 }
-.box-pick-quan{
-    margin-left: 5px;
-    .items-change-quan{
-        width: 30px;
-        height: 30px;
-        line-height: 30px;
-        float: left;
-        padding: 0;
-        display: block;
-        text-align: center;
-        margin: 0 auto;
-        border: none;
-        outline:none;
-        font-size: 1.28571em;
-        background: #ebebeb;
-        -webkit-border-radius: 50%;
-        border-radius: 50%;
-        @include transition(all ease .3s);
-        cursor: pointer;
-        &:hover{
-            background: $sColor;
-        }
+.box-pick-quan {
+  margin-left: 5px;
+  .items-change-quan {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    float: left;
+    padding: 0;
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+    border: none;
+    outline: none;
+    font-size: 1.28571em;
+    background: #ebebeb;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    @include transition(all ease 0.3s);
+    cursor: pointer;
+    &:hover {
+      background: $sColor;
     }
-    .number-quan{
-        box-shadow: none;
-        text-align: center;
-        min-height: 1px;
-        height: 30px;
-        padding: 0;
-        outline:none;
-        line-height: 30px;
-        border: none;
-        width: 30px;
-    }
+  }
+  .number-quan {
+    box-shadow: none;
+    text-align: center;
+    min-height: 1px;
+    height: 30px;
+    padding: 0;
+    outline: none;
+    line-height: 30px;
+    border: none;
+    width: 30px;
+  }
 }
-@media only  screen and (max-width: 767px){
-    .input_qty_pr{
-        .number-sidebar{
-            border: 1px solid $commonColor1;
-            border-radius: 4px;
-            margin: 0 2px;
-        }
+@media only screen and (max-width: 767px) {
+  .input_qty_pr {
+    .number-sidebar {
+      border: 1px solid $commonColor1;
+      border-radius: 4px;
+      margin: 0 2px;
     }
-
+  }
 }
