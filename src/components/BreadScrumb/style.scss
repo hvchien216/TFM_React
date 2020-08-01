@@ -1,0 +1,36 @@
+@import "./../../commons/style.scss";
+
+.breadscrumb-nav {
+  background: #fff;
+  border-top: #ebebeb 1px dashed;
+  border-bottom: #ebebeb 1px dashed;
+  margin-bottom: 30px;
+  &-list {
+    max-width: 1170px;
+    padding: 10px 0;
+    margin: 0 auto;
+    background: transparent;
+
+    li:not(:last-child)::after {
+      content: "\00BB	" !important;
+      position: relative;
+      width: 20px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 5px;
+      color: #5b5b5b66;
+    }
+    li {
+      a {
+        color: #5b5b5b;
+      }
+    }
+    li:last-child {
+      a {
+        color: #5b5b5b;
+        font-weight: 700;
+      }
+    }
+  }
+}

@@ -58,6 +58,18 @@
             width: 100%;
             padding: 10px 20px;
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            &:hover .action-change-pwd {
+              opacity: 1;
+              @include transform(translateX(0px));
+            }
+            .action-change-pwd {
+              opacity: 0;
+              position: absolute;
+              top: 100%;
+              left: 0;
+              @include transform(translateX(-40px));
+              @include transition(all ease 0.3s);
+            }
             a {
               width: 100%;
               display: block;
@@ -494,8 +506,9 @@
                 visibility: hidden;
                 opacity: 0;
                 border-top: 1px solid $commonColor2;
+                border-radius: 5px;
                 .mega-item {
-                  padding: 5px 0;
+                  padding: 12px 0;
                 }
                 .mega-item-title {
                   font-weight: 700;

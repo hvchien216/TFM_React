@@ -3,6 +3,7 @@ import {
 	SET_AUTHENTICATED,
 	SET_UNAUTHENTICATED,
 	LOADING_USER,
+	EDIT_PROFILE
 } from './../types';
 
 let userLocal = JSON.parse(localStorage.getItem('user'));

@@ -1,0 +1,32 @@
+@import "./../../commons/style.scss";
+.heading-user-info {
+  color: #fff;
+  margin: 0 0 15px;
+  border-bottom: $commonColor2 1px solid;
+  background: $tColor;
+  height: 37px;
+}
+.user-info-content {
+  padding: 0px 8px 8px;
+  .info-item {
+    margin-bottom: 10px;
+    i {
+      width: 15px;
+      margin-right: 5px;
+      color: $tColor;
+      font-size: 16px;
+    }
+  }
+}
+.user-info-edit {
+  display: block;
+  color: #fff;
+  padding: 8px;
+  text-align: center;
+  background: $tColor;
+  @include transition(all ease-in 0.3s);
+
+  &:hover {
+    background: $sColor;
+  }
+}

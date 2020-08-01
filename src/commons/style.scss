@@ -120,6 +120,11 @@ ul {
   -ms-flex-pack: center;
   justify-content: center;
 }
+.al-center {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
 .jf-end {
   justify-content: flex-end;
 }
@@ -131,6 +136,16 @@ ul {
 }
 .mt-20 {
   margin-top: 20px;
+}
+.mtb100 {
+  margin: 100px 0px;
+}
+.text-warning {
+  width: 100%;
+  color: #8a6d3b;
+  background: #fcf8e3;
+  padding: 15px;
+  margin: 0 15px;
 }
 .container-fluid {
   position: relative;

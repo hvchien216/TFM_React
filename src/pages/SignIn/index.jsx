@@ -13,8 +13,9 @@ import { connect } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import InputField from "../../custom-fields/InpuField";
-import { signIn } from "./../../redux/actions/userActions";
+import { signInAndUp, resetPassword } from "./../../redux/actions/userActions";
 import "./style.scss";
+import BreadScrumb from "../../components/BreadScrumb";
 const useStyles = makeStyles((theme) => ({
   form: {
     width: "100%",
@@ -39,17 +40,33 @@ function SignIn(props) {
     password: Yup.string().required("Vui lòng nhập mật khẩu"),
   });
 
+  const validationSchemaForgetPwd = Yup.object().shape({
+    emailForgotPwd: Yup.string().required(
+      "Vui lòng nhập email để lấy mật khẩu"
+    ),
+  });
+
   return (
     <>
+      <BreadScrumb path={history.location} />
+
       <Container maxWidth="lg" component="main">
         <h1>ĐĂNG NHẬP TÀI KHOẢN</h1>
         <Grid container spacing={5}>
           <Grid item xs={12} md={6}>
             <span>Nếu bạn đã có tài khoản, đăng nhập tại đây.</span>
             <Formik
-              initialValues={{ email: "", password: "" }}
+              initialValues={{
+                email:
+                  process.env.NODE_ENV === "development"
+                    ? "hahaha@gmail.com"
+                    : "",
+                password:
+                  process.env.NODE_ENV === "development" ? "kimjisoo@" : "",
+              }}
               validationSchema={validationSchemaSignIn}
-              onSubmit={(values) => props.signIn(values, history)}
+              onSubmit={(values) => props.signInAndUp(values, history, false)}
+              // onSubmit={(values) => submitHere(values)}
             >
               {(formikProps) => {
                 const { isSubmitting } = formikProps;
@@ -66,14 +83,15 @@ function SignIn(props) {
                       label="Mật khẩu"
                       type="password"
                     />
-                    {props.error && (
+                    {/* {props.error && (
                       <Typography
                         variant="body2"
                         className={classes.customError}
                       >
-                        {props.error}
+                        {props.error.charAt(0).toUpperCase() +
+                          props.error.slice(1)}
                       </Typography>
-                    )}
+                    )} */}
                     <Grid item xs={12} md={6} className={classes.submitBox}>
                       <Button
                         type="submit"
@@ -103,7 +121,8 @@ function SignIn(props) {
             </span>
             <Formik
               initialValues={{ emailForgotPwd: "" }}
-              onSubmit={(values) => console.log("forgot pwd==>", values)}
+              validationSchema={validationSchemaForgetPwd}
+              onSubmit={(values) => props.resetPassword(values)}
             >
               {(formikProps) => {
                 return (
@@ -134,7 +153,8 @@ function SignIn(props) {
 }
 
 SignIn.propTypes = {
-  signIn: PropTypes.func.isRequired,
+  signInAndUp: PropTypes.func.isRequired,
+  resetPassword: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -144,6 +164,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  signIn,
+  signInAndUp,
+  resetPassword,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

@@ -1,0 +1,51 @@
+@import "./../../commons/style.scss";
+.heading-user-info {
+  color: #fff;
+  margin: 0 0 15px;
+  border-bottom: $commonColor2 1px solid;
+  background: $tColor;
+  height: 37px;
+}
+.user-info-content {
+  padding: 0px 8px 8px;
+  .info-item {
+    margin-bottom: 10px;
+    i {
+      color: $tColor;
+    }
+  }
+}
+.user-info-edit {
+  display: block;
+  color: #fff;
+  padding: 8px;
+  text-align: center;
+  background: $tColor;
+  @include transition(all ease-in 0.3s);
+
+  &:hover {
+    background: $sColor;
+  }
+}
+
+.profile-info-wrapper {
+  margin-top: 16px;
+  text-align: center;
+  position: relative;
+  .profile-info-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    max-width: 100%;
+    border-radius: 50%;
+  }
+
+  .btn-edit-image {
+    position: absolute;
+    top: 70%;
+    left: 55%;
+    i {
+      color: $tColor;
+    }
+  }
+}

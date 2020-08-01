@@ -196,7 +196,7 @@ function Footer(props) {
           </div>
         </div>
       </footer>
-      <div className="copy-right">
+      <div id="tfm-copy-right" className="copy-right">
         <span>Bản quyền thuốc về THE FIRE MONKEY</span>
         <span>|</span>
         <span>

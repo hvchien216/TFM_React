@@ -4,10 +4,12 @@ import "./style.scss";
 import { Link } from "react-router-dom";
 import { formatCurrency } from "./../../commons/utils";
 function ProductItem(props) {
-  const { id, name, price, discount, img } = props;
+  const { id, name, price, discount, img, index, setId } = props;
+  // console.log("props===>", props);
+
   return (
     <>
-      <div className="product-item">
+      <div id={setId ? "last-product-item" : ""} className="product-item">
         <div className="product-item-box">
           <div className="product-thumbnail">
             {discount ? (
@@ -33,7 +35,7 @@ function ProductItem(props) {
           <div className="product-info">
             <h3 className="product-name">
               <Link to={"/product-detail/" + id} title={name}>
-                {name}
+                {name + " " + index}
               </Link>
             </h3>
             <div className="price-box">
@@ -41,7 +43,7 @@ function ProductItem(props) {
                 <span className="price">
                   {discount
                     ? formatCurrency(
-                        Math.ceil(price - price * (discount / 100)),
+                        Math.ceil(price - price * (parseInt(discount) / 100)),
                         "₫"
                       )
                     : formatCurrency(price, "₫")}

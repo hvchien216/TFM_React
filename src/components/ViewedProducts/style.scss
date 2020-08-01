@@ -1,0 +1,33 @@
+@import "./../../commons/style.scss";
+
+.recent-products {
+  margin: 30px auto !important;
+  .module-header {
+    border: none;
+    background: #ebebeb;
+    padding: 10px 15px;
+    .module-title {
+      font-weight: 700;
+      color: $commonColor1;
+    }
+  }
+  .module-content {
+    width: 100%;
+    padding: 10px 0px;
+    &-box {
+      // flex-wrap: wrap;
+    }
+    .bs-btn {
+      position: absolute;
+      top: 40%;
+      cursor: pointer;
+      z-index: 10;
+    }
+    .pre {
+      left: -30px;
+    }
+    .next {
+      right: -30px;
+    }
+  }
+}

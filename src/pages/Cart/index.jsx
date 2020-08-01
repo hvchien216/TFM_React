@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./style.scss";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import CartItem from "../../components/CartItem";
 import { formatCurrency } from "./../../commons/utils";
@@ -10,8 +10,10 @@ import {
   changeQuantityItemCart,
   removeAllItemCart,
 } from "./../../redux/actions/cartActions";
+import BreadScrumb from "../../components/BreadScrumb";
 function Cart(props) {
   const { cart } = props;
+  const history = useHistory();
   const totalPrice = cart
     ? cart.cart.reduce((total, item) => {
         return (total = total + item.price * item.quantity);
@@ -131,21 +133,7 @@ function Cart(props) {
   };
   return (
     <section className="cart ">
-      <section className="cart-nav">
-        <div className="container-fluid">
-          <ul className="cart-nav-list flex">
-            <li className="home">
-              <a href="/">
-                <span>Trang chủ</span>
-              </a>
-            </li>
-
-            <li>
-              <strong>Giỏ hàng</strong>
-            </li>
-          </ul>
-        </div>
-      </section>
+      <BreadScrumb path={history.location} />
       <section className="main-cart-page mt-20">{showSummaryCart()}</section>
     </section>
   );

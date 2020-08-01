@@ -42,6 +42,7 @@
         white-space: nowrap;
       }
       img {
+        width: 100%;
         @include transition(all ease 0.3s);
       }
       .product-action {

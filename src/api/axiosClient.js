@@ -3,9 +3,9 @@ import queryString from 'query-string';
 
 const axiosClient = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
-  headers: {
-    'Content-Type': 'application/json; charset=utf-8',
-  },
+  // headers: {
+  //   'Content-Type': 'application/json; charset=utf-8',
+  // },
   paramsSerializer: params => queryString.stringify(params),
 });
 
@@ -18,6 +18,8 @@ axiosClient.interceptors.request.use(async (config) => {
   }
   // config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
   config.headers['Accept'] = 'application/json';
+  config.headers['Content-Type'] = 'application/json';
+  // config.headers['Access-Control-Allow-Origin'] = '*';
   return config;
 });
 

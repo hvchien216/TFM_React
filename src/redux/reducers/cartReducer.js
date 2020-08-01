@@ -1,8 +1,9 @@
 import { ADD_TO_CART, REMOVE_FROM_CART, UPDATE_CART_ITEM, REMOVE_ALL_CART } from './../types';
 import thumb from './../../assets/domba.jpg';
+import { savedYourCard } from './../../commons/utils';
 const initialState = {
-	cart: [
-		// { id: 1, img: thumb, name: "Domba - Trắng/Đen", quantity: 2, price: 990000, },
+	cart: JSON.parse(localStorage.getItem('your_cart')) || [
+		{ product_id: 1, img: thumb, name: "Domba - Trắng/Đen", quantity: 2, price: 990000, total: 100000, specification_id: 2 },
 		// { id: 2, img: thumb, name: "Ananas Track 6 - Low To2p", quantity: 2, price: 1990000, },
 		// { id: 3, img: thumb, name: "Ananas Track  - Low ", quantity: 1, price: 990000, },
 		// { id: 4, img: thumb, name: "Ananas - Low Top", quantity: 4, price: 1990000, },
@@ -23,11 +24,13 @@ export default function (state = initialState, action) {
 				newCartState[indexOfProduct].quantity =
 					Number(newCartState[indexOfProduct].quantity) +
 					Number(action.payload.quantity);
+				savedYourCard(newCartState)
 				return {
 					...state,
 					cart: newCartState
 				};
 			} else {
+				savedYourCard([...state.cart, action.payload]);
 				return {
 					...state,
 					cart: [...state.cart, action.payload]
@@ -38,6 +41,7 @@ export default function (state = initialState, action) {
 			const newCartState = state.cart.filter(item => {
 				return item.id !== action.id;
 			});
+			savedYourCard(newCartState);
 			return {
 				...state,
 				cart: newCartState
@@ -53,17 +57,20 @@ export default function (state = initialState, action) {
 				const newCart = newCartState.filter(item => {
 					return item.id !== action.id;
 				});
+				savedYourCard(newCart);
 				return {
 					...state,
 					cart: newCart
 				};
 			}
+			savedYourCard(newCartState);
 			return {
 				...state,
 				cart: newCartState
 			};
 		}
 		case REMOVE_ALL_CART: {
+			savedYourCard([]);
 			return {
 				...state,
 				cart: [],

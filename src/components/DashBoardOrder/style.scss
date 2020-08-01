@@ -1,0 +1,36 @@
+@import "./../../commons/style.scss";
+
+.table-order {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 20px;
+  &-thead {
+    text-align: left;
+    th {
+      background-color: $tColor;
+      color: #fff;
+      padding: 8px;
+      border-bottom: 2px solid #ddd;
+    }
+  }
+  & tr:nth-child(even) {
+    background-color: #fff;
+  }
+  & tr:nth-child(odd) {
+    background-color: $commonColor2;
+  }
+
+  tbody {
+    tr {
+      @include transition(all ease-out 0.2s);
+      &:hover {
+        background-color: $sColor;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+        @include transform(translateY(-15px) scale(1.05));
+      }
+      td {
+        padding: 8px;
+      }
+    }
+  }
+}

@@ -149,9 +149,20 @@ function NavBar(props) {
                 className="cp-item mm-listitem"
                 onClick={handleToggleMenuMobile}
               >
-                <span className="btn-transition">
-                  <i className="fa fa-sign-in-alt"></i> {props.credentials.name}
-                </span>
+                <Link to="/account">
+                  <span className="btn-transition">
+                    <i className="fa fa-sign-in-alt"></i>{" "}
+                    {props.credentials.name}
+                  </span>
+                </Link>
+              </li>
+              <li
+                className="cp-item mm-listitem"
+                onClick={handleToggleMenuMobile}
+              >
+                <Link to="/account/change-password">
+                  <i className="fa fa-key"></i> Đổi mật khẩu
+                </Link>
               </li>
               <li className="cp-item mm-listitem" onClick={props.logoutUser}>
                 <span className="btn-transition">
@@ -191,7 +202,14 @@ function NavBar(props) {
         <>
           <ul className="flex">
             <li>
-              <span>{props.credentials.name}</span>
+              <Link to="/account">
+                <span>{props.credentials.name}</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/account/change-password">
+                <span>Đổi mật khẩu</span>
+              </Link>
             </li>
             <li onClick={props.logoutUser}>
               <span>Thoát</span>

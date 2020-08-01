@@ -9,37 +9,32 @@ import {
   Button,
 } from "@material-ui/core";
 function AlertDialog(props) {
-  const [open, setOpen] = useState(false);
-  console.log(props.data);
-  useEffect(() => {
-    setOpen(props.open);
-  }, [props.open]);
-
+  console.log("props====>", props);
   const handleClose = () => {
-    setOpen(false);
+    props.close(false);
   };
   return (
     <Dialog
-      open={open}
+      open={props.open}
       onClose={handleClose}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">
-        {"Use Google's location service?"}
-      </DialogTitle>
+      <DialogTitle id="alert-dialog-title">Thông báo</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          Let Google help apps determine location. This means sending anonymous
-          location data to Google, even when no apps are running.
+          <span>
+            {`Bạn đã thêm `}
+            <span
+              style={{ color: "red" }}
+            >{`[${props.data.quantity} ${props.data.name}, size: ${props.data.size}]`}</span>
+            {` vào giỏ hàng`}
+          </span>
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
-          Disagree
-        </Button>
         <Button onClick={handleClose} color="primary" autoFocus>
-          Agree
+          Xác nhận
         </Button>
       </DialogActions>
     </Dialog>
