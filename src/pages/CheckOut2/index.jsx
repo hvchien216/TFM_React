@@ -1,27 +1,25 @@
-import React, { useState, useReducer } from "react";
-import PropTypes from "prop-types";
 import {
-  Container,
-  Typography,
-  Grid,
   Checkbox,
-  FormControlLabel,
   CircularProgress,
+  Container,
+  FormControlLabel,
+  Grid,
 } from "@material-ui/core";
-import PurchaseInfoForm from "../../components/PurchaseInfoForm2";
-import "./style.scss";
-import { connect } from "react-redux";
-import CartItem from "../../components/CartItem";
-import { Link, Redirect } from "react-router-dom";
-import { formatCurrency } from "../../commons/utils";
-import { CHECKOUT_MAIN_FIELDS } from "./../../commons/constant";
-import { orderAndCheckout } from "./../../redux/actions/cartActions";
 import { makeStyles } from "@material-ui/core/styles";
-
-import { FastField, Form, Formik, FieldProps } from "formik";
+import { FastField, Form, Formik } from "formik";
+import PropTypes from "prop-types";
+import React from "react";
+import { connect } from "react-redux";
+import { Link, Redirect, useHistory } from "react-router-dom";
 import * as Yup from "yup";
+import { formatCurrency } from "../../commons/utils";
+import CartItem from "../../components/CartItem";
 import InputField from "../../custom-fields/InpuField";
+import { CHECKOUT_MAIN_FIELDS } from "./../../commons/constant";
 import { requiredWith } from "./../../commons/utils";
+import { orderAndCheckout } from "./../../redux/actions/cartActions";
+import "./style.scss";
+
 const useStyles = makeStyles((theme) => ({
   form: {
     width: "100%",
@@ -33,14 +31,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 function CheckOut(props) {
   const classes = useStyles();
+  const history = useHistory();
   Yup.addMethod(Yup.mixed, "requiredWith", requiredWith);
   const validationSchema = Yup.object().shape({
-    email: Yup.string().required("Vui lòng nhập email "),
+    email: Yup.string().requiredWith(
+      Yup.ref("anotherAddress"),
+      false,
+      "Vui lòng nhập email "
+    ),
 
-    name: Yup.string().required("Vui lòng nhập họ tên "),
+    name: Yup.string().requiredWith(
+      Yup.ref("anotherAddress"),
+      false,
+      "Vui lòng nhập họ tên "
+    ),
 
     phone: Yup.string()
-      .required("Vui lòng nhập sđt")
+      .requiredWith(Yup.ref("anotherAddress"), false, "Vui lòng nhập sđt")
       .matches(/^[0-9]{10}$/, "Không đúng định dạng số điện thoại"),
 
     address: Yup.string().required("Vui lòng nhập địa chỉ"),
@@ -63,7 +70,6 @@ function CheckOut(props) {
       .matches(/^[0-9]{10}$/, "Không đúng định dạng số điện thoại"),
   });
   const { cart, userInfo } = props;
-  console.log("cart===>", cart);
   const totalPrice = cart
     ? cart.cart.reduce((total, item) => {
         return (total = total + item.price * item.quantity);
@@ -123,8 +129,7 @@ function CheckOut(props) {
       data.phone = phoneReceive;
       data.address = addressReceive;
     }
-    console.log("checkout===>", data);
-    props.orderAndCheckout(data);
+    props.orderAndCheckout(data, history);
   };
   const renderFields = (inputs, valuesOfFormik) => {
     return inputs.map((input) => {
@@ -191,6 +196,7 @@ function CheckOut(props) {
             <Formik
               initialValues={stateForm}
               validationSchema={validationSchema}
+              // onSubmit={(values) => console.log(values)}
               onSubmit={(values) => handleSubmitOrder(values)}
             >
               {(formikProps) => {

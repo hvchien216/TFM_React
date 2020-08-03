@@ -1,31 +1,38 @@
+import { CircularProgress } from "@material-ui/core";
 import PropTypes from "prop-types";
 import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { formatCurrency } from "../../commons/utils";
-import AlertDialog from "../../components/AlertDialog";
 import SelectQuan from "../../components/SelectQuan";
-import productApi from "./../../api/productApi";
-import { addToCart } from "./../../redux/actions/cartActions";
-import { fetchingData } from "./../../redux/actions/uiActions";
-import imgTemp from "./../../assets/stan-smith-shoes-white-m20605-01-standard.jpg";
-import "./style.scss";
-import { CircularProgress } from "@material-ui/core";
-import { setAndGetViewedProducts } from "./../../commons/utils";
 import ViewedProducts from "../../components/ViewedProducts";
+import imgTemp from "./../../assets/stan-smith-shoes-white-m20605-01-standard.jpg";
+import {
+  alertNotification,
+  isObjectEmpty,
+  setAndGetViewedProducts,
+} from "./../../commons/utils";
+import { addToCart } from "./../../redux/actions/cartActions";
+import {
+  fetchingData,
+  fetchProductDetail,
+  setError,
+} from "./../../redux/actions/uiActions";
+import "./style.scss";
 function ProductDetail(props) {
   const [product, setProduct] = useState({});
   const [viewedProducts, setViewedProducts] = useState([]);
   const [quantity, setQuanity] = useState(1);
   const [sizee, setSizee] = useState(null);
-  const [showAlert, setShowAlert] = useState(false);
-  const [error, setError] = useState(null);
-  const [infoAlert, setInfoAlert] = useState({});
+  const [specification_id, setSpecification_id] = useState(null);
 
   const fetchProductDetails = useCallback(async () => {
-    console.log("show modal!!!!");
     props.fetchingData();
-    let { data } = await productApi.detail(props.match.params.maSP);
+    let data = await props.fetchProductDetail(props.match.params.maSP);
+    if (isObjectEmpty(data)) {
+      props.fetchingData();
+      return;
+    }
     props.fetchingData();
     const {
       id,
@@ -37,13 +44,14 @@ function ProductDetail(props) {
       price,
       discount_rate,
     } = data;
-    let mapSize = specs.map(({ attribute_item }) => attribute_item.name).sort();
+    let mapSize = specs
+      .map(({ attribute_item: { name }, id }) => ({ id, name }))
+      .sort();
     const dataShow = {
       id: id,
       name: name,
       brand: slug,
       slug: slug,
-      specification_id: specs.id,
       nameBrand: nameCategory,
       description: description,
       discount: discount_rate,
@@ -54,7 +62,6 @@ function ProductDetail(props) {
     };
     const { images: recentProducts } = setAndGetViewedProducts(dataShow);
     setViewedProducts(recentProducts);
-    console.log(dataShow);
     setProduct(dataShow);
   }, []);
 
@@ -65,6 +72,7 @@ function ProductDetail(props) {
   const handleChooseSize = (e) => {
     e.stopPropagation();
     setSizee(e.target.value);
+    setSpecification_id(e.target.name);
   };
 
   const handleChangeQuan = (quan) => {
@@ -76,16 +84,16 @@ function ProductDetail(props) {
   };
 
   const handleAddToCart = () => {
-    const { name, brand, price, discount, img, id, specification_id } = product;
+    const { name, brand, price, discount, img, id } = product;
     if (!sizee) {
-      setError("Please choose size");
+      props.setError("Vui lòng chọn size !!!");
       return;
     }
     const data = {
       product_id: id,
       name,
       brand,
-      specification_id: specification_id,
+      specification_id,
       img: img,
       quantity,
       price: Math.ceil(price - price * (parseInt(discount || 0) / 100)),
@@ -93,12 +101,23 @@ function ProductDetail(props) {
         quantity * Math.ceil(price - price * (parseInt(discount || 0) / 100)),
       size: sizee,
     };
-    console.log("data==>", data);
+    console.log("addtoCart===>", data);
     props.addToCart(data);
-    setShowAlert(true);
-    setInfoAlert(data);
+    alertNotification(
+      <span>
+        {`Bạn đã thêm `}
+        <span
+          style={{ color: "red" }}
+        >{`[${data.quantity} ${data.name}, size: ${data.size}]`}</span>
+        {` vào giỏ hàng`}
+      </span>,
+      "info"
+    );
   };
   const renderUiProductDetailMain = () => {
+    if (isObjectEmpty(product)) {
+      return <div className="text-warning">Không tìm thấy sản phẩm</div>;
+    }
     return (
       <div className="product-detail-main flex">
         <div className="pro-image-list">
@@ -141,11 +160,14 @@ function ProductDetail(props) {
               {size &&
                 size.map((ele) => {
                   let c =
-                    sizee == ele.toString() ? "size-item active" : "size-item";
+                    sizee == ele.name.toString()
+                      ? "size-item active"
+                      : "size-item";
                   return (
                     <input
-                      key={"size-item" + ele}
-                      value={ele}
+                      key={"size-item" + ele.id}
+                      value={ele.name}
+                      name={ele.id}
                       type="text"
                       readOnly
                       className={c}
@@ -155,7 +177,6 @@ function ProductDetail(props) {
                 })}
             </div>
           </div>
-          <span style={{ color: "red", fontSize: 12 }}>{error}</span>
           <div className="pro-details-action">
             <div className="pro-details-quantity">
               <label>Số lượng: </label>
@@ -196,11 +217,6 @@ function ProductDetail(props) {
   } = product;
   return (
     <>
-      <AlertDialog
-        open={showAlert}
-        close={setShowAlert}
-        data={{ ...infoAlert }}
-      />
       <section className="product-detail-tempalte">
         <div className="container-fluid">
           {props.isFetchingData ? (
@@ -218,8 +234,9 @@ function ProductDetail(props) {
 }
 ProductDetail.propTypes = {
   addToCart: PropTypes.func.isRequired,
-  showLoading: PropTypes.func.isRequired,
   fetchingData: PropTypes.func.isRequired,
+  fetchProductDetail: PropTypes.func.isRequired,
+  setError: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -230,5 +247,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   addToCart,
   fetchingData,
+  fetchProductDetail,
+  setError,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ProductDetail);

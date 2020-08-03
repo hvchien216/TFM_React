@@ -3,7 +3,7 @@ import thumb from './../../assets/domba.jpg';
 import { savedYourCard } from './../../commons/utils';
 const initialState = {
 	cart: JSON.parse(localStorage.getItem('your_cart')) || [
-		{ product_id: 1, img: thumb, name: "Domba - Trắng/Đen", quantity: 2, price: 990000, total: 100000, specification_id: 2 },
+		// { product_id: 1, img: thumb, name: "Domba - Trắng/Đen", quantity: 2, price: 990000, total: 100000, specification_id: 2 },
 		// { id: 2, img: thumb, name: "Ananas Track 6 - Low To2p", quantity: 2, price: 1990000, },
 		// { id: 3, img: thumb, name: "Ananas Track  - Low ", quantity: 1, price: 990000, },
 		// { id: 4, img: thumb, name: "Ananas - Low Top", quantity: 4, price: 1990000, },
@@ -14,6 +14,7 @@ const initialState = {
 export default function (state = initialState, action) {
 	switch (action.type) {
 		case ADD_TO_CART: {
+			console.log("payload===>", action.payload);
 			const indexOfProduct = state.cart.findIndex(ele => {
 				return ele.id === action.payload.id;
 			});

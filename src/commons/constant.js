@@ -129,7 +129,7 @@ export const NAV_ITEM = [
 		]
 	},
 	{
-		id: '2', label: 'SNEAKERS', to: '/products', nav_nested: [
+		id: '2', label: 'SNEAKERS', to: '/products?limit=20&page=1', nav_nested: [
 			{ id: '2.1', label: 'Adidas', to: '/products?supplier=adidas' },
 			{ id: '2.2', label: 'Nike', to: '/products?supplier=nike' },
 			{ id: '2.3', label: 'Vans', to: '/products?supplier=vans' },

@@ -4,12 +4,22 @@ import "./style.scss";
 import { Link } from "react-router-dom";
 import { formatCurrency } from "./../../commons/utils";
 function ProductItem(props) {
-  const { id, name, price, discount, img, index, setId } = props;
-  // console.log("props===>", props);
-
+  const { id, name, price, discount, img, isCarouselItem } = props;
   return (
     <>
-      <div id={setId ? "last-product-item" : ""} className="product-item">
+      <div
+        style={
+          isCarouselItem
+            ? {
+                width: "100%",
+                padding: "0 5px",
+                margin: "0 -5px",
+                // boxShadow: "0 0 15px 1px rgba(0, 0, 0, 0.4)",
+              }
+            : null
+        }
+        className="product-item"
+      >
         <div className="product-item-box">
           <div className="product-thumbnail">
             {discount ? (
@@ -35,7 +45,7 @@ function ProductItem(props) {
           <div className="product-info">
             <h3 className="product-name">
               <Link to={"/product-detail/" + id} title={name}>
-                {name + " " + index}
+                {name}
               </Link>
             </h3>
             <div className="price-box">

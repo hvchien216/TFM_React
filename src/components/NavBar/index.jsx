@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import "./style.scss";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import iconAcc from "./../../assets/icon_account.png";
 import iconCartEmpty from "./../../assets/icon_cart___empty.png";
 import iconCartFull from "./../..//assets/icon_cart___full.png";
@@ -16,8 +16,11 @@ import { logoutUser } from "./../../redux/actions/userActions";
 import { formatCurrency } from "../../commons/utils";
 import { NAV_ITEM } from "../../commons/constant";
 import SelectQuan from "../SelectQuan";
+import qs from "query-string";
 
 function NavBar(props) {
+  const [keyword, setKeyword] = useState("");
+  const history = useHistory();
   const { cart } = props;
   const totalPrice = cart
     ? cart.cart.reduce((total, item) => {
@@ -25,21 +28,27 @@ function NavBar(props) {
       }, 0)
     : null;
 
-  const [query, setQuery] = useState("");
-
   const totalQuantity = () => {
     return cart.cart.reduce((total, item) => {
       return total + item.quantity;
     }, 0);
   };
 
-  const handleSearchQuery = (e) => {
-    setQuery(e.target.value);
-  };
-
-  const handleSubmitQuery = (e) => {
+  const handleSubmitSearch = (e) => {
     e.preventDefault();
-    console.log(query);
+    if (!keyword) return;
+    let query = {
+      limit: 20,
+      page: 1,
+      keyword: keyword.toLocaleLowerCase(),
+    };
+    //set flag to show notification
+    sessionStorage.setItem("flag-search", "true");
+    history.push({
+      pathname: "/products",
+      search: qs.stringify(query),
+    });
+    console.log(keyword);
   };
 
   const handleToggleMenuMobile = (e) => {
@@ -454,171 +463,32 @@ function NavBar(props) {
               </Link>
             </div>
             <div className="search-bar">
-              <div className="search-bar-contain">
+              <form
+                onSubmit={handleSubmitSearch}
+                className="search-bar-contain"
+              >
                 <input
                   type="text"
                   className="input-control"
                   autoComplete="off"
                   maxLength="70"
-                  name="query"
-                  value={query}
-                  onChange={handleSearchQuery}
+                  name="keyword"
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value.trim())}
                   id="search"
                   title="Nhập từ khoá cần tìm"
                   placeholder="Tìm kiếm ..."
                   required=""
                 />
-                <button
-                  onClick={handleSubmitQuery}
-                  className="btn-input"
-                  type="button"
-                >
+                <button className="btn-input" type="submit">
                   <i className="fa fa-search"></i>
                 </button>
-              </div>
+              </form>
             </div>
             <div className="menu-pc flex lf-al-center">
               <nav>
                 <ul id="nav" className="nav flex jf-al-center">
                   {renderNavItem()}
-                  {/* <li className="nav-item  has-mega">
-                    <Link to="/tfm-clothing" className="nav-link">
-                      TFM CLOTHING <i className="fa fa-angle-down"></i>
-                    </Link>
-
-                    <div className="mega-content">
-                      <ul className="flex f-wrap">
-                        <li className="mega-item flex jf-al-center col-3">
-                          <h4 className="mega-item-title">
-                            <Link className="mega-item-url" to="/phu-kien">
-                              <span>Phụ Kiện</span>
-                            </Link>
-                          </h4>
-                        </li>
-
-                        <li className="mega-item flex jf-al-center col-3">
-                          <h4 className="mega-item-title">
-                            <Link className="mega-item-url" to="/quan">
-                              <span>Quần</span>
-                            </Link>
-                          </h4>
-                        </li>
-
-                        <li className="mega-item flex jf-al-center col-3">
-                          <h4 className="mega-item-title">
-                            <Link className="mega-item-url" to="/ao">
-                              <span>Áo</span>
-                            </Link>
-                          </h4>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-
-                  <li className="nav-item  has-mega">
-                    <Link to="/brand" className="nav-link">
-                      Sneakers <i className="fa fa-angle-down"></i>
-                    </Link>
-
-                    <div className="mega-content">
-                      <ul className="flex f-wrap">
-                        <li className="mega-item flex jf-al-center col-3">
-                          <h4 className="mega-item-title">
-                            <Link
-                              className="mega-item-url"
-                              to="/products/adidas"
-                            >
-                              <span>Adidas</span>
-                            </Link>
-                          </h4>
-                        </li>
-                        <li className="mega-item flex jf-al-center col-3">
-                          <h4 className="mega-item-title">
-                            <Link className="mega-item-url" to="/products/nike">
-                              <span>Nike</span>
-                            </Link>
-                          </h4>
-                        </li>
-                        <li className="mega-item flex jf-al-center col-3">
-                          <h4 className="mega-item-title">
-                            <Link className="mega-item-url" to="/products/vans">
-                              <span>Vans</span>
-                            </Link>
-                          </h4>
-                        </li>
-                        <li className="mega-item flex jf-al-center col-3">
-                          <h4 className="mega-item-title">
-                            <Link
-                              className="mega-item-url"
-                              to="/products/converse"
-                            >
-                              <span>Converse</span>
-                            </Link>
-                          </h4>
-                        </li>
-                        <li className="mega-item flex jf-al-center col-3">
-                          <h4 className="mega-item-title">
-                            <Link className="mega-item-url" to="/products/fila">
-                              <span>Fila</span>
-                            </Link>
-                          </h4>
-                        </li>
-                        <li className="mega-item flex jf-al-center col-3">
-                          <h4 className="mega-item-title">
-                            <Link
-                              className="mega-item-url"
-                              to="/products/reebok"
-                            >
-                              <span>Reebok</span>
-                            </Link>
-                          </h4>
-                        </li>
-                        <li className="mega-item flex jf-al-center col-3">
-                          <h4 className="mega-item-title">
-                            <Link className="mega-item-url" to="/products/puma">
-                              <span>Puma</span>
-                            </Link>
-                          </h4>
-                        </li>
-                        <li className="mega-item flex jf-al-center col-3">
-                          <h4 className="mega-item-title">
-                            <Link
-                              className="mega-item-url"
-                              to="/products/domba"
-                            >
-                              <span>Domba</span>
-                            </Link>
-                          </h4>
-                        </li>
-                        <li className="mega-item flex jf-al-center col-3">
-                          <h4 className="mega-item-title">
-                            <Link className="mega-item-url" to="/products/asic">
-                              <span>Asic</span>
-                            </Link>
-                          </h4>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li className="nav-item  ">
-                    <Link className="nav-link" to="/champion">
-                      Champion
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link
-                      className="nav-link"
-                      style={{ color: "red" }}
-                      to="/giam-gia-1"
-                    >
-                      Giảm Giá
-                    </Link>
-                  </li>
-                  <li className="nav-item  ">
-                    <Link className="nav-link" to="/tin-tuc">
-                      Tin Tức
-                    </Link>
-                  </li> */}
                 </ul>
               </nav>
             </div>

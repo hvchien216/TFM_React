@@ -1,7 +1,4 @@
-import swal from 'sweetalert';
-// export const formatCurrency = (n, currency) => {
-//     return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1.') + currency;
-// }
+import swal from '@sweetalert/with-react';
 
 export const formatCurrency = (n, currency) => {
 
@@ -11,6 +8,10 @@ export const formatCurrency = (n, currency) => {
 export const isNaN = (event) => {
 	if (isNaN(this.value + String.fromCharCode(event.keyCode)))
 		return false;
+}
+
+export const isObjectEmpty = (obj) => {
+	return Object.keys(obj).length === 0;
 }
 
 export const setAndGetViewedProducts = (data) => {
@@ -23,10 +24,10 @@ export const setAndGetViewedProducts = (data) => {
 		return newImgLocal;
 	}
 
-	const isExisted = imgLocal.images.some(img => img.slug === data.slug);
+	const isExisted = imgLocal.images.some(img => img.id === data.id);
 	// check is existed
 	if (isExisted) {
-		newImgLocal.images = imgLocal.images.filter(img => img.slug !== data.slug);
+		newImgLocal.images = imgLocal.images.filter(img => img.id !== data.id);
 	} else {
 		newImgLocal.images = imgLocal.images;
 	}
@@ -45,7 +46,6 @@ export const setAndGetViewedProducts = (data) => {
 }
 
 export const savedYourCard = (data) => {
-	console.log("saved===>", data);
 	localStorage.setItem('your_cart', JSON.stringify(data));
 }
 
@@ -53,14 +53,19 @@ export const uppercaseFirstCharater = (text) => {
 	return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
-export const alertNotification = (text) => {
-	swal({
+export const alertNotification = (text, icon = "success") => {
+	let settings = {
 		title: "Thông báo",
 		text: text,
-		icon: "success",
+		icon: icon,
 		button: "OK",
 		timer: 3000,
-	});
+	}
+	if (typeof text !== "string") {
+		delete settings["text"];
+		settings.content = text;
+	}
+	swal(settings);
 }
 
 export const alertError = (text) => {

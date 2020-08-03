@@ -1,6 +1,6 @@
 
 import { ADD_TO_CART, SET_ERRORS, REMOVE_FROM_CART, UPDATE_CART_ITEM, REMOVE_ALL_CART, CLEAR_ERRORS } from './../types';
-import { dataJsonProvince } from '../../commons/utils';
+import { dataJsonProvince, alertNotification } from '../../commons/utils';
 import cartApi from './../../api/cartApi';
 // export const loginUser = (userData) => (dispatch) => {
 //     dispatch({ type: LOADING_UI });
@@ -49,7 +49,7 @@ export const removeAllItemCart = () => dispatch => {
 	})
 }
 
-export const orderAndCheckout = data => async dispatch => {
+export const orderAndCheckout = (data, history) => async dispatch => {
 	try {
 		const res = await cartApi.checkout(data);
 		const { success, error_message } = res;
@@ -62,6 +62,9 @@ export const orderAndCheckout = data => async dispatch => {
 			});
 			return;
 		}
+		dispatch(removeAllItemCart());
+		history.push('/');
+		alertNotification("Bạn đã đặt hàng thành công, vui lòng đợi xác nhận.")
 	} catch (error) {
 		console.log("Err==>", error);
 	}

@@ -5,12 +5,14 @@
     width: 75%;
     padding-left: 15px;
     .category-header {
+      display: flex;
+      justify-content: space-between;
       border-bottom: none;
       padding: 10px;
       background: $commonColor2;
       margin-bottom: 20px;
       #sortBar {
-        margin-left: auto;
+        // margin-left: auto;
         width: 150px;
         position: relative;
         font-size: 13px;
@@ -166,9 +168,12 @@
   .products {
     &-main {
       .category-header {
+        flex-wrap: wrap;
         #sortBar {
-          margin-left: 0;
+          margin-bottom: 20px;
           width: 100%;
+          order: -1;
+
           &::before {
             display: none;
           }

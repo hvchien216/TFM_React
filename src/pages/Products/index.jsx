@@ -1,36 +1,31 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { CircularProgress } from "@material-ui/core";
+import { Pagination } from "@material-ui/lab";
 import PropTypes from "prop-types";
-import "./style.scss";
-import { API_PRODUCT, SORT_PAGI, FILTER_BY } from "./../../commons/constant";
-import ProductItem from "../../components/ProductItem";
-import RadioButton from "../../components/RadioBtn";
+import qs from "query-string";
+import React, { useCallback, useEffect, useState } from "react";
+import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import BreadScrumb from "../../components/BreadScrumb";
-import productApi from "./../../api/productApi";
-import {
-  hideLoading,
-  showLoading,
-  fetchingData,
-} from "./../../redux/actions/uiActions";
-import { connect } from "react-redux";
-import qs from "query-string";
+import ProductItem from "../../components/ProductItem";
+import RadioButton from "../../components/RadioBtn";
 import imgTemp from "./../../assets/domba.jpg";
-import { CircularProgress } from "@material-ui/core";
+import { FILTER_BY, SORT_PAGI } from "./../../commons/constant";
+import {
+  fetchingData,
+  fetchListProduct,
+} from "./../../redux/actions/uiActions";
+import "./style.scss";
+import { alertNotification } from "../../commons/utils";
+
 function Products(props) {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState({ results: [] });
   const [loadMore, setLoadMore] = useState(true);
-  const [cc, setCC] = useState(1);
-  const [_pageSize, _setPageSize] = useState(5);
+  const [page, setPage] = useState(1);
 
   const [sort, setSort] = useState(1);
   const history = useHistory();
-  const handleScrollInfinite = () => {
-    const lastProductItem = document.getElementById("last-product-item");
+  const { results: productList, total_page } = products;
 
-    if (window.pageYOffset + 200 - lastProductItem.offsetTop >= 50) {
-      setCC(cc + 1);
-    }
-  };
   const fetchProductList = useCallback(async () => {
     let query = qs.parse(history.location.search);
     for (let key in query) {
@@ -38,36 +33,22 @@ function Products(props) {
         delete query[key];
       }
     }
+    //tránh sai current_page khi chuyển route = nút BACK
+    setPage(parseInt(query.page));
     props.fetchingData();
-    let { data } = await productApi.list(query);
+    const data = await props.fetchListProduct(query, history);
+    const { total } = data;
+    if (sessionStorage.getItem("flag-search")) {
+      alertNotification(`Có ${total} sản phẩm phù hợp với tìm kiếm của bạn`);
+      sessionStorage.removeItem("flag-search");
+    }
     props.fetchingData();
-    setProducts(data.results);
+    setProducts(data);
   }, [history.location.search]);
 
   useEffect(() => {
     fetchProductList();
   }, [fetchProductList]);
-  // useEffect(() => {
-  //   // const list = document.getElementById("list-product");
-  //   // const footer = document.querySelector("footer");
-  //   // const nearFooter = document.getElementById("tfm-copy-right");
-  //   // list has auto height
-  //   window.addEventListener("scroll", handleScrollInfinite);
-
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScrollInfinite);
-  //   };
-
-  //   // const data = API_PRODUCT.filter((item, index) => {
-  //   //     return item.brand === props.match.params.maBrand;
-  //   // })
-  //   // setProducts(API_PRODUCT);
-  // }, []);
-
-  // useEffect(() => {
-  //   console.log("heheheh");
-  //   getData();
-  // }, [cc]);
 
   const handleChangeChecked = (e) => {
     let queryOnUrl = qs.parse(history.location.search);
@@ -81,11 +62,23 @@ function Products(props) {
         delete query[key];
       }
     }
+    query.page = 1;
     history.push({
       pathname: history.pathname,
       search: qs.stringify(query),
     });
   };
+
+  const handlePageChange = (e, value) => {
+    let query = qs.parse(history.location.search);
+    query.page = value;
+    history.push({
+      pathname: "/products",
+      search: qs.stringify(query),
+    });
+    setPage(value);
+  };
+
   const mapOption = SORT_PAGI.map((item) => {
     return (
       <option key={"sort" + item.name} value={item.value}>
@@ -123,45 +116,50 @@ function Products(props) {
 
   const handleChangeSort = (e) => {
     console.log("Sort here===>", e.target.value);
+    let { results: productList } = products;
+    console.log(products);
     setSort(e.target.value);
     switch (e.target.value) {
       case "1": {
-        const arrNew = [...products].sort((a, b) =>
+        const results = [...productList].sort((a, b) =>
           a.name.localeCompare(b.name)
         );
-        // console.log("2", arrNew)
-        setProducts(arrNew);
-        console.log("1==>", arrNew);
+        setProducts({ ...products, results });
         return;
       }
       case "2": {
-        const arrNew = [...products].sort((a, b) =>
+        const results = [...productList].sort((a, b) =>
           b.name.localeCompare(a.name)
         );
-        setProducts(arrNew);
-        console.log("2==>", arrNew);
+        setProducts({ ...products, results });
         return;
       }
       case "3": {
-        const arrNew = [...products].sort(
-          (a, b) =>
-            a.price -
-            a.price * (a.discount / 100) -
-            (b.price - b.price * (b.discount / 100))
-        );
-        setProducts(arrNew);
-        console.log("3==>", arrNew);
+        const results = [...productList].sort((a, b) => {
+          const realPriceA = a.discount_rate
+            ? a.price - a.price * (parseInt(a.discount_rate) / 100)
+            : a.price;
+          const realPriceB = b.discount_rate
+            ? b.price - b.price * (parseInt(b.discount_rate) / 100)
+            : b.price;
+          return realPriceA - realPriceB;
+        });
+        console.log("3==>", results);
+        setProducts({ ...products, results });
         return;
       }
       case "4": {
-        const arrNew = [...products].sort(
-          (a, b) =>
-            b.price -
-            b.price * (b.discount / 100) -
-            (a.price - a.price * (a.discount / 100))
-        );
-        setProducts(arrNew);
-        console.log("4==>", arrNew);
+        const results = [...productList].sort((a, b) => {
+          const realPriceA = a.discount_rate
+            ? a.price - a.price * (parseInt(a.discount_rate) / 100)
+            : a.price;
+          const realPriceB = b.discount_rate
+            ? b.price - b.price * (parseInt(b.discount_rate) / 100)
+            : b.price;
+          return realPriceB - realPriceA;
+        });
+        console.log("3==>", results);
+        setProducts({ ...products, results });
         return;
       }
       default:
@@ -169,9 +167,11 @@ function Products(props) {
     }
   };
   const mapProductItem = () => {
-    let xhtml = <div class="text-warning">Không tìm thấy sản phẩm phù hợp</div>;
-    if (products.length > 0) {
-      xhtml = products.map((item, index) => {
+    let xhtml = (
+      <div className="text-warning mlr15">Không tìm thấy sản phẩm phù hợp</div>
+    );
+    if (productList.length > 0) {
+      xhtml = productList.map((item, index) => {
         return (
           <ProductItem
             key={"product-item" + item.id}
@@ -180,8 +180,6 @@ function Products(props) {
             img={item?.default_image || imgTemp}
             price={item?.price || 0}
             discount={item?.discount_rate}
-            index={index}
-            setId={products.length - 1 === index ? true : false}
           />
         );
       });
@@ -189,30 +187,22 @@ function Products(props) {
     return xhtml;
   };
 
-  // const getData = () => {
-  //   console.log("get more!!!");
-  //   // setProducts([...products, ...API_PRODUCT]);
-  //   console.log("page getData===>", cc, _pageSize * cc);
-  //   let arr = API_PRODUCT.slice(0, _pageSize * cc);
-  //   setProducts(arr);
-  //   // if (load) {
-  //   //   fetch('https://dog.ceo/api/breeds/image/random/15')
-  //   //     .then(res => {
-  //   //       return !res.ok
-  //   //       ? res.json().then(e => Promise.reject(e))
-  //   //       : res.json();
-  //   //     })
-  //   //     .then(res => {
-  //   //       props.setState([...props.state, ...res.message]);
-  //   //     });
-  //   // }
-  // };
-
   const handleToggleSidebar = () => {
     const sideBar = document.querySelector(".products-sidebar");
     sideBar.classList.toggle("open-sidebar");
   };
-  const handleTest = () => {};
+  const PaginationCPN = (
+    <Pagination
+      page={page}
+      count={total_page}
+      size="large"
+      color="primary"
+      shape="rounded"
+      onChange={handlePageChange}
+      showFirstButton={total_page > 8}
+      showLastButton={total_page > 8}
+    />
+  );
   return (
     <>
       <BreadScrumb path={history.location} />
@@ -228,9 +218,7 @@ function Products(props) {
         </aside>
         <section className="products-main">
           <div className="category-header">
-            <div>
-              <button onClick={handleTest}>Click me!</button>
-            </div>
+            {PaginationCPN}
             <div id="sortBar">
               <select
                 onChange={handleChangeSort}
@@ -251,6 +239,7 @@ function Products(props) {
               mapProductItem()
             )}
           </div>
+          <div className="category-header mt-20">{PaginationCPN}</div>
         </section>
       </div>
     </>
@@ -258,10 +247,9 @@ function Products(props) {
 }
 
 Products.propTypes = {
-  showLoading: PropTypes.func.isRequired,
-  hideLoading: PropTypes.func.isRequired,
   isFetchingData: PropTypes.bool.isRequired,
   fetchingData: PropTypes.func.isRequired,
+  fetchListProduct: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -270,8 +258,7 @@ const mapStateToProps = (state) => {
   };
 };
 const mapDispatchToProps = {
-  showLoading,
-  hideLoading,
   fetchingData,
+  fetchListProduct,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Products);

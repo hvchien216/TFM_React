@@ -10,11 +10,11 @@ const settings = {
   dots: true,
   infinite: true,
   // lazyLoad: true,
-  autoplay: true,
+  // autoplay: true,
   autoplaySpeed: 2000,
   speed: 500,
   slidesToShow: 4,
-  slidesToScroll: 2,
+  slidesToScroll: 4,
   initialSlide: 0,
   nextArrow: <SampleNextArrow />,
   prevArrow: <SamplePrevArrow />,
@@ -45,18 +45,17 @@ function ViewedProducts(props) {
     products &&
     products.map((item, index) => {
       let price = Math.ceil(
-        item?.price - item?.price * (parseInt(item?.discount) / 100)
+        item?.price - item?.price * (parseInt(item?.discount || 0) / 100)
       );
       return (
         <ProductItem
+          isCarouselItem={true}
           key={"recent-product-" + item.id}
           id={item.slug}
           name={item.name}
           img={item?.default_image || imgTemp}
           price={price || 0}
           discount={0}
-          // index={index}
-          setId={false}
         />
       );
     });
