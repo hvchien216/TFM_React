@@ -1,22 +1,16 @@
 import { ADD_TO_CART, REMOVE_FROM_CART, UPDATE_CART_ITEM, REMOVE_ALL_CART } from './../types';
-import thumb from './../../assets/domba.jpg';
 import { savedYourCard } from './../../commons/utils';
 const initialState = {
 	cart: JSON.parse(localStorage.getItem('your_cart')) || [
 		// { product_id: 1, img: thumb, name: "Domba - Trắng/Đen", quantity: 2, price: 990000, total: 100000, specification_id: 2 },
-		// { id: 2, img: thumb, name: "Ananas Track 6 - Low To2p", quantity: 2, price: 1990000, },
-		// { id: 3, img: thumb, name: "Ananas Track  - Low ", quantity: 1, price: 990000, },
-		// { id: 4, img: thumb, name: "Ananas - Low Top", quantity: 4, price: 1990000, },
-		// { id: 5, img: thumb, name: "Ananas Track 6 - Top", quantity: 1, price: 90000, },
 	],
 }
 
 export default function (state = initialState, action) {
 	switch (action.type) {
 		case ADD_TO_CART: {
-			console.log("payload===>", action.payload);
 			const indexOfProduct = state.cart.findIndex(ele => {
-				return ele.id === action.payload.id;
+				return ele.product_id === action.payload.product_id;
 			});
 			// -1 hoac 0=>99999
 			if (indexOfProduct >= 0) {
@@ -40,7 +34,7 @@ export default function (state = initialState, action) {
 		}
 		case REMOVE_FROM_CART: {
 			const newCartState = state.cart.filter(item => {
-				return item.id !== action.id;
+				return item.product_id !== action.product_id;
 			});
 			savedYourCard(newCartState);
 			return {
@@ -51,12 +45,12 @@ export default function (state = initialState, action) {
 		case UPDATE_CART_ITEM: {
 			const newCartState = [...state.cart];
 			const indexOfProduct = state.cart.findIndex(ele => {
-				return ele.id === action.id;
+				return ele.product_id === action.product_id;
 			});
 			newCartState[indexOfProduct].quantity = newCartState[indexOfProduct].quantity + action.quan;
 			if (newCartState[indexOfProduct].quantity === 0) {
 				const newCart = newCartState.filter(item => {
-					return item.id !== action.id;
+					return item.product_id !== action.product_id;
 				});
 				savedYourCard(newCart);
 				return {

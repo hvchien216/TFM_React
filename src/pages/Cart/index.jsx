@@ -27,9 +27,10 @@ function Cart(props) {
     return cart.cart.map((ele) => {
       return (
         <CartItem
-          key={"cartItem" + ele.id}
-          id={ele.id}
+          key={"cartItem" + ele.product_id}
+          id={ele.product_id}
           img={ele.img}
+          slug={ele.slug}
           name={ele.name}
           price={ele.price}
           quantity={ele.quantity}

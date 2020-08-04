@@ -1,10 +1,4 @@
-import {
-  Button,
-  CircularProgress,
-  Container,
-  Grid,
-  Typography,
-} from "@material-ui/core";
+import { Button, CircularProgress, Container, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { FastField, Form, Formik } from "formik";
 import PropTypes from "prop-types";
@@ -24,18 +18,15 @@ const useStyles = makeStyles((theme) => ({
   submitBox: {
     marginTop: theme.spacing(2),
   },
-  customError: {
-    color: "red",
-    fontSize: "0.8rem",
-    marginTop: 10,
-  },
 }));
 
 function SignIn(props) {
   const classes = useStyles();
   const history = useHistory();
   const validationSchemaSignIn = Yup.object().shape({
-    email: Yup.string().required("Vui lòng nhập email"),
+    email: Yup.string()
+      .required("Vui lòng nhập email")
+      .email("Email không đúng định dạng"),
 
     password: Yup.string().required("Vui lòng nhập mật khẩu"),
   });
@@ -66,7 +57,6 @@ function SignIn(props) {
               }}
               validationSchema={validationSchemaSignIn}
               onSubmit={(values) => props.signInAndUp(values, history, false)}
-              // onSubmit={(values) => submitHere(values)}
             >
               {(formikProps) => {
                 const { isSubmitting } = formikProps;
@@ -83,15 +73,6 @@ function SignIn(props) {
                       label="Mật khẩu"
                       type="password"
                     />
-                    {/* {props.error && (
-                      <Typography
-                        variant="body2"
-                        className={classes.customError}
-                      >
-                        {props.error.charAt(0).toUpperCase() +
-                          props.error.slice(1)}
-                      </Typography>
-                    )} */}
                     <Grid item xs={12} md={6} className={classes.submitBox}>
                       <Button
                         type="submit"
@@ -157,14 +138,8 @@ SignIn.propTypes = {
   resetPassword: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => {
-  return {
-    error: state.ui.errors,
-  };
-};
-
 const mapDispatchToProps = {
   signInAndUp,
   resetPassword,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
+export default connect(null, mapDispatchToProps)(SignIn);

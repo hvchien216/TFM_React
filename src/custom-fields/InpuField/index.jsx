@@ -1,8 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
 import { TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { ErrorMessage } from "formik";
+import PropTypes from "prop-types";
+import React from "react";
 
 InputField.defaultProps = {
   type: "text",
@@ -12,21 +11,6 @@ InputField.defaultProps = {
 };
 
 const useStyles = makeStyles((theme) => ({
-  input: {
-    // fontSize: 12,
-    // color: '',
-    // typography: {
-    //     subtitle1: {
-    //         fontSize: 12,
-    //     },
-    //     body1: {
-    //         fontWeight: 500,
-    //     },
-    //     button: {
-    //         fontStyle: 'italic',
-    //     },
-    // },
-  },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
@@ -50,7 +34,6 @@ function InputField(props) {
   return (
     <>
       <TextField
-        // className={classes.input}
         {...props}
         variant="outlined"
         margin="normal"

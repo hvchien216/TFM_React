@@ -2,8 +2,6 @@ import {
 	SET_USER,
 	SET_AUTHENTICATED,
 	SET_UNAUTHENTICATED,
-	LOADING_USER,
-	EDIT_PROFILE
 } from './../types';
 
 let userLocal = JSON.parse(localStorage.getItem('user'));
@@ -11,7 +9,6 @@ let userLocal = JSON.parse(localStorage.getItem('user'));
 const initialState = {
 	credentials: userLocal ? userLocal.user : {},
 	authenticated: userLocal ? true : false,
-	loading: false,
 }
 
 export default function (state = initialState, action) {
@@ -32,11 +29,6 @@ export default function (state = initialState, action) {
 				authenticated: true,
 				loading: false,
 				credentials: { ...action.payload },
-			};
-		case LOADING_USER:
-			return {
-				...state,
-				loading: true
 			};
 		default:
 			return state;

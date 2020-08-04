@@ -1,43 +1,24 @@
-import React, { useEffect, useState, useCallback } from "react";
+import { Container, Grid } from "@material-ui/core";
 import PropTypes from "prop-types";
-import "./style.scss";
-import { FastField, Form, Formik } from "formik";
-import * as Yup from "yup";
-import InputField from "../../custom-fields/InpuField";
-import {
-  Container,
-  Grid,
-  Button,
-  Typography,
-  CircularProgress,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { useHistory, Link } from "react-router-dom";
-import BreadScrumb from "../../components/BreadScrumb";
-import { fetchYourOrder } from "../../redux/actions/userActions";
+import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
+import BreadScrumb from "../../components/BreadScrumb";
 import DashBoardOrder from "../../components/DashBoardOrder";
-
-const useStyles = makeStyles((theme) => ({
-  form: {
-    width: "100%",
-    marginTop: theme.spacing(1),
-  },
-  submitBox: {
-    marginTop: theme.spacing(2),
-  },
-}));
+import { fetchingData } from "../../redux/actions/uiActions";
+import { fetchYourOrder } from "../../redux/actions/userActions";
+import "./style.scss";
 
 function Account(props) {
-  const classes = useStyles();
   const [orderList, setOrderList] = useState([]);
   const history = useHistory();
-  const { userInfo } = props;
-
+  const { userInfo, fetchingData } = props;
   const fetchYourOrder = useCallback(async () => {
-    const res = await props.fetchYourOrder();
-    setOrderList(res?.data);
-    console.log(res);
+    fetchingData();
+    const data = await props.fetchYourOrder();
+    fetchingData();
+
+    setOrderList(data);
   }, []);
 
   useEffect(() => {
@@ -59,10 +40,13 @@ function Account(props) {
               </i>
             </div>
           </Grid>
-          <Grid item md={9}>
-            <DashBoardOrder order={orderList} />
+          <Grid item xs={12} md={9}>
+            <DashBoardOrder
+              order={orderList}
+              isFetchingData={props.isFetchingData}
+            />
           </Grid>
-          <Grid item md={3}>
+          <Grid item xs={12} md={3}>
             <div className="heading-user-info flex jf-al-center">
               <h4>Thông tin khách hàng</h4>
             </div>
@@ -70,25 +54,29 @@ function Account(props) {
               <div className="info-item">
                 <span>
                   <i className="fas fa-user"></i>
-                  {userInfo.name}
+                  <strong>{userInfo.name}</strong>
                 </span>
               </div>
               <div className="info-item">
-                <span>Đơn hàng: 0</span>
+                <span>
+                  Số đơn hàng: <strong>{orderList.length}</strong>
+                </span>
               </div>
               <div className="info-item">
-                <span>Chi tiêu: 0</span>
+                <span>
+                  Chi tiêu: <strong>0</strong>
+                </span>
               </div>
               <div className="info-item">
                 <span>
                   <i className="fas fa-map-marker-alt"></i>
-                  {userInfo?.address}
+                  <strong>{userInfo?.address}</strong>
                 </span>
               </div>
               <div className="info-item">
                 <span>
                   <i className="fas fa-phone-alt"></i>
-                  {userInfo?.phone}
+                  <strong>{userInfo?.phone}</strong>
                 </span>
               </div>
             </div>
@@ -105,16 +93,19 @@ function Account(props) {
 Account.propTypes = {
   fetchYourOrder: PropTypes.func.isRequired,
   userInfo: PropTypes.object,
+  fetchingData: PropTypes.func,
+  isFetchingData: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => {
   return {
-    error: state.ui.errors,
     userInfo: state.user.credentials,
+    isFetchingData: state.ui.isFetchingData,
   };
 };
 
 const mapDispatchToProps = {
   fetchYourOrder,
+  fetchingData,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Account);

@@ -4,13 +4,7 @@ import "./style.scss";
 import { FastField, Form, Formik } from "formik";
 import * as Yup from "yup";
 import InputField from "../../custom-fields/InpuField";
-import {
-  Container,
-  Grid,
-  Button,
-  Typography,
-  CircularProgress,
-} from "@material-ui/core";
+import { Container, Grid, Button, CircularProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import BreadScrumb from "../../components/BreadScrumb";
@@ -33,11 +27,17 @@ function SignUp(props) {
 
   const validationSchemaSignUp = Yup.object().shape({
     firstName: Yup.string().required("Vui lòng Họ"),
-
     lastName: Yup.string().required("Vui lòng Tên"),
-
-    email: Yup.string().required("Vui lòng nhập Email"),
-
+    address: Yup.string().required("Vui lòng nhập địa chỉ"),
+    phone: Yup.string()
+      .required("Vui lòng nhập số điện thoại")
+      .matches(
+        /(03|07|08|09)+([0-9]{8})\b/,
+        "Không đúng định dạng số điện thoại"
+      ),
+    email: Yup.string()
+      .required("Vui lòng nhập Email")
+      .email("Email không đúng định dạng"),
     password: Yup.string().required("Vui lòng nhập Mật khẩu"),
   });
 
@@ -56,9 +56,11 @@ function SignUp(props) {
                 lastName: "",
                 email: "",
                 password: "",
+                phone: "",
+                address: "",
               }}
               validationSchema={validationSchemaSignUp}
-              onSubmit={(values) => props.signInAndUp(values, history, true)}
+              onSubmit={(values) => console.log(values)}
             >
               {(formikProps) => {
                 const { isSubmitting } = formikProps;
@@ -75,6 +77,16 @@ function SignUp(props) {
                       label="Tên"
                     />
                     <FastField
+                      name="phone"
+                      component={InputField}
+                      label="Số điện thoại"
+                    />
+                    <FastField
+                      name="address"
+                      component={InputField}
+                      label="Địa chỉ"
+                    />
+                    <FastField
                       name="email"
                       component={InputField}
                       label="Email"
@@ -85,15 +97,6 @@ function SignUp(props) {
                       label="Mật khẩu"
                       type="password"
                     />
-                    {/* {props.error && (
-                      <Typography
-                        variant="body2"
-                        className={classes.customError}
-                      >
-                        {props.error.charAt(0).toUpperCase() +
-                          props.error.slice(1)}
-                      </Typography>
-                    )} */}
                     <Grid item xs={12} md={6} className={classes.submitBox}>
                       <Button
                         type="submit"
@@ -123,13 +126,7 @@ SignUp.propTypes = {
   signInAndUp: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => {
-  return {
-    error: state.ui.errors,
-  };
-};
-
 const mapDispatchToProps = {
   signInAndUp,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+export default connect(null, mapDispatchToProps)(SignUp);

@@ -1,6 +1,6 @@
 import React from "react";
 import "./style.scss";
-function RingRing(props) {
+function RingRing() {
   return (
     <div className="ring">
       <a href="tel:0703239783" className="coccoc-alo-phone coccoc-alo-green ">

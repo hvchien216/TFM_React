@@ -1,8 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
-import "./style.scss";
 import { Link } from "react-router-dom";
 import { formatCurrency } from "./../../commons/utils";
+import "./style.scss";
 function ProductItem(props) {
   const { id, name, price, discount, img, isCarouselItem } = props;
   return (
@@ -14,7 +13,6 @@ function ProductItem(props) {
                 width: "100%",
                 padding: "0 5px",
                 margin: "0 -5px",
-                // boxShadow: "0 0 15px 1px rgba(0, 0, 0, 0.4)",
               }
             : null
         }

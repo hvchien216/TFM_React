@@ -16,12 +16,12 @@ const PrivateRoute = ({ component: Component, authenticated, ...rest }) => (
   />
 );
 
+PrivateRoute.propTypes = {
+  authenticated: PropTypes.bool,
+};
+
 const mapStateToProps = (state) => ({
   authenticated: state.user.authenticated,
 });
-
-PrivateRoute.propTypes = {
-  user: PropTypes.object,
-};
 
 export default connect(mapStateToProps)(PrivateRoute);

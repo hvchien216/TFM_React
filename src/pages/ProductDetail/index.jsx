@@ -23,6 +23,7 @@ function ProductDetail(props) {
   const [product, setProduct] = useState({});
   const [viewedProducts, setViewedProducts] = useState([]);
   const [quantity, setQuanity] = useState(1);
+  const [quanOfProduct, setQuanOfProduct] = useState(1);
   const [sizee, setSizee] = useState(null);
   const [specification_id, setSpecification_id] = useState(null);
 
@@ -37,7 +38,8 @@ function ProductDetail(props) {
     const {
       id,
       name,
-      category: { slug, name: nameCategory },
+      category: { slugCategory, name: nameCategory },
+      slug,
       description,
       images,
       specs,
@@ -45,12 +47,18 @@ function ProductDetail(props) {
       discount_rate,
     } = data;
     let mapSize = specs
-      .map(({ attribute_item: { name }, id }) => ({ id, name }))
-      .sort();
+      .map(({ attribute_item: { name }, id, quantity }) => ({
+        id,
+        name,
+        quantity,
+      }))
+      .sort()
+      .reverse();
+    let quanOfProduct = mapSize.reduce((acc, cur) => acc + cur.quantity, 0);
     const dataShow = {
       id: id,
       name: name,
-      brand: slug,
+      brand: slugCategory,
       slug: slug,
       nameBrand: nameCategory,
       description: description,
@@ -62,6 +70,7 @@ function ProductDetail(props) {
     };
     const { images: recentProducts } = setAndGetViewedProducts(dataShow);
     setViewedProducts(recentProducts);
+    setQuanOfProduct(quanOfProduct);
     setProduct(dataShow);
   }, []);
 
@@ -71,8 +80,12 @@ function ProductDetail(props) {
 
   const handleChooseSize = (e) => {
     e.stopPropagation();
+    let quanOfProductShow = product.size.filter(
+      (ele) => ele.id === parseInt(e.target.name)
+    )[0].quantity;
     setSizee(e.target.value);
     setSpecification_id(e.target.name);
+    setQuanOfProduct(quanOfProductShow);
   };
 
   const handleChangeQuan = (quan) => {
@@ -84,7 +97,7 @@ function ProductDetail(props) {
   };
 
   const handleAddToCart = () => {
-    const { name, brand, price, discount, img, id } = product;
+    const { name, slug, brand, price, discount, img, id } = product;
     if (!sizee) {
       props.setError("Vui lòng chọn size !!!");
       return;
@@ -92,6 +105,7 @@ function ProductDetail(props) {
     const data = {
       product_id: id,
       name,
+      slug,
       brand,
       specification_id,
       img: img,
@@ -101,7 +115,6 @@ function ProductDetail(props) {
         quantity * Math.ceil(price - price * (parseInt(discount || 0) / 100)),
       size: sizee,
     };
-    console.log("addtoCart===>", data);
     props.addToCart(data);
     alertNotification(
       <span>
@@ -160,7 +173,7 @@ function ProductDetail(props) {
               {size &&
                 size.map((ele) => {
                   let c =
-                    sizee == ele.name.toString()
+                    sizee === ele.name.toString()
                       ? "size-item active"
                       : "size-item";
                   return (
@@ -177,6 +190,9 @@ function ProductDetail(props) {
                 })}
             </div>
           </div>
+          <div className="pro-details-quan-of-product">
+            <label>{quanOfProduct} sản phẩm có sẵn</label>
+          </div>
           <div className="pro-details-action">
             <div className="pro-details-quantity">
               <label>Số lượng: </label>
@@ -189,14 +205,16 @@ function ProductDetail(props) {
             </div>
             <div className="button-actions">
               <button
+                style={!quanOfProduct ? { background: "#8e8a8a" } : null}
                 onClick={handleAddToCart}
                 type="button"
                 className="btn-add-to-cart libra-sport___button"
                 title="Mua ngay"
+                disabled={!quanOfProduct}
               >
                 <span>
-                  <i className="fa fa-shopping-bag" aria-hidden="true"></i> Mua
-                  ngay
+                  <i className="fa fa-shopping-bag" aria-hidden="true"></i>
+                  {quanOfProduct ? "Mua ngay" : "Hết hàng"}
                 </span>
               </button>
             </div>
@@ -212,7 +230,7 @@ function ProductDetail(props) {
     discount,
     price,
     img,
-    rel_img,
+    // rel_img,
     size,
   } = product;
   return (

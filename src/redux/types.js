@@ -5,17 +5,11 @@ export const UPDATE_CART_ITEM = 'UPDATE_CART_ITEM';
 export const REMOVE_ALL_CART = 'REMOVE_ALL_CART'
 
 //User
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_ERROR = 'LOGIN_ERROR';
 export const SET_USER = 'SET_USER';
 export const SET_AUTHENTICATED = 'SET_AUTHENTICATED';
 export const SET_UNAUTHENTICATED = 'SET_UNAUTHENTICATED';
-export const LOADING_USER = 'LOADING_USER';
-export const EDIT_PROFILE = 'EDIT_PROFILE';
 
 //UI
 export const SET_ERRORS = 'SET_ERRORS';
-export const LOADING_UI = 'LOADING_UI';
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 export const FETCHING_DATA = 'FETCHING_DATA';
-export const STOP_LOADING_UI = 'STOP_LOADING_UI';

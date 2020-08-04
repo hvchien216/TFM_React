@@ -1,22 +1,22 @@
-import React, { useState } from "react";
 import PropTypes from "prop-types";
-import "./style.scss";
+import qs from "query-string";
+import React, { useState } from "react";
+import { connect } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
+import { NAV_ITEM } from "../../commons/constant";
+import { formatCurrency } from "../../commons/utils";
+import RingRing from "../RingRing";
+import SelectQuan from "../SelectQuan";
+import iconCartFull from "./../..//assets/icon_cart___full.png";
 import iconAcc from "./../../assets/icon_account.png";
 import iconCartEmpty from "./../../assets/icon_cart___empty.png";
-import iconCartFull from "./../..//assets/icon_cart___full.png";
 import logo from "./../../assets/logo.png";
-import { connect } from "react-redux";
-import RingRing from "../RingRing";
 import {
-  removeItemFromCart,
   changeQuantityItemCart,
+  removeItemFromCart,
 } from "./../../redux/actions/cartActions";
 import { logoutUser } from "./../../redux/actions/userActions";
-import { formatCurrency } from "../../commons/utils";
-import { NAV_ITEM } from "../../commons/constant";
-import SelectQuan from "../SelectQuan";
-import qs from "query-string";
+import "./style.scss";
 
 function NavBar(props) {
   const [keyword, setKeyword] = useState("");
@@ -48,7 +48,6 @@ function NavBar(props) {
       pathname: "/products",
       search: qs.stringify(query),
     });
-    console.log(keyword);
   };
 
   const handleToggleMenuMobile = (e) => {
@@ -91,13 +90,19 @@ function NavBar(props) {
   const renderCartMiniItem = () => {
     return cart.cart.map((item) => {
       return (
-        <li className="cart-mini-list-item" key={"cartMiniListItem" + item.id}>
-          <Link className="product-img" to={"/product-detail/" + item.id}>
+        <li
+          className="cart-mini-list-item"
+          key={"cartMiniListItem" + item.product_id}
+        >
+          <Link
+            className="product-img"
+            to={"/product-detail/" + item.product_id}
+          >
             <img src={item.img} alt="" />
           </Link>
           <div className="product-info-detail">
             <p className="product-name">
-              <Link to={"/product-detail/" + item.id}>{item.name}</Link>
+              <Link to={"/product-detail/" + item.product_id}>{item.name}</Link>
             </p>
             <div className="product-price-box">
               <div className="product-price flex jf-al-center">
@@ -107,13 +112,17 @@ function NavBar(props) {
                 <SelectQuan
                   detail={true}
                   quantity={item.quantity}
-                  handleIncre={() => props.changeQuantityItemCart(item.id, 1)}
-                  handleDescre={() => props.changeQuantityItemCart(item.id, -1)}
+                  handleIncre={() =>
+                    props.changeQuantityItemCart(item.product_id, 1)
+                  }
+                  handleDescre={() =>
+                    props.changeQuantityItemCart(item.product_id, -1)
+                  }
                 />
               </div>
             </div>
             <button
-              onClick={() => props.removeItemFromCart(item.id)}
+              onClick={() => props.removeItemFromCart(item.product_id)}
               className="btn-remove-item-product"
               type="button"
             >
@@ -160,8 +169,7 @@ function NavBar(props) {
               >
                 <Link to="/account">
                   <span className="btn-transition">
-                    <i className="fa fa-sign-in-alt"></i>{" "}
-                    {props.credentials.name}
+                    <i className="fa fa-edit"></i> {props.credentials.name}
                   </span>
                 </Link>
               </li>
@@ -175,7 +183,7 @@ function NavBar(props) {
               </li>
               <li className="cp-item mm-listitem" onClick={props.logoutUser}>
                 <span className="btn-transition">
-                  <i className="fa fa-edit"></i> Thoát
+                  <i className="fa fa-sign-in-alt"></i> Thoát
                 </span>
               </li>
             </ul>

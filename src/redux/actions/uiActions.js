@@ -1,24 +1,9 @@
 import {
-	STOP_LOADING_UI,
-	LOADING_UI,
 	FETCHING_DATA,
 	CLEAR_ERRORS,
 	SET_ERRORS
 } from '../types';
 import productApi from '../../api/productApi';
-
-export const showLoading = () => dispatch => {
-	dispatch({
-		type: LOADING_UI
-	})
-}
-export const hideLoading = () => dispatch => {
-	setTimeout(() => {
-		dispatch({
-			type: STOP_LOADING_UI
-		})
-	}, 700)
-}
 
 export const fetchingData = () => dispatch => {
 	dispatch({

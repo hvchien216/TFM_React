@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import "./style.scss";
-import logoFooter from "./../../assets/logo_footer.png";
 import { Link } from "react-router-dom";
 import BackToTop from "../BackToTop";
+import logoFooter from "./../../assets/logo_footer.png";
+import "./style.scss";
 function Footer(props) {
   const [email, setEmail] = useState("");
 
@@ -11,7 +11,6 @@ function Footer(props) {
   };
   const handleSubmitEmail = (e) => {
     e.preventDefault();
-    console.log(email);
   };
   return (
     <>

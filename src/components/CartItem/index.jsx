@@ -8,6 +8,7 @@ function CartItem(props) {
     id,
     img,
     name,
+    slug,
     quantity,
     price,
     variantInfo,
@@ -21,13 +22,17 @@ function CartItem(props) {
       <>
         <div className="product-item-mb flex ">
           <div className="product-item-mb-thumb">
-            <Link to={name} className="product-images1" title={name}>
+            <Link
+              to={`/product-detail/${slug}`}
+              className="product-images1"
+              title={name}
+            >
               <img alt={name} src={img} />
             </Link>
           </div>
           <div className="product-item-mb-title">
             <h3>
-              <Link to={name} title="Domba Moonlake - Trắng / 37.5">
+              <Link to={`/product-detail/${slug}`} title={name}>
                 {name}
               </Link>
             </h3>
@@ -71,13 +76,17 @@ function CartItem(props) {
   return (
     <div className="item-cart flex">
       <div style={{ width: "17%" }} className="flex jf-al-center image">
-        <Link className="product-image" title={name} to="/domba-trang-den">
+        <Link
+          className="product-image"
+          title={name}
+          to={`/product-detail/${slug}`}
+        >
           <img alt={name} src={img} />
         </Link>
       </div>
       <div style={{ width: "28%" }} className="flex jf-al-center">
         <h2 className="product-name">
-          <Link to="/domba-trang-den">{name}</Link>
+          <Link to={`/product-detail/${slug}`}>{name}</Link>
           <span className="variant-title">{variantInfo}</span>
         </h2>
       </div>

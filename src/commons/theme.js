@@ -10,8 +10,6 @@ const theme = createMuiTheme({
 		//     main: "#183451"
 		// }
 	},
-	// typography: {
-	//     fontFamily: 'Montserrat , sans-serif'
-	// }
+
 });
 export default theme;

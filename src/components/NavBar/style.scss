@@ -261,7 +261,7 @@
                     .btn-remove-item-product {
                       position: absolute;
                       right: 0;
-                      top: 12px;
+                      top: -5px;
                       outline: none;
                       border: none;
                       background: transparent;
@@ -339,7 +339,7 @@
           position: relative;
           width: 100%;
           .icon-ham {
-            transform: translateY(-50%);
+            @include transform(translateY(-50%));
             position: absolute;
             top: 0;
             right: 0;
@@ -360,18 +360,15 @@
           opacity: 0;
           right: -100px;
           top: -100px;
-          -webkit-transform: rotate(270deg);
-          transform: rotate(270deg);
+          @include transform(rotate(270deg));
         }
         &#menu-ham.active .menu-bar__content .icon-ham:nth-child(2) {
           top: 8px;
-          -webkit-transform: rotate(-135deg);
-          transform: rotate(-135deg);
+          @include transform(rotate(-135deg));
         }
         &#menu-ham.active .menu-bar__content .icon-ham:nth-child(3) {
           top: 8px;
-          transform: rotate(135deg);
-          -webkit-transform: rotate(135deg);
+          @include transform(rotate(135deg));
         }
       }
       .logo,

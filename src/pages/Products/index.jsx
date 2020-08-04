@@ -19,7 +19,6 @@ import { alertNotification } from "../../commons/utils";
 
 function Products(props) {
   const [products, setProducts] = useState({ results: [] });
-  const [loadMore, setLoadMore] = useState(true);
   const [page, setPage] = useState(1);
 
   const [sort, setSort] = useState(1);
@@ -44,7 +43,7 @@ function Products(props) {
     }
     props.fetchingData();
     setProducts(data);
-  }, [history.location.search]);
+  }, [history]);
 
   useEffect(() => {
     fetchProductList();
@@ -115,9 +114,7 @@ function Products(props) {
   });
 
   const handleChangeSort = (e) => {
-    console.log("Sort here===>", e.target.value);
     let { results: productList } = products;
-    console.log(products);
     setSort(e.target.value);
     switch (e.target.value) {
       case "1": {
@@ -144,7 +141,6 @@ function Products(props) {
             : b.price;
           return realPriceA - realPriceB;
         });
-        console.log("3==>", results);
         setProducts({ ...products, results });
         return;
       }
@@ -158,7 +154,6 @@ function Products(props) {
             : b.price;
           return realPriceB - realPriceA;
         });
-        console.log("3==>", results);
         setProducts({ ...products, results });
         return;
       }

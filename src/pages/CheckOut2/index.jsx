@@ -67,7 +67,10 @@ function CheckOut(props) {
         true,
         "Vui lòng nhập số điện thoại người nhận"
       )
-      .matches(/^[0-9]{10}$/, "Không đúng định dạng số điện thoại"),
+      .matches(
+        /(03|07|08|09)+([0-9]{8})\b/,
+        "Không đúng định dạng số điện thoại"
+      ),
   });
   const { cart, userInfo } = props;
   const totalPrice = cart
@@ -93,8 +96,8 @@ function CheckOut(props) {
     return cart.cart.map((ele) => {
       return (
         <CartItem
-          key={"cartItem" + ele.id}
-          id={ele.id}
+          key={"cartItem" + ele.product_id}
+          id={ele.product_id}
           img={ele.img}
           name={ele.name}
           price={ele.price}
@@ -145,10 +148,8 @@ function CheckOut(props) {
 
       if (input.type === "checkbox") {
         return (
-          <FastField
-            key={"checkbox" + input.name}
-            // name={input.name}
-            render={({ field: { onChange } }) => (
+          <FastField name={input.name} key={"checkbox" + input.name}>
+            {({ field: { onChange } }) => (
               <FormControlLabel
                 control={
                   <Checkbox
@@ -160,7 +161,7 @@ function CheckOut(props) {
                 label={input.label}
               />
             )}
-          />
+          </FastField>
         );
       }
       if (input.type === "textarea") {
@@ -218,19 +219,26 @@ function CheckOut(props) {
                               {mapCartToUI(true)}
                             </div>
                             <div className="panel-order__temp-price__content">
+                              <br />
                               <p>
                                 <span>Tạm tính:</span>
                                 <span>{formatCurrency(totalPrice, "₫")}</span>
                               </p>
+                              <br />
                               <p>
                                 <span>Phí vận chuyển:</span>
                                 <span>{formatCurrency(0, "₫")}</span>
                               </p>
+                              <br />
                             </div>
+                            <br />
+
                             <p className="panel-order__total-price">
                               <span>Tổng cộng:</span>
                               <span>{formatCurrency(totalPrice, "₫")}</span>
                             </p>
+                            <br />
+
                             <div className="panel-order__action">
                               <Link to="/cart">
                                 <i className="fas fa-chevron-left"></i>{" "}
@@ -282,41 +290,3 @@ const mapDispatchToProps = {
   orderAndCheckout,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(CheckOut);
-
-{
-  /* <div className="panel-order">
-              <div className="panel-order__header">
-                <h2>Đơn hàng (2 sản phẩm )</h2>
-              </div>
-              <div className="panel-order__content">
-                <div className="panel-order__list">{mapCartToUI(true)}</div>
-                <div className="panel-order__temp-price__content">
-                  <p>
-                    <span>Tạm tính:</span>
-                    <span>{formatCurrency(totalPrice, "₫")}</span>
-                  </p>
-                  <p>
-                    <span>Phí vận chuyển:</span>
-                    <span>{formatCurrency(0, "₫")}</span>
-                  </p>
-                </div>
-                <p className="panel-order__total-price">
-                  <span>Tổng cộng:</span>
-                  <span>{formatCurrency(totalPrice, "₫")}</span>
-                </p>
-                <div className="panel-order__action">
-                  <Link to="/cart">
-                    <i className="fas fa-chevron-left"></i>{" "}
-                    <span>Quay về giỏ hàng</span>{" "}
-                  </Link>
-                  <button
-                    onClick={handleSubmitOrder}
-                    type="button"
-                    className="btn-order-products"
-                  >
-                    ĐẶT HÀNG
-                  </button>
-                </div>
-              </div>
-            </div> */
-}

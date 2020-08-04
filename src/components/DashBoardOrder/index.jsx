@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
-import "./style.scss";
-import { formatCurrency } from "../../commons/utils";
-import ProductItem from "../ProductItem";
-import imgTemp from "./../../assets/stan-smith-shoes-white-m20605-01-standard.jpg";
-import { SUMMARY_ORDER_COLUMNS } from "./../../commons/constant";
+import { CircularProgress } from "@material-ui/core";
+import React from "react";
 import { Link } from "react-router-dom";
+import { formatCurrency } from "../../commons/utils";
+import { SUMMARY_ORDER_COLUMNS } from "./../../commons/constant";
+import "./style.scss";
+
 function DashBoardOrder(props) {
-  const { order } = props;
+  const { order, isFetchingData } = props;
 
   const mapHeadingTable = () => {
     return SUMMARY_ORDER_COLUMNS.map(({ label }) => {
@@ -16,7 +16,6 @@ function DashBoardOrder(props) {
   const mapDataRowTable = () => {
     return order.map(({ code, created, shipping_address, total, subtotal }) => {
       const { full_name, phone, address } = shipping_address;
-      console.log("total===>", total);
       return (
         <tr key={"row-order-" + code}>
           <td>
@@ -43,6 +42,11 @@ function DashBoardOrder(props) {
         </thead>
         <tbody>{mapDataRowTable()}</tbody>
       </table>
+      {isFetchingData && (
+        <div className="flex jf-center mtb100" style={{ width: "100%" }}>
+          <CircularProgress size={80} color="secondary" />
+        </div>
+      )}
     </>
   );
 }

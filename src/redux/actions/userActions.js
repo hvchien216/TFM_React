@@ -1,21 +1,14 @@
-import {
-	SET_USER,
-	SET_ERRORS,
-	CLEAR_ERRORS,
-	LOADING_UI,
-	SET_UNAUTHENTICATED,
-	LOADING_USER,
-	EDIT_PROFILE
-
-} from './../types';
 import userApi from './../../api/userApi';
-import jwtDecode from 'jwt-decode';
-import { alertNotification, alertError, uppercaseFirstCharater } from './../../commons/utils';
+import { alertNotification } from './../../commons/utils';
+import {
+	CLEAR_ERRORS,
+	SET_ERRORS,
+	SET_UNAUTHENTICATED,
+	SET_USER
+} from './../types';
 export const signInAndUp = (userData, history, isSignUp) => async dispatch => {
 	// isSignUp = true: Sign Up
 	// isSignUp = false: Sign In
-
-	// dispatch({ type: LOADING_UI });
 
 	try {
 		let res = isSignUp ? await userApi.register(userData) : await userApi.login(userData);
@@ -30,7 +23,6 @@ export const signInAndUp = (userData, history, isSignUp) => async dispatch => {
 		}
 		let resInfo = await userApi.getInfo(data.access);
 		const { email, first_name, last_name, phone, default_shipping_address: { address }, avatar } = resInfo?.data;
-		console.log("hahaha=>>", resInfo, typeof resInfo)
 		let user = {
 			name: first_name + ' ' + last_name,
 			first_name,
@@ -66,7 +58,6 @@ export const editProfile = (dataInfoUser, history) => async dispatch => {
 			file,
 			isTouch
 		} } = dataInfoUser;
-	console.log("dataInfo==>", dataInfoUser)
 	const formData = new FormData();
 	if (isTouch) {
 		formData.append('avatar', file, file.name);
@@ -88,9 +79,7 @@ export const editProfile = (dataInfoUser, history) => async dispatch => {
 			return;
 		}
 		const token = getTokenFromLocal();
-		// let resInfo = await userApi.getInfo(token);
 		const { email, first_name, last_name, phone, address, avatar } = data;
-		// console.log("hahaha=>>", resInfo, typeof resInfo)
 		let user = {
 			name: first_name + ' ' + last_name,
 			first_name,
@@ -109,7 +98,6 @@ export const editProfile = (dataInfoUser, history) => async dispatch => {
 	} catch (error) {
 		console.log("Err==>", error);
 	}
-	// console.log("res==>", res);
 }
 
 export const changePassword = (data, history) => async dispatch => {
@@ -124,6 +112,7 @@ export const changePassword = (data, history) => async dispatch => {
 			});
 			return;
 		}
+		alertNotification("Đổi mật khẩu thành công");
 		history.push('/');
 	} catch (error) {
 		console.log("Err==>", error);
@@ -150,7 +139,7 @@ export const resetPassword = (data) => async dispatch => {
 export const fetchYourOrder = () => async dispatch => {
 	try {
 		const res = await userApi.yourOrder();
-		const { success, error_message } = res;
+		const { success, error_message, data } = res;
 		dispatch({ type: CLEAR_ERRORS });
 		if (!success) {
 			dispatch({
@@ -159,25 +148,26 @@ export const fetchYourOrder = () => async dispatch => {
 			});
 			return;
 		}
-		return res;
+		return data;
 	} catch (error) {
 		console.log("Err==>", error);
 	}
 }
 
-export const fetchYourOrderDetail = (code) => async dispatch => {
+export const fetchYourOrderDetail = (code, history) => async dispatch => {
 	try {
 		const res = await userApi.yourOrderDetail(code);
-		const { success, error_message } = res;
+		const { success, error_message, data } = res;
 		dispatch({ type: CLEAR_ERRORS });
 		if (!success) {
 			dispatch({
 				type: SET_ERRORS,
 				payload: error_message
 			});
+			history.push('/not-found');
 			return;
 		}
-		return res;
+		return data;
 
 	} catch (error) {
 		console.log("Err==>", error);

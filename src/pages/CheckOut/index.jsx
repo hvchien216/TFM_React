@@ -1,17 +1,16 @@
-import React, { useState, useReducer } from "react";
+import { Container, Grid, Typography } from "@material-ui/core";
 import PropTypes from "prop-types";
-import { Container, Typography, Grid } from "@material-ui/core";
-import PurchaseInfoForm from "../../components/PurchaseInfoForm";
-import "./style.scss";
+import React, { useReducer } from "react";
 import { connect } from "react-redux";
-import CartItem from "../../components/CartItem";
 import { Link, Redirect } from "react-router-dom";
 import { formatCurrency } from "../../commons/utils";
+import CartItem from "../../components/CartItem";
+import PurchaseInfoForm from "../../components/PurchaseInfoForm";
 import { CHECKOUT_MAIN_FIELDS } from "./../../commons/constant";
 import { orderAndCheckout } from "./../../redux/actions/cartActions";
+import "./style.scss";
 function CheckOut(props) {
   const { cart, userInfo } = props;
-  console.log("cart===>", cart);
   const totalPrice = cart
     ? cart.cart.reduce((total, item) => {
         return (total = total + item.price * item.quantity);
@@ -63,7 +62,6 @@ function CheckOut(props) {
   };
 
   const handleSubmitOrder = () => {
-    console.log("state here==>", formValues);
     const {
       name,
       phone,
@@ -87,7 +85,6 @@ function CheckOut(props) {
       data.phone = phoneReceive;
       data.address = addressReceive;
     }
-    console.log("checkout===>", data);
     props.orderAndCheckout(data);
   };
 
@@ -106,9 +103,7 @@ function CheckOut(props) {
               fields={CHECKOUT_MAIN_FIELDS}
             />
           </Grid>
-          <Grid item xs={false} md={4}>
-            {/* <Typography component="div" style={{ height: '100vh' }} /> */}
-          </Grid>
+          <Grid item xs={false} md={4}></Grid>
           <Grid item xs={12} md={4}>
             <div className="panel-order">
               <div className="panel-order__header">

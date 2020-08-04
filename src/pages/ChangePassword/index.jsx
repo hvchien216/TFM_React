@@ -1,21 +1,15 @@
-import {
-  Button,
-  CircularProgress,
-  Container,
-  Grid,
-  Typography,
-} from "@material-ui/core";
+import { Button, CircularProgress, Container, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { FastField, Form, Formik } from "formik";
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
-import InputField from "../../custom-fields/InpuField";
-import "./style.scss";
 import BreadScrumb from "../../components/BreadScrumb";
+import InputField from "../../custom-fields/InpuField";
 import { changePassword } from "../../redux/actions/userActions";
+import "./style.scss";
 const useStyles = makeStyles((theme) => ({
   form: {
     width: "100%",
@@ -24,19 +18,13 @@ const useStyles = makeStyles((theme) => ({
   submitBox: {
     marginTop: theme.spacing(2),
   },
-  customError: {
-    color: "red",
-    fontSize: "0.8rem",
-    marginTop: 10,
-  },
 }));
 
 function ChangePassword(props) {
   const classes = useStyles();
   const history = useHistory();
   const validationSchemaChangePassword = Yup.object().shape({
-    old_password: Yup.string().required("Vui lòng nhập email"),
-
+    old_password: Yup.string().required("Vui lòng nhập mật khẩu cũ"),
     new_password: Yup.string().required("Vui lòng nhập mật khẩu"),
   });
 
@@ -57,7 +45,6 @@ function ChangePassword(props) {
               onSubmit={(values) =>
                 props.changePassword(values, history, false)
               }
-              // onSubmit={(values) => console.log(values)}
             >
               {(formikProps) => {
                 const { isSubmitting } = formikProps;
@@ -75,15 +62,7 @@ function ChangePassword(props) {
                       label="Mật khẩu mới"
                       type="password"
                     />
-                    {props.error && (
-                      <Typography
-                        variant="body2"
-                        className={classes.customError}
-                      >
-                        {props.error.charAt(0).toUpperCase() +
-                          props.error.slice(1)}
-                      </Typography>
-                    )}
+
                     <Grid item xs={12} md={6} className={classes.submitBox}>
                       <Button
                         type="submit"
@@ -114,13 +93,7 @@ ChangePassword.propTypes = {
   changePassword: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => {
-  return {
-    error: state.ui.errors,
-  };
-};
-
 const mapDispatchToProps = {
   changePassword,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(ChangePassword);
+export default connect(null, mapDispatchToProps)(ChangePassword);

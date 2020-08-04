@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import './commons/style.scss';
 import theme from './commons/theme';
 import Footer from './components/Footer';
-import GlobalLoading from './components/GlobalLoading';
 import NavBar from './components/NavBar';
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
@@ -29,7 +28,6 @@ function App() {
       <Provider store={store}>
         <Router>
           <ScrollToTop />
-          <GlobalLoading />
           <NavBar />
           <Switch>
             <PublicRoute restricted={false} path="/" component={Home} exact />

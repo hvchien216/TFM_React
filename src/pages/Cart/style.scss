@@ -130,8 +130,7 @@
             padding: 0 35px;
             outline: none;
             -webkit-user-select: none;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
+            @include transform(translateZ(0));
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
             white-space: nowrap;

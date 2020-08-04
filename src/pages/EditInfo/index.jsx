@@ -1,24 +1,23 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import "./style.scss";
-import { FastField, Form, Formik } from "formik";
-import * as Yup from "yup";
-import InputField from "../../custom-fields/InpuField";
 import {
+  Button,
+  CircularProgress,
   Container,
   Grid,
-  Button,
-  Typography,
-  CircularProgress,
   IconButton,
   Tooltip,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useHistory, Link } from "react-router-dom";
-import BreadScrumb from "../../components/BreadScrumb";
-import { signInAndUp, editProfile } from "../../redux/actions/userActions";
+import { FastField, Form, Formik } from "formik";
+import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
+import * as Yup from "yup";
+import BreadScrumb from "../../components/BreadScrumb";
+import InputField from "../../custom-fields/InpuField";
+import { editProfile } from "../../redux/actions/userActions";
 import avatarDefault from "./../../assets/user_default.jpg";
+import "./style.scss";
 const useStyles = makeStyles((theme) => ({
   form: {
     width: "100%",
@@ -48,12 +47,14 @@ function EditInfo(props) {
   } = props;
   const validationSchemaEditInfo = Yup.object().shape({
     firstName: Yup.string().required("Vui lòng Họ"),
-
     lastName: Yup.string().required("Vui lòng Tên"),
-
     address: Yup.string().required("Vui lòng nhập địa chỉ"),
-
-    phone: Yup.string().required("Vui lòng nhập số điện thoại"),
+    phone: Yup.string()
+      .required("Vui lòng nhập số điện thoại")
+      .matches(
+        /(03|07|08|09)+([0-9]{8})\b/,
+        "Không đúng định dạng số điện thoại"
+      ),
   });
 
   useEffect(() => {
@@ -67,16 +68,14 @@ function EditInfo(props) {
 
   const handleImageChange = (e) => {
     const image = e.target.files[0];
-    console.log(image);
     let reader = new FileReader();
     reader.readAsDataURL(image);
 
     reader.onloadend = function (e) {
       setAvatar({ image: reader.result, file: image, isTouch: true });
-    }.bind(this);
+    };
   };
   const handleSubmit = (values) => {
-    console.log("submit is here");
     const data = {
       ...values,
       avatar: avatar,
@@ -128,7 +127,7 @@ function EditInfo(props) {
                               onClick={handleEditPicture}
                               className="btn-edit-image"
                             >
-                              <i class="fas fa-pen"></i>
+                              <i className="fas fa-pen"></i>
                             </IconButton>
                           </Tooltip>
                         </div>
@@ -156,15 +155,6 @@ function EditInfo(props) {
                         />
                       </Grid>
                     </Grid>
-                    {/* {props.error && (
-                      <Typography
-                        variant="body2"
-                        className={classes.customError}
-                      >
-                        {props.error.charAt(0).toUpperCase() +
-                          props.error.slice(1)}
-                      </Typography>
-                    )} */}
                     <Grid container>
                       <Grid item xs={false} md={4}></Grid>
 
@@ -197,20 +187,17 @@ function EditInfo(props) {
 }
 
 EditInfo.propTypes = {
-  signInAndUp: PropTypes.func.isRequired,
   editProfile: PropTypes.func.isRequired,
   userInfo: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
   return {
-    error: state.ui.errors,
     userInfo: state.user.credentials,
   };
 };
 
 const mapDispatchToProps = {
-  signInAndUp,
   editProfile,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(EditInfo);

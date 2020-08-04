@@ -14,7 +14,6 @@ function SelectQuan(props) {
           <span>-</span>
         </button>
         <input
-          // onKeyPress={isNaN}
           type="text"
           maxLength="3"
           min="0"
@@ -44,7 +43,6 @@ function SelectQuan(props) {
           <span>-</span>
         </button>
         <input
-          // onKeyPress={isNaN}
           type="text"
           maxLength="3"
           min="0"

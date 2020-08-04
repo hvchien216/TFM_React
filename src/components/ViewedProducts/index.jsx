@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
-import "./style.scss";
-import { formatCurrency } from "./../../commons/utils";
-import ProductItem from "../ProductItem";
-import imgTemp from "./../../assets/stan-smith-shoes-white-m20605-01-standard.jpg";
+import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
+import ProductItem from "../ProductItem";
+import imgTemp from "./../../assets/stan-smith-shoes-white-m20605-01-standard.jpg";
+import "./style.scss";
 const settings = {
   dots: true,
   infinite: true,
@@ -40,31 +39,36 @@ function SamplePrevArrow(props) {
 
 function ViewedProducts(props) {
   const { products } = props;
-  console.log("products recent==>", products);
-  const mapProductItem =
-    products &&
-    products.map((item, index) => {
-      let price = Math.ceil(
-        item?.price - item?.price * (parseInt(item?.discount || 0) / 100)
-      );
-      return (
-        <ProductItem
-          isCarouselItem={true}
-          key={"recent-product-" + item.id}
-          id={item.slug}
-          name={item.name}
-          img={item?.default_image || imgTemp}
-          price={price || 0}
-          discount={0}
-        />
-      );
-    });
+  const mapProductItem = (isCarouselItem) => {
+    return (
+      products &&
+      products.map((item, index) => {
+        let price = Math.ceil(
+          item?.price - item?.price * (parseInt(item?.discount || 0) / 100)
+        );
+        return (
+          <ProductItem
+            isCarouselItem={isCarouselItem}
+            key={"recent-product-" + item.id}
+            id={item.slug}
+            name={item.name}
+            img={item?.default_image || imgTemp}
+            price={price || 0}
+            discount={0}
+          />
+        );
+      })
+    );
+  };
+
   const carouselProduct = () => {
     let xhtml = null;
     if (products.length <= 4) {
-      xhtml = <div className="module-content-box flex">{mapProductItem}</div>;
+      xhtml = (
+        <div className="module-content-box flex">{mapProductItem(false)}</div>
+      );
     } else {
-      xhtml = <Slider {...settings}>{mapProductItem}</Slider>;
+      xhtml = <Slider {...settings}>{mapProductItem(true)}</Slider>;
     }
     return xhtml;
   };
