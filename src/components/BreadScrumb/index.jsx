@@ -1,23 +1,31 @@
-import qs from "query-string";
 import React from "react";
 import { Link } from "react-router-dom";
 import { BREADBRUMBS } from "../../commons/constant";
 import "./style.scss";
 function BreadScrumb(props) {
-  const renderBreadCrumbs = (path = props.path) => {
-    let pathArr = path.pathname.split("/");
-    let queryOnUrl = qs.parse(path.search);
-    for (var key in queryOnUrl) {
-      if (key === "supplier" && BREADBRUMBS.hasOwnProperty(queryOnUrl[key])) {
-        pathArr = [...pathArr, queryOnUrl[key]];
+  const renderBreadCrumbs = (
+    path = props.path,
+    productDetail = props.productDetail
+  ) => {
+    let pathArr;
+    if (productDetail) {
+      pathArr = [productDetail.slugBrand];
+    } else {
+      pathArr = path.pathname.split("/");
+      pathArr = pathArr.filter((path) => path !== "collections");
+
+      pathArr.shift();
+      if (
+        pathArr.some((path) => BREADBRUMBS[path.toLowerCase()] === undefined)
+      ) {
+        return null;
       }
     }
-    pathArr.shift();
     let breadScrumb = pathArr.map((item) => {
       return (
         <li key={"breadScrumb" + item}>
-          <Link to={BREADBRUMBS[item].to}>
-            <span>{BREADBRUMBS[item].label}</span>
+          <Link to={BREADBRUMBS[item.toLowerCase()].to}>
+            <span>{BREADBRUMBS[item.toLowerCase()].label}</span>
           </Link>
         </li>
       );
@@ -29,7 +37,15 @@ function BreadScrumb(props) {
         </Link>
       </li>
     );
-    // let breadScrumb = null;
+    if (productDetail) {
+      breadScrumb.push(
+        <li key={`breadScrumb ${productDetail.slugProduct}`}>
+          <Link to={productDetail.slugProduct}>
+            <span>{productDetail.name}</span>
+          </Link>
+        </li>
+      );
+    }
     return breadScrumb;
   };
   if (props.path === "/") return null;

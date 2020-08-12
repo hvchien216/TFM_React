@@ -183,8 +183,8 @@ function Footer(props) {
                 </button>
                 <input
                   type="email"
-                  value={email}
-                  onChange={handleChangeMailSubscribe}
+                  // value={email}
+                  // onChange={handleChangeMailSubscribe}
                   autoComplete="off"
                   placeholder="Email của bạn"
                   name="email"

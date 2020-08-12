@@ -4,6 +4,10 @@ import {
   Container,
   FormControlLabel,
   Grid,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  Radio,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { FastField, Form, Formik } from "formik";
@@ -19,16 +23,76 @@ import { CHECKOUT_MAIN_FIELDS } from "./../../commons/constant";
 import { requiredWith } from "./../../commons/utils";
 import { orderAndCheckout } from "./../../redux/actions/cartActions";
 import "./style.scss";
+import BreadScrumb from "../../components/BreadScrumb";
 
 const useStyles = makeStyles((theme) => ({
+  trasport: {
+    padding: "0px 15px",
+  },
   form: {
     width: "100%",
     marginTop: theme.spacing(1),
   },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
+  root: {
+    "&:hover": {
+      backgroundColor: "transparent",
+    },
+  },
+  icon: {
+    borderRadius: "50%",
+    width: 16,
+    height: 16,
+    boxShadow:
+      "inset 0 0 0 1px rgba(16,22,26,.2), inset 0 -1px 0 rgba(16,22,26,.1)",
+    backgroundColor: "#f5f8fa",
+    backgroundImage:
+      "linear-gradient(180deg,hsla(0,0%,100%,.8),hsla(0,0%,100%,0))",
+    "$root.Mui-focusVisible &": {
+      outline: "2px auto rgba(19,124,189,.6)",
+      outlineOffset: 2,
+    },
+    "input:hover ~ &": {
+      backgroundColor: "#ebf1f5",
+    },
+    "input:disabled ~ &": {
+      boxShadow: "none",
+      background: "rgba(206,217,224,.5)",
+    },
+  },
+  checkedIcon: {
+    backgroundColor: "#137cbd",
+    backgroundImage:
+      "linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))",
+    "&:before": {
+      display: "block",
+      width: 16,
+      height: 16,
+      backgroundImage: "radial-gradient(#fff,#fff 28%,transparent 32%)",
+      content: '""',
+    },
+    "input:hover ~ &": {
+      cursor: "pointer",
+      backgroundColor: "#106ba3",
+    },
   },
 }));
+
+function StyledRadio(props) {
+  const classes = useStyles();
+
+  return (
+    <Radio
+      className={classes.root}
+      disableRipple
+      color="default"
+      checkedIcon={
+        <span className={`${classes.icon} ${classes.checkedIcon}`} />
+      }
+      icon={<span className={classes.icon} />}
+      {...props}
+    />
+  );
+}
 function CheckOut(props) {
   const classes = useStyles();
   const history = useHistory();
@@ -191,13 +255,14 @@ function CheckOut(props) {
   }
   return (
     <>
+      <BreadScrumb path={history.location} />
+
       <Container maxWidth="lg" component="main">
         <Grid container spacing={5}>
           <Grid item md={12}>
             <Formik
               initialValues={stateForm}
               validationSchema={validationSchema}
-              // onSubmit={(values) => console.log(values)}
               onSubmit={(values) => handleSubmitOrder(values)}
             >
               {(formikProps) => {
@@ -206,9 +271,39 @@ function CheckOut(props) {
                   <Form className={classes.form}>
                     <Grid container>
                       <Grid item xs={12} md={4}>
+                        <h2>Thông tin mua hàng</h2>
                         {renderFields(CHECKOUT_MAIN_FIELDS, valuesOfFormik)}
                       </Grid>
-                      <Grid item xs={12} md={4}></Grid>
+                      <Grid item xs={12} md={4} className={classes.trasport}>
+                        <h2>Thanh toán</h2>
+                        <div className="transport__content">
+                          <FormControl component="fieldset">
+                            <RadioGroup
+                              defaultValue="payment-live"
+                              name="customized-radios"
+                            >
+                              <FormControlLabel
+                                value="payment-live"
+                                control={<StyledRadio />}
+                                label="Thanh toán khi giao hàng (COD)"
+                              />
+                              <br />
+                              <FormControlLabel
+                                value="payment-with-credit-card"
+                                control={<StyledRadio />}
+                                label={
+                                  <p>
+                                    Chuyển khoản qua ngân hàng <br />
+                                    Tài khoản vietcombank chi nhánh Nhà Bè
+                                    <br />- Chủ tài khoản: Anubis
+                                    <br />- STK: 054100026776
+                                  </p>
+                                }
+                              />
+                            </RadioGroup>
+                          </FormControl>
+                        </div>
+                      </Grid>
                       <Grid item xs={12} md={4}>
                         <div className="panel-order">
                           <div className="panel-order__header">
@@ -219,7 +314,6 @@ function CheckOut(props) {
                               {mapCartToUI(true)}
                             </div>
                             <div className="panel-order__temp-price__content">
-                              <br />
                               <p>
                                 <span>Tạm tính:</span>
                                 <span>{formatCurrency(totalPrice, "₫")}</span>

@@ -38,14 +38,14 @@ function NavBar(props) {
     e.preventDefault();
     if (!keyword) return;
     let query = {
-      limit: 20,
+      limit: 12,
       page: 1,
       keyword: keyword.toLocaleLowerCase(),
     };
     //set flag to show notification
     sessionStorage.setItem("flag-search", "true");
     history.push({
-      pathname: "/products",
+      pathname: "/search",
       search: qs.stringify(query),
     });
   };
@@ -253,7 +253,13 @@ function NavBar(props) {
     return NAV_ITEM.map((nav) => {
       return (
         <li className="nav-item  has-mega" key={nav.id}>
-          <Link to={nav.to} className="nav-link">
+          <Link
+            to={nav.to || "/"}
+            onClick={(e) => {
+              nav.to || e.preventDefault();
+            }}
+            className="nav-link"
+          >
             {nav.label}{" "}
             {nav.nav_nested.length > 0 && <i className="fa fa-angle-down"></i>}
           </Link>
@@ -283,6 +289,39 @@ function NavBar(props) {
     });
   };
 
+  const renderBottomNav = () => {
+    let xhtml = null;
+    xhtml = (
+      <section className="bottom-nav">
+        <Link className="bottom-nav__item" to="/collections/giam-gia">
+          <span>
+            <i className="fas fa-gift"></i>
+            <p>Giảm Giá</p>
+          </span>
+        </Link>
+        <Link className="bottom-nav__item" to="/signin">
+          <span>
+            <i className="fas fa-user"></i>
+            <p>Tài Khoản</p>
+          </span>
+        </Link>
+        <Link className="bottom-nav__item" to="/account">
+          <span>
+            <i className="fas fa-phone-alt"></i>
+            <p>Hàng Order</p>
+          </span>
+        </Link>
+        <Link className="bottom-nav__item" to="/cart">
+          <span>
+            <i className="fas fa-shopping-cart"></i>
+            <p>Giỏ Hàng</p>
+          </span>
+        </Link>
+      </section>
+    );
+    return xhtml;
+  };
+
   return (
     <>
       <div className="nav-mb" id="nav-mobile" onClick={handleToggleMenuMobile}>
@@ -305,7 +344,12 @@ function NavBar(props) {
             <div className="tab-content" id="panel-menu">
               <ul className="mm-listview">
                 <li className="mm-listitem" onClick={handleToggleMenuMobile}>
-                  <Link to="/tfm-clothing">
+                  <Link
+                    to={"/"}
+                    onClick={(e) => {
+                      e.preventDefault();
+                    }}
+                  >
                     TFM CLOTHING
                     <span
                       onClick={(e) =>
@@ -340,7 +384,12 @@ function NavBar(props) {
                 </li>
 
                 <li className="mm-listitem" onClick={handleToggleMenuMobile}>
-                  <Link to="/products">
+                  <Link
+                    to={"/"}
+                    onClick={(e) => {
+                      e.preventDefault();
+                    }}
+                  >
                     Sneakers
                     <span
                       onClick={(e) =>
@@ -375,15 +424,15 @@ function NavBar(props) {
                 </li>
 
                 <li className="mm-listitem" onClick={handleToggleMenuMobile}>
-                  <Link to="/champion">Champion</Link>
+                  <Link to="/collections/champion">Champion</Link>
                 </li>
 
                 <li className="mm-listitem" onClick={handleToggleMenuMobile}>
-                  <Link to="/giam-gia-1">Giảm Giá</Link>
+                  <Link to="/collections/giam-gia">Giảm Giá</Link>
                 </li>
 
                 <li className="mm-listitem" onClick={handleToggleMenuMobile}>
-                  <Link to="/tin-tuc">Tin Tức</Link>
+                  <Link to="/news">Tin Tức</Link>
                 </li>
               </ul>
             </div>
@@ -503,6 +552,7 @@ function NavBar(props) {
           </div>
         </div>
       </header>
+      {renderBottomNav()}
       <RingRing />
     </>
   );

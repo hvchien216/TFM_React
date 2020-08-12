@@ -85,7 +85,7 @@ function Cart(props) {
               <Link
                 className="btn-gray mr-15 libra-sport___button"
                 title="Tiếp tục mua hàng"
-                to="/collections/all"
+                to="/collections/giam-gia"
               >
                 <span>Tiếp tục mua hàng</span>
               </Link>
@@ -114,7 +114,7 @@ function Cart(props) {
               <Link
                 className="btn-proceed btn-back-store"
                 title="Tiếp tục mua hàng"
-                to="/collections/all"
+                to="/collections/giam-gia"
               >
                 <span>Tiếp tục mua hàng</span>
               </Link>

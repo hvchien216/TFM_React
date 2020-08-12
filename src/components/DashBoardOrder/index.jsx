@@ -2,7 +2,10 @@ import { CircularProgress } from "@material-ui/core";
 import React from "react";
 import { Link } from "react-router-dom";
 import { formatCurrency } from "../../commons/utils";
-import { SUMMARY_ORDER_COLUMNS } from "./../../commons/constant";
+import {
+  SUMMARY_ORDER_COLUMNS,
+  TRANSPORT_STATUSES,
+} from "./../../commons/constant";
 import "./style.scss";
 
 function DashBoardOrder(props) {
@@ -14,25 +17,32 @@ function DashBoardOrder(props) {
     });
   };
   const mapDataRowTable = () => {
-    return order.map(({ code, created, shipping_address, total, subtotal }) => {
-      const { full_name, phone, address } = shipping_address;
-      return (
-        <tr key={"row-order-" + code}>
-          <td>
-            <Link to={`/order-detail/${code}`}>{code}</Link>
-          </td>
-          <td>{created}</td>
-          <td>{address}</td>
-          <td>{formatCurrency(total, "₫")}</td>
-          <td>
-            <p>{full_name}</p>
-            <p>{phone}</p>
-            <p>{address}</p>
-          </td>
-          <td>Techcombank</td>
-        </tr>
+    let xhtml = null;
+    if (order.length > 0) {
+      xhtml = order.map(
+        ({ code, created, shipping_address, total, status, subtotal }) => {
+          const { full_name, phone, address } = shipping_address;
+          return (
+            <tr key={"row-order-" + code}>
+              <td>
+                <Link to={`/order-detail/${code}`}>{code}</Link>
+              </td>
+              <td>{created}</td>
+              {/* <td>{address}</td> */}
+              <td>{formatCurrency(total, "₫")}</td>
+              <td>
+                <p>{full_name}</p>
+                <p>{phone}</p>
+                <p>{address}</p>
+              </td>
+              <td>{status && TRANSPORT_STATUSES[status]}</td>
+            </tr>
+          );
+        }
       );
-    });
+    }
+
+    return xhtml;
   };
   return (
     <>
@@ -42,10 +52,16 @@ function DashBoardOrder(props) {
         </thead>
         <tbody>{mapDataRowTable()}</tbody>
       </table>
-      {isFetchingData && (
+      {isFetchingData ? (
         <div className="flex jf-center mtb100" style={{ width: "100%" }}>
           <CircularProgress size={80} color="secondary" />
         </div>
+      ) : (
+        order.length === 0 && (
+          <div className="text-warning" style={{ width: "100%" }}>
+            Không có đơn hàng nào.
+          </div>
+        )
       )}
     </>
   );

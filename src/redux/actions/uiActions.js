@@ -11,23 +11,24 @@ export const fetchingData = () => dispatch => {
 	})
 }
 
-export const setError = (error_message) => dispatch => {
+export const setError = (error) => dispatch => {
 	dispatch({
 		type: SET_ERRORS,
-		payload: error_message
+		payload: error
 	});
 }
 
-export const fetchProductDetail = (code) => async dispatch => {
+export const fetchProductDetail = (code, history) => async dispatch => {
 	try {
 		const res = await productApi.detail(code);
-		const { success, error_message, data } = res;
+		const { success, error_message, data, error_code } = res;
 		dispatch({ type: CLEAR_ERRORS });
 		if (!success) {
 			dispatch({
 				type: SET_ERRORS,
-				payload: error_message
+				payload: { error_message, error_code }
 			});
+			history.push('/not-found');
 			return;
 		}
 		return data;
@@ -39,12 +40,12 @@ export const fetchProductDetail = (code) => async dispatch => {
 export const fetchListProduct = (query, history) => async dispatch => {
 	try {
 		const res = await productApi.list(query);
-		const { success, error_message, data } = res;
+		const { success, error_message, error_code, data } = res;
 		dispatch({ type: CLEAR_ERRORS });
 		if (!success) {
 			dispatch({
 				type: SET_ERRORS,
-				payload: error_message
+				payload: { error_message, error_code }
 			});
 			history.push('/not-found');
 			return;

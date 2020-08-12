@@ -35,12 +35,12 @@ export const removeAllItemCart = () => dispatch => {
 export const orderAndCheckout = (data, history) => async dispatch => {
 	try {
 		const res = await cartApi.checkout(data);
-		const { success, error_message } = res;
+		const { success, error_message, error_code } = res;
 		dispatch({ type: CLEAR_ERRORS });
 		if (!success) {
 			dispatch({
 				type: SET_ERRORS,
-				payload: error_message
+				payload: { error_message, error_code }
 			});
 			return;
 		}

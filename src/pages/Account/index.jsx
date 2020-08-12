@@ -17,6 +17,7 @@ function Account(props) {
     fetchingData();
     const data = await props.fetchYourOrder();
     fetchingData();
+    if (!data) return;
 
     setOrderList(data);
   }, []);
@@ -62,11 +63,11 @@ function Account(props) {
                   Số đơn hàng: <strong>{orderList.length}</strong>
                 </span>
               </div>
-              <div className="info-item">
+              {/* <div className="info-item">
                 <span>
                   Chi tiêu: <strong>0</strong>
                 </span>
-              </div>
+              </div> */}
               <div className="info-item">
                 <span>
                   <i className="fas fa-map-marker-alt"></i>

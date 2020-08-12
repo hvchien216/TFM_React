@@ -1,0 +1,66 @@
+@import "./../../commons/style.scss";
+
+.products-search {
+  &-main {
+    width: 100%;
+    padding-left: 15px;
+    .category-header {
+      display: flex;
+      justify-content: center;
+      border-bottom: none;
+      padding: 10px;
+      background: $commonColor2;
+      margin-bottom: 20px;
+      #sortBar {
+        // margin-left: auto;
+        width: 150px;
+        position: relative;
+        font-size: 13px;
+        &::before {
+          position: absolute;
+          content: "Sắp xếp";
+          left: -55px;
+          font-size: 13px;
+          top: 50%;
+          @include transform(translateY(-50%));
+        }
+        select#sortPagi {
+          width: 100%;
+          height: 40px;
+          border: transparent 1px solid !important;
+          outline: none;
+          padding: 0 15px;
+          color: $commonColor1;
+          option {
+            border: transparent 1px solid !important;
+            outline: none;
+          }
+        }
+      }
+    }
+    .products-main-content {
+      margin: 0 -15px;
+    }
+  }
+}
+@media screen and (max-width: 991px) {
+  .products-search {
+    &-main {
+      width: 100%;
+      padding: 0;
+      .products-main-content {
+        flex-wrap: wrap;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .products-search {
+    &-main {
+      .category-header {
+        flex-wrap: wrap;
+      }
+    }
+  }
+}

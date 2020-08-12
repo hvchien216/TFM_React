@@ -30,10 +30,10 @@ function SignUp(props) {
     lastName: Yup.string().required("Vui lòng Tên"),
     address: Yup.string().required("Vui lòng nhập địa chỉ"),
     phone: Yup.string()
-      .required("Vui lòng nhập số điện thoại")
+      .required("Vui lòng nhập Số điện thoại")
       .matches(
         /(03|07|08|09)+([0-9]{8})\b/,
-        "Không đúng định dạng số điện thoại"
+        "Không đúng định dạng Số điện thoại"
       ),
     email: Yup.string()
       .required("Vui lòng nhập Email")
@@ -60,7 +60,7 @@ function SignUp(props) {
                 address: "",
               }}
               validationSchema={validationSchemaSignUp}
-              onSubmit={(values) => console.log(values)}
+              onSubmit={(values) => props.signInAndUp(values, history, true)}
             >
               {(formikProps) => {
                 const { isSubmitting } = formikProps;

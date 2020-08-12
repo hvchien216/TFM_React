@@ -106,6 +106,8 @@ function SignIn(props) {
               onSubmit={(values) => props.resetPassword(values)}
             >
               {(formikProps) => {
+                const { isSubmitting } = formikProps;
+
                 return (
                   <Form className={classes.form}>
                     <FastField
@@ -113,14 +115,18 @@ function SignIn(props) {
                       component={InputField}
                       label="Email"
                     />
-
                     <Button
                       type="submit"
+                      disabled={isSubmitting}
                       className={classes.submitBox}
                       variant="contained"
                       color="primary"
                     >
-                      Lấy lại mật khẩu
+                      {isSubmitting ? (
+                        <CircularProgress size={23} />
+                      ) : (
+                        "Lấy lại mật khẩu"
+                      )}
                     </Button>
                   </Form>
                 );

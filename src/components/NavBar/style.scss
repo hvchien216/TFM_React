@@ -526,6 +526,36 @@
   }
 }
 
+.bottom-nav {
+  z-index: 100;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: none;
+  justify-content: center;
+  height: 70px;
+  &__item {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    & > span {
+      text-align: center;
+      & > i {
+        font-size: 22px;
+      }
+      & > p {
+        margin-top: 5px;
+        font-size: 10px;
+      }
+    }
+  }
+}
+
 // Reposinve
 
 @media only screen and (max-width: 1199px) {
@@ -672,5 +702,8 @@
         }
       }
     }
+  }
+  .bottom-nav {
+    display: flex;
   }
 }

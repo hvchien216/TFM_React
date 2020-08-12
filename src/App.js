@@ -17,6 +17,7 @@ import EditInfo from './pages/EditInfo';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import OrderDetail from './pages/OrderDetail';
+import Search from './pages/Search';
 import ProductDetail from './pages/ProductDetail';
 import Products from './pages/Products';
 import SignIn from './pages/SignIn';
@@ -31,7 +32,8 @@ function App() {
           <NavBar />
           <Switch>
             <PublicRoute restricted={false} path="/" component={Home} exact />
-            <PublicRoute restricted={false} path="/products" component={Products} />
+            <PublicRoute restricted={false} path="/collections/:category_id" component={Products} />
+            <PublicRoute restricted={false} path="/search" component={Search} exact />
             <PublicRoute restricted={false} path="/product-detail/:maSP" component={ProductDetail} exact />
             <PublicRoute restricted={false} path="/cart" component={Cart} exact />
             <PublicRoute restricted={true} path="/signin" component={SignIn} exact />

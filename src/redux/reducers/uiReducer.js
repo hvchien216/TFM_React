@@ -12,7 +12,10 @@ const initialState = {
 export default function (state = initialState, action) {
 	switch (action.type) {
 		case SET_ERRORS:
-			alertError(uppercaseFirstCharater(action.payload));
+			if (action.payload.error_code === 'token_not_valid')
+				alertError(uppercaseFirstCharater("Phiên sử dụng của bạn đã hết hạn, vui lòng đăng nhập lại"));
+			else
+				alertError(uppercaseFirstCharater(action.payload.error_message));
 			return {
 				...state,
 				isFetchingData: false,
@@ -22,7 +25,6 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				errors: null,
-				isFetchingData: false,
 			};
 		case FETCHING_DATA:
 			return {

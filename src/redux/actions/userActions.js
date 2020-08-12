@@ -12,12 +12,12 @@ export const signInAndUp = (userData, history, isSignUp) => async dispatch => {
 
 	try {
 		let res = isSignUp ? await userApi.register(userData) : await userApi.login(userData);
-		const { data, success, error_message } = res;
+		const { data, success, error_message, error_code } = res;
 		dispatch({ type: CLEAR_ERRORS });
 		if (!success) {
 			dispatch({
 				type: SET_ERRORS,
-				payload: error_message
+				payload: { error_message, error_code }
 			});
 			return;
 		}
@@ -53,7 +53,7 @@ export const editProfile = (dataInfoUser, history) => async dispatch => {
 	const { firstName,
 		lastName,
 		phone,
-		default_shipping_address: { address },
+		address,
 		avatar: {
 			file,
 			isTouch
@@ -69,17 +69,17 @@ export const editProfile = (dataInfoUser, history) => async dispatch => {
 
 	try {
 		const res = await userApi.updateProfile(formData);
-		const { data, success, error_message } = res;
+		const { data, success, error_message, error_code } = res;
 		dispatch({ type: CLEAR_ERRORS });
 		if (!success) {
 			dispatch({
 				type: SET_ERRORS,
-				payload: error_message
+				payload: { error_message, error_code }
 			});
 			return;
 		}
 		const token = getTokenFromLocal();
-		const { email, first_name, last_name, phone, address, avatar } = data;
+		const { email, first_name, last_name, phone, default_shipping_address: { address }, avatar } = data;
 		let user = {
 			name: first_name + ' ' + last_name,
 			first_name,
@@ -89,12 +89,14 @@ export const editProfile = (dataInfoUser, history) => async dispatch => {
 			address,
 			avatar
 		}
+		console.log("user===>", user);
 		savedToLocal({ user, token });
 		dispatch({
 			type: SET_USER,
 			payload: user
 		});
 		history.push('/account');
+		alertNotification('Cập nhật thông tin thành công.')
 	} catch (error) {
 		console.log("Err==>", error);
 	}
@@ -103,12 +105,12 @@ export const editProfile = (dataInfoUser, history) => async dispatch => {
 export const changePassword = (data, history) => async dispatch => {
 	try {
 		const res = await userApi.changePassword(data);
-		const { success, error_message } = res;
+		const { success, error_message, error_code } = res;
 		dispatch({ type: CLEAR_ERRORS });
 		if (!success) {
 			dispatch({
 				type: SET_ERRORS,
-				payload: error_message
+				payload: { error_message, error_code }
 			});
 			return;
 		}
@@ -122,12 +124,12 @@ export const changePassword = (data, history) => async dispatch => {
 export const resetPassword = (data) => async dispatch => {
 	try {
 		const res = await userApi.resetPassword(data);
-		const { success, error_message } = res;
+		const { success, error_message, error_code } = res;
 		dispatch({ type: CLEAR_ERRORS });
 		if (!success) {
 			dispatch({
 				type: SET_ERRORS,
-				payload: error_message
+				payload: { error_message, error_code }
 			});
 			return;
 		}
@@ -139,12 +141,12 @@ export const resetPassword = (data) => async dispatch => {
 export const fetchYourOrder = () => async dispatch => {
 	try {
 		const res = await userApi.yourOrder();
-		const { success, error_message, data } = res;
+		const { success, error_message, data, error_code } = res;
 		dispatch({ type: CLEAR_ERRORS });
 		if (!success) {
 			dispatch({
 				type: SET_ERRORS,
-				payload: error_message
+				payload: { error_message, error_code }
 			});
 			return;
 		}
@@ -157,12 +159,12 @@ export const fetchYourOrder = () => async dispatch => {
 export const fetchYourOrderDetail = (code, history) => async dispatch => {
 	try {
 		const res = await userApi.yourOrderDetail(code);
-		const { success, error_message, data } = res;
+		const { success, error_message, data, error_code } = res;
 		dispatch({ type: CLEAR_ERRORS });
 		if (!success) {
 			dispatch({
 				type: SET_ERRORS,
-				payload: error_message
+				payload: { error_message, error_code }
 			});
 			history.push('/not-found');
 			return;

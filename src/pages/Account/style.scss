@@ -27,6 +27,7 @@
   @include transition(all ease-in 0.3s);
 
   &:hover {
-    background: $sColor;
+    box-shadow: 2px 4px 5px $sColor;
+    @include transform(scale(1.05));
   }
 }

@@ -10,12 +10,12 @@ function Home() {
       <h2 className="title__banner">THƯƠNG HIỆU NỔI BẬT</h2>
       <section className="sec__banner flex">
         <div className="sec__banner__item">
-          <Link to="/products?supplier=reebok">
+          <Link to="/collections/reebok">
             <img src={banner1} alt="" />
           </Link>
         </div>
         <div className="sec__banner__item">
-          <Link to="/products?supplier=reebok">
+          <Link to="/collections/reebok">
             <img src={banner2} alt="" />
           </Link>
         </div>

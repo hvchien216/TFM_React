@@ -4,18 +4,21 @@ import PropTypes from "prop-types";
 import qs from "query-string";
 import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import BreadScrumb from "../../components/BreadScrumb";
 import ProductItem from "../../components/ProductItem";
 import RadioButton from "../../components/RadioBtn";
 import imgTemp from "./../../assets/domba.jpg";
-import { FILTER_BY, SORT_PAGI } from "./../../commons/constant";
+import {
+  CONVERT_SLUG_CATEGORY_TO_ID,
+  FILTER_BY,
+  SORT_PAGI,
+} from "./../../commons/constant";
 import {
   fetchingData,
   fetchListProduct,
 } from "./../../redux/actions/uiActions";
 import "./style.scss";
-import { alertNotification } from "../../commons/utils";
 
 function Products(props) {
   const [products, setProducts] = useState({ results: [] });
@@ -23,6 +26,8 @@ function Products(props) {
 
   const [sort, setSort] = useState(1);
   const history = useHistory();
+  const params = useParams();
+
   const { results: productList, total_page } = products;
 
   const fetchProductList = useCallback(async () => {
@@ -32,18 +37,28 @@ function Products(props) {
         delete query[key];
       }
     }
+    if (params.category_id === "giam-gia") {
+      query.status = "on_sale";
+    } else {
+      const category_id =
+        CONVERT_SLUG_CATEGORY_TO_ID[params.category_id.toLowerCase()];
+
+      if (!category_id) return;
+
+      query.category = category_id;
+    }
+
     //tránh sai current_page khi chuyển route = nút BACK
-    setPage(parseInt(query.page));
+    if (query.page) {
+      setPage(parseInt(query.page));
+    }
+
     props.fetchingData();
     const data = await props.fetchListProduct(query, history);
-    const { total } = data;
-    if (sessionStorage.getItem("flag-search")) {
-      alertNotification(`Có ${total} sản phẩm phù hợp với tìm kiếm của bạn`);
-      sessionStorage.removeItem("flag-search");
-    }
     props.fetchingData();
+
     setProducts(data);
-  }, [history]);
+  }, [history.location.search, params.category_id]);
 
   useEffect(() => {
     fetchProductList();
@@ -72,7 +87,6 @@ function Products(props) {
     let query = qs.parse(history.location.search);
     query.page = value;
     history.push({
-      pathname: "/products",
       search: qs.stringify(query),
     });
     setPage(value);
@@ -85,33 +99,56 @@ function Products(props) {
       </option>
     );
   });
-  const mapSidebarFilter = FILTER_BY.map((item) => {
-    return (
-      <div className="sidebar-item" key={"sibebarItem" + item.id}>
-        <div className="sidebar-item-title">
-          <h2 className="title-head">{item.title}</h2>
-        </div>
-        <div className="sidebar-item-content">
-          <div className="filter-group">
-            <ul className="filter-list">
-              {item.items.map((ele) => {
-                return (
-                  <li key={"li" + item.name + ele.id}>
-                    <RadioButton
-                      name={"radio" + item.name}
-                      title={ele.name}
-                      handleChange={handleChangeChecked}
-                      value={JSON.stringify(ele.value)}
-                    />
-                  </li>
-                );
-              })}
-            </ul>
+  const mapSidebarFilter = () => {
+    const category = params.category_id.toLowerCase();
+    const filterArr = (category) => {
+      switch (category) {
+        case "quan":
+        case "ao":
+        case "phu-kien": {
+          return [...FILTER_BY].filter(
+            (ele) => ele.title !== "SIZE GIÀY" && ele.title !== "HÃNG"
+          );
+        }
+
+        case "giam-gia": {
+          return [...FILTER_BY];
+        }
+        default:
+          return [...FILTER_BY].filter(
+            (ele) => ele.title !== "SIZE QUẦN ÁO" && ele.title !== "HÃNG"
+          );
+      }
+    };
+    let filterProduct = filterArr(category);
+    return filterProduct.map((item) => {
+      return (
+        <div className="sidebar-item" key={"sibebarItem" + item.id}>
+          <div className="sidebar-item-title">
+            <h2 className="title-head">{item.title}</h2>
+          </div>
+          <div className="sidebar-item-content">
+            <div className="filter-group">
+              <ul className="filter-list">
+                {item.items.map((ele) => {
+                  return (
+                    <li key={"li" + item.name + ele.id}>
+                      <RadioButton
+                        name={"radio" + item.name}
+                        title={ele.name}
+                        handleChange={handleChangeChecked}
+                        value={JSON.stringify(ele.value)}
+                      />
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-    );
-  });
+      );
+    });
+  };
 
   const handleChangeSort = (e) => {
     let { results: productList } = products;
@@ -188,6 +225,7 @@ function Products(props) {
   };
   const PaginationCPN = (
     <Pagination
+      defaultPage={1}
       page={page}
       count={total_page}
       size="large"
@@ -204,7 +242,7 @@ function Products(props) {
       <div className="products container-fluid flex">
         <aside className="products-sidebar">
           <div className="products-sidebar-content">
-            {mapSidebarFilter}
+            {mapSidebarFilter()}
             <div onClick={handleToggleSidebar} className="icon-filter">
               <i className="fas fa-filter open-sidebar"></i>
               <i className="fas fa-times close-sidebar"></i>

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { formatCurrency } from "../../commons/utils";
 import SelectQuan from "../../components/SelectQuan";
 import ViewedProducts from "../../components/ViewedProducts";
@@ -19,7 +20,10 @@ import {
   setError,
 } from "./../../redux/actions/uiActions";
 import "./style.scss";
+import { PRODUCT_STATUSES } from "../../commons/constant";
+import BreadScrumb from "../../components/BreadScrumb";
 function ProductDetail(props) {
+  const history = useHistory();
   const [product, setProduct] = useState({});
   const [viewedProducts, setViewedProducts] = useState([]);
   const [quantity, setQuanity] = useState(1);
@@ -29,22 +33,28 @@ function ProductDetail(props) {
 
   const fetchProductDetails = useCallback(async () => {
     props.fetchingData();
-    let data = await props.fetchProductDetail(props.match.params.maSP);
-    if (isObjectEmpty(data)) {
+    let data = await props.fetchProductDetail(props.match.params.maSP, history);
+    if (!data || typeof data !== "object") {
       props.fetchingData();
-      return;
+    } else {
+      if (isObjectEmpty(data)) {
+        props.fetchingData();
+        return;
+      }
     }
     props.fetchingData();
     const {
       id,
       name,
-      category: { slugCategory, name: nameCategory },
+      category: { slug: slugCategory },
+      supplier: { name: nameSuplier },
       slug,
       description,
       images,
       specs,
       price,
       discount_rate,
+      status,
     } = data;
     let mapSize = specs
       .map(({ attribute_item: { name }, id, quantity }) => ({
@@ -56,17 +66,18 @@ function ProductDetail(props) {
       .reverse();
     let quanOfProduct = mapSize.reduce((acc, cur) => acc + cur.quantity, 0);
     const dataShow = {
-      id: id,
-      name: name,
+      id,
+      name,
       brand: slugCategory,
-      slug: slug,
-      nameBrand: nameCategory,
+      slug,
+      nameBrand: nameSuplier,
       description: description,
       discount: discount_rate,
-      price: price,
+      price,
       img: images.filter((img) => img.is_main === true)?.image_large || imgTemp,
       rel_img: images.filter((img) => img.is_main !== true),
       size: mapSize,
+      status,
     };
     const { images: recentProducts } = setAndGetViewedProducts(dataShow);
     setViewedProducts(recentProducts);
@@ -145,9 +156,14 @@ function ProductDetail(props) {
           <div className="pro-details-vendor">
             <label>Hãng: </label>
             <span className="vendor_item">
-              <Link to={"/products/" + brand}>{nameBrand}</Link>
+              <Link to={"/collections/" + brand}>{nameBrand}</Link>
             </span>
           </div>
+          <p>
+            <strong>Tình trạng: </strong> {PRODUCT_STATUSES[status]}
+          </p>
+          <br />
+
           <div className="pro-details-price-box">
             <div className="special-price">
               <span className="price">
@@ -228,13 +244,22 @@ function ProductDetail(props) {
     brand,
     nameBrand,
     discount,
+    slug,
     price,
     img,
     // rel_img,
     size,
+    status,
   } = product;
   return (
     <>
+      {brand && slug && name && (
+        <BreadScrumb
+          path={history.location}
+          productDetail={{ slugBrand: brand, slugProduct: slug, name }}
+        />
+      )}
+
       <section className="product-detail-tempalte">
         <div className="container-fluid">
           {props.isFetchingData ? (

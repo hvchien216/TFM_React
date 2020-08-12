@@ -3,11 +3,14 @@ import axiosClient from "./axiosClient";
 const userApi = {
   register: (userData) => {
     const url = '/auth/register';
+    const { email, password, lastName, firstName, phone, address } = userData;
     let data = {
-      email: userData.email,
-      password: userData.password,
-      first_name: userData.firstName,
-      last_name: userData.lastName,
+      email,
+      password,
+      first_name: firstName,
+      last_name: lastName,
+      phone,
+      address,
     }
     return axiosClient.post(url, data);
   },
