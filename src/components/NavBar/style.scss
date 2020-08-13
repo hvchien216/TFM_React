@@ -42,7 +42,63 @@
       }
     }
     .nav-mb__panel {
+      height: 80vh;
+      overflow-y: auto;
       .tab-content {
+        .nav-mobile-list-parent {
+          display: flex;
+          flex-wrap: wrap;
+          .nav-mobile-parent-item {
+            background-color: #eee;
+            cursor: pointer;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            transition: 0.4s;
+            position: relative;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            & > a > i {
+              @include transition(transform 0.2s ease-in-out);
+            }
+            & > a {
+              padding: 10px 20px;
+              display: flex;
+              justify-content: space-between;
+              background-color: #eee;
+              color: $commonColor1;
+              &.active > i {
+                @include transform(translateX(-4px) rotate(90deg));
+              }
+            }
+
+            .nav-mobile-list-child {
+              transition: max-height 0.2s ease-out;
+              display: flex;
+              flex-wrap: wrap;
+              padding: 0px 10px;
+              width: 100%;
+              max-height: 0;
+              overflow: hidden;
+              border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+              .nav-mobile-child-item {
+                cursor: pointer;
+                width: 100%;
+                border: none;
+                text-align: left;
+                outline: none;
+                font-size: 15px;
+                position: relative;
+                padding: 10px 20px;
+                & > a {
+                  color: $commonColor1;
+                  font-weight: 700;
+                }
+              }
+            }
+          }
+        }
         &:nth-child(1) {
           display: block;
         }

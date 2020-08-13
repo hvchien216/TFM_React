@@ -23,7 +23,6 @@ import "./style.scss";
 function Products(props) {
   const [products, setProducts] = useState({ results: [] });
   const [page, setPage] = useState(1);
-
   const [sort, setSort] = useState(1);
   const history = useHistory();
   const params = useParams();
@@ -37,7 +36,7 @@ function Products(props) {
         delete query[key];
       }
     }
-    if (params.category_id === "giam-gia") {
+    if (params.category_id === "discount") {
       query.status = "on_sale";
     } else {
       const category_id =
@@ -111,7 +110,7 @@ function Products(props) {
           );
         }
 
-        case "giam-gia": {
+        case "discount": {
           return [...FILTER_BY];
         }
         default:

@@ -106,7 +106,7 @@ export const NAV_ITEM = [
 	{ id: '5', label: 'Tin tức', to: '/news', nav_nested: [] }
 ];
 
-export const BREADBRUMBS = {
+export let BREADBRUMBS = {
 	'cart': { label: 'Giỏ hàng', to: '/cart' },
 	'signin': { label: 'Đăng nhập tài khoản', to: '/signin' },
 	'signup': { label: 'Đăng ký tài khoản', to: '/signup' },
@@ -126,7 +126,7 @@ export const BREADBRUMBS = {
 	'ao': { label: 'Áo', to: '/collections/ao' },
 	'quan': { label: 'Quần', to: '/collections/quan' },
 	'search': { label: 'Tìm kiếm', to: '/search' },
-	'giam-gia': { label: 'Giảm giá', to: '/collections/giam-gia' },
+	'discount': { label: 'Giảm giá', to: '/collections/giam-gia' },
 	'edit': { label: 'Chỉnh sửa thông tin khách hàng', to: '/account/edit' },
 	'change-password': { label: 'Đổi mật khẩu', to: '/account/change-password' },
 	'order-detail': { label: 'Chi tiết đơn hàng', to: '/order-detail' },

@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@material-ui/core';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import './commons/style.scss';
@@ -23,7 +23,11 @@ import Products from './pages/Products';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import store from './redux/store';
+import { fetchCategory } from './redux/actions/uiActions';
 function App() {
+  useEffect(() => {
+    store.dispatch(fetchCategory());
+  }, []);
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>

@@ -66,6 +66,9 @@ body {
   font-weight: 400;
   font-size: 14px;
   color: $commonColor1;
+  &.no-scroll {
+    overflow: hidden;
+  }
 }
 a {
   cursor: pointer;
@@ -155,6 +158,14 @@ ul {
   position: relative;
   margin: 0 auto;
   padding: 0 15px;
+}
+@media (min-width: 426px) {
+  .fb-customerchat {
+    & > span > iframe {
+      bottom: 80px;
+      right: 5px;
+    }
+  }
 }
 
 @media (min-width: 768px) {

@@ -1,10 +1,12 @@
 import {
 	SET_ERRORS,
 	CLEAR_ERRORS,
-	FETCHING_DATA
+	FETCHING_DATA,
+	SET_ROUTE_NAVBAR
 } from '../types';
 import { alertError, uppercaseFirstCharater } from './../../commons/utils';
 const initialState = {
+	routeNavbar: [],
 	isFetchingData: false,
 	errors: null
 };
@@ -30,6 +32,11 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				isFetchingData: !state.isFetchingData
+			}
+		case SET_ROUTE_NAVBAR:
+			return {
+				...state,
+				routeNavbar: action.payload
 			}
 		default:
 			return state;

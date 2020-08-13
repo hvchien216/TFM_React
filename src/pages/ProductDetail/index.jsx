@@ -134,8 +134,7 @@ function ProductDetail(props) {
           style={{ color: "red" }}
         >{`[${data.quantity} ${data.name}, size: ${data.size}]`}</span>
         {` vào giỏ hàng`}
-      </span>,
-      "info"
+      </span>
     );
   };
   const renderUiProductDetailMain = () => {

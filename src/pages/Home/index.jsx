@@ -1,9 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import banner1 from "./../../assets/index_banner_medium_1___1_image.jpg";
 import banner2 from "./../../assets/index_banner_medium_1___2_image.jpg";
-import { Link } from "react-router-dom";
 import "./style.scss";
-
 function Home() {
   return (
     <section className="home">

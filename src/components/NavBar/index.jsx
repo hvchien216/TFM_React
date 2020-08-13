@@ -3,7 +3,6 @@ import qs from "query-string";
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
-import { NAV_ITEM } from "../../commons/constant";
 import { formatCurrency } from "../../commons/utils";
 import RingRing from "../RingRing";
 import SelectQuan from "../SelectQuan";
@@ -58,14 +57,15 @@ function NavBar(props) {
     iconMenu.classList.toggle("active");
     navMb.classList.toggle("active");
     root.classList.toggle("active");
+    document.body.classList.toggle("no-scroll");
   };
 
-  const handleToggleSubMenuMobile = (e, id) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const subMenu = document.getElementById(id);
-    subMenu.classList.toggle("active");
-  };
+  // const handleToggleSubMenuMobile = (e, id) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  //   const subMenu = document.getElementById(id);
+  //   subMenu.classList.toggle("active");
+  // };
 
   const handleChangeTab = (e, tabName) => {
     e.stopPropagation();
@@ -250,15 +250,16 @@ function NavBar(props) {
     );
   };
   const renderNavItem = () => {
-    return NAV_ITEM.map((nav) => {
+    return props.routeNavbar.map((nav) => {
       return (
         <li className="nav-item  has-mega" key={nav.id}>
           <Link
             to={nav.to || "/"}
             onClick={(e) => {
-              nav.to || e.preventDefault();
+              nav.nav_nested.length > 0 && e.preventDefault();
             }}
             className="nav-link"
+            style={{ cursor: nav.to ? "pointer" : "default" }}
           >
             {nav.label}{" "}
             {nav.nav_nested.length > 0 && <i className="fa fa-angle-down"></i>}
@@ -293,18 +294,26 @@ function NavBar(props) {
     let xhtml = null;
     xhtml = (
       <section className="bottom-nav">
-        <Link className="bottom-nav__item" to="/collections/giam-gia">
+        <Link
+          className="bottom-nav__item"
+          to="/collections/discount"
+          style={{
+            color: "#f12c2c",
+          }}
+        >
           <span>
             <i className="fas fa-gift"></i>
             <p>Giảm Giá</p>
           </span>
         </Link>
-        <Link className="bottom-nav__item" to="/signin">
-          <span>
-            <i className="fas fa-user"></i>
-            <p>Tài Khoản</p>
-          </span>
-        </Link>
+        {props.authenticated || (
+          <Link className="bottom-nav__item" to="/signin">
+            <span>
+              <i className="fas fa-user"></i>
+              <p>Tài Khoản</p>
+            </span>
+          </Link>
+        )}
         <Link className="bottom-nav__item" to="/account">
           <span>
             <i className="fas fa-phone-alt"></i>
@@ -321,7 +330,69 @@ function NavBar(props) {
     );
     return xhtml;
   };
+  const handleToggleNavItemMobile = (e, disableLink) => {
+    e.stopPropagation();
+    if (disableLink) {
+      e.preventDefault();
+    }
+    e.target.classList.toggle("active");
+    let nextELe = e.target.nextElementSibling;
+    if (!nextELe) {
+      return;
+    }
+    if (nextELe.style.maxHeight) {
+      nextELe.style.maxHeight = null;
+    } else {
+      nextELe.style.maxHeight = nextELe.scrollHeight + "px";
+    }
+  };
 
+  const renderNavMobile = () => {
+    let xhtml = null;
+    xhtml = (
+      <ul className="nav-mobile-list-parent">
+        {props.routeNavbar.map((nav) => {
+          const { nav_nested, to, label, id } = nav;
+          return (
+            <li
+              className="nav-mobile-parent-item"
+              key={"link parent " + id + label}
+            >
+              <Link
+                to={to || "/"}
+                onClick={(e) =>
+                  handleToggleNavItemMobile(e, nav_nested.length > 0)
+                }
+              >
+                <span>{label}</span>
+                {nav_nested.length > 0 && (
+                  <i className="fas fa-chevron-right"></i>
+                )}
+              </Link>
+              {nav_nested.length > 0 && (
+                <ul
+                  className="nav-mobile-list-child"
+                  key={"link list " + id + label}
+                >
+                  {nav_nested.map((ele) => {
+                    return (
+                      <li
+                        className="nav-mobile-child-item"
+                        key={"link child item" + ele.id + ele.label}
+                      >
+                        <Link to={ele.to}>{ele.label}</Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    );
+    return xhtml;
+  };
   return (
     <>
       <div className="nav-mb" id="nav-mobile" onClick={handleToggleMenuMobile}>
@@ -342,7 +413,9 @@ function NavBar(props) {
           </div>
           <div className="nav-mb__panel">
             <div className="tab-content" id="panel-menu">
-              <ul className="mm-listview">
+              {renderNavMobile()}
+
+              {/* <ul className="mm-listview">
                 <li className="mm-listitem" onClick={handleToggleMenuMobile}>
                   <Link
                     to={"/"}
@@ -434,7 +507,7 @@ function NavBar(props) {
                 <li className="mm-listitem" onClick={handleToggleMenuMobile}>
                   <Link to="/news">Tin Tức</Link>
                 </li>
-              </ul>
+              </ul> */}
             </div>
             <div className="tab-content" id="panel-account">
               {renderBoxCredentials(true)}
@@ -565,9 +638,11 @@ NavBar.propTypes = {
   removeItemFromCart: PropTypes.func.isRequired,
   changeQuantityItemCart: PropTypes.func.isRequired,
   logoutUser: PropTypes.func.isRequired,
+  routeNavbar: PropTypes.array.isRequired,
 };
 const mapStateToProps = (state) => {
   return {
+    routeNavbar: state.ui.routeNavbar,
     cart: state.cart,
     authenticated: state.user.authenticated,
     credentials: state.user.credentials,

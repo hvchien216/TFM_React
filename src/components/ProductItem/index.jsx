@@ -43,7 +43,7 @@ function ProductItem(props) {
           <div className="product-info">
             <h3 className="product-name">
               <Link to={"/product-detail/" + id} title={name}>
-                {name}
+                <strong>{name}</strong>
               </Link>
             </h3>
             <div className="price-box">
