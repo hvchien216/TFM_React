@@ -39,12 +39,13 @@ function Products(props) {
     if (params.category_id === "discount") {
       query.status = "on_sale";
     } else {
-      const category_id =
-        CONVERT_SLUG_CATEGORY_TO_ID[params.category_id.toLowerCase()];
+      const category_id = props.categoryIdList.filter(
+        (el) => el.name === params.category_id.toLowerCase()
+      );
 
-      if (!category_id) return;
+      if (category_id.length <= 0) return;
 
-      query.category = category_id;
+      query.category = category_id[0].id;
     }
 
     //tránh sai current_page khi chuyển route = nút BACK
@@ -282,10 +283,12 @@ Products.propTypes = {
   isFetchingData: PropTypes.bool.isRequired,
   fetchingData: PropTypes.func.isRequired,
   fetchListProduct: PropTypes.func.isRequired,
+  categoryIdList: PropTypes.array,
 };
 
 const mapStateToProps = (state) => {
   return {
+    categoryIdList: state.ui.categoryIdList,
     isFetchingData: state.ui.isFetchingData,
   };
 };

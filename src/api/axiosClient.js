@@ -1,6 +1,7 @@
 import axios from 'axios';
 import queryString from 'query-string';
-
+import store from './../redux/store';
+import { logoutUser } from './../redux/actions/userActions';
 const axiosClient = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   // headers: {
@@ -24,6 +25,9 @@ axiosClient.interceptors.request.use(async (config) => {
 });
 
 axiosClient.interceptors.response.use((response) => {
+  if (response?.data?.error_code === 'token_not_valid') {
+    store.dispatch(logoutUser());
+  }
   if (response?.data) {
     return response.data;
   }

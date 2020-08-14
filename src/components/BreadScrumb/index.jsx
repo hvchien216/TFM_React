@@ -18,7 +18,7 @@ function BreadScrumb(props) {
       if (
         pathArr.some((path) => BREADBRUMBS[path.toLowerCase()] === undefined)
       ) {
-        return null;
+        return;
       }
     }
     let breadScrumb = pathArr.map((item) => {
