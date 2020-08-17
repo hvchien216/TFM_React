@@ -49,6 +49,40 @@
       }
     }
   }
+  .sec__carousel-logo {
+    max-width: 1920px;
+    overflow: hidden;
+    padding: 30px 0;
+    user-select: none;
+    margin: 0 auto;
+    .carousel-logo-item {
+      img {
+        width: 100%;
+        object-fit: none;
+      }
+    }
+    .bs-btn {
+      position: absolute;
+      top: 40%;
+      cursor: pointer;
+      z-index: 10;
+      padding: 15px 8px;
+      background-color: #fff;
+      color: $tColor;
+
+      @include transition(all ease-out 0.2s);
+      &:hover {
+        background-color: $tColor;
+        color: #fff;
+      }
+    }
+    .pre {
+      left: 5px;
+    }
+    .next {
+      right: 5px;
+    }
+  }
 }
 
 @media only screen and (max-width: 767px) {

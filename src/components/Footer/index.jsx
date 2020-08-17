@@ -29,7 +29,7 @@ function Footer(props) {
               <ul>
                 <li>Địa chỉ: Đông Anh – Hà Nội</li>
                 <li>
-                  Hotline: <a href="tel:0983151780">0983 151 780</a>
+                  Hotline: <a href="tel:0703239783">0703 239 783</a>
                 </li>
                 <li>
                   Email:{" "}
@@ -183,8 +183,6 @@ function Footer(props) {
                 </button>
                 <input
                   type="email"
-                  // value={email}
-                  // onChange={handleChangeMailSubscribe}
                   autoComplete="off"
                   placeholder="Email của bạn"
                   name="email"

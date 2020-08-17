@@ -160,18 +160,19 @@ function CheckOut(props) {
     return cart.cart.map((ele) => {
       return (
         <CartItem
-          key={"cartItem" + ele.product_id}
+          key={"cartItem" + ele.product_id + ele.specName}
           id={ele.product_id}
           img={ele.img}
           name={ele.name}
           price={ele.price}
+          specName={ele.specName}
           quantity={ele.quantity}
           checkout={checkout}
         />
       );
     });
   };
-
+  console.log(cart.cart);
   const handleSubmitOrder = (values) => {
     const {
       name,

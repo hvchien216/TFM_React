@@ -1,3 +1,21 @@
+import logo1 from './../assets/index_brand___1_image.jpg';
+import logo2 from './../assets/index_brand___2_image.jpg';
+import logo3 from './../assets/index_brand___3_image.jpg';
+import logo4 from './../assets/index_brand___4_image.jpg';
+import logo5 from './../assets/index_brand___5_image.jpg';
+import logo6 from './../assets/index_brand___6_image.jpg';
+import logo7 from './../assets/index_brand___7_image.jpg';
+
+export const LOGO_BRAND_LIST = [
+	{ id: 1, to: '/collections/nike', image: logo1 },
+	{ id: 2, to: '/collections/adidas', image: logo2 },
+	{ id: 3, to: '/collections/reebok', image: logo3 },
+	{ id: 4, to: '/collections/vans', image: logo4 },
+	{ id: 5, to: '/collections/fila', image: logo5 },
+	{ id: 6, to: '/collections/converse', image: logo6 },
+	{ id: 7, to: '/collections/champion', imgage: logo7 },
+]
+
 export const SORT_PAGI = [
 	{ value: 1, name: 'Tên A → Z' },
 	{ value: 2, name: 'Tên Z → A' },
@@ -82,14 +100,14 @@ export const CHECKOUT_MAIN_FIELDS = [
 
 export const NAV_ITEM = [
 	{
-		id: '1', label: 'TFM CLOTHING', to: null, nav_nested: [
+		id: '1', label: 'TFM CLOTHING', to: '/', nav_nested: [
 			{ id: '1.1', label: 'Phụ Kiện', to: '/collections/phu-kien' },
 			{ id: '1.2', label: 'Quần', to: '/collections/quan' },
 			{ id: '1.3', label: 'Áo', to: '/collections/ao' },
 		]
 	},
 	{
-		id: '2', label: 'SNEAKERS', to: null, nav_nested: [
+		id: '2', label: 'SNEAKERS', to: '/', nav_nested: [
 			{ id: '2.1', label: 'Adidas', to: '/collections/adidas' },
 			{ id: '2.2', label: 'Nike', to: '/collections/nike' },
 			{ id: '2.3', label: 'Vans', to: '/collections/vans' },
@@ -111,7 +129,7 @@ export let BREADBRUMBS = {
 	'signin': { label: 'Đăng nhập tài khoản', to: '/signin' },
 	'signup': { label: 'Đăng ký tài khoản', to: '/signup' },
 	'champion': { label: 'Champion', to: '/collections/champion' },
-	// 'dasc': { label: 'Dasc', to: '/collections/dasc' },
+	'dasc': { label: 'Dasc', to: '/collections/dasc' },
 	'adidas': { label: 'Adidas', to: '/collections/adidas' },
 	'nike': { label: 'Nike', to: '/collections/nike' },
 	'vans': { label: 'Vans', to: '/collections/vans' },
@@ -136,14 +154,13 @@ export let BREADBRUMBS = {
 export const SUMMARY_ORDER_COLUMNS = [
 	{ label: 'Đơn hàng', width: '10%' },
 	{ label: 'Ngày', width: '10%' },
-	// { label: 'Địa chỉ', width: '10%' },
 	{ label: 'Giá trị đơn hàng', width: '10%' },
 	{ label: 'TT người nhận', width: '10%' },
-	{ label: 'TT vận chuyển', width: '10%' },
+	{ label: 'TT đơn hàng', width: '10%' },
 ]
 
 export const ORDER_DETAIL_COLUMNS = [
-	{ label: 'Ảnh', width: '10%' },
+	{ label: 'Thông tin sản phẩm', width: '10%' },
 	{ label: 'Giá', width: '10%' },
 	{ label: 'Số lượng', width: '10%' },
 	{ label: 'Thành tiền', width: '10%' },
@@ -151,8 +168,8 @@ export const ORDER_DETAIL_COLUMNS = [
 
 export const TRANSPORT_STATUSES = {
 	new: 'Đang xác nhận',
-	success: 'Đã thanh toán',
 	shipping: 'Đang vận chuyển',
+	completed: 'Đã hoàn thành',
 	canceled: 'Hủy đơn hàng',
 }
 

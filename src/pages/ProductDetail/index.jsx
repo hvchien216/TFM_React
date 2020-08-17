@@ -2,12 +2,13 @@ import { CircularProgress } from "@material-ui/core";
 import PropTypes from "prop-types";
 import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { PRODUCT_STATUSES } from "../../commons/constant";
 import { formatCurrency } from "../../commons/utils";
+import BreadScrumb from "../../components/BreadScrumb";
 import SelectQuan from "../../components/SelectQuan";
 import ViewedProducts from "../../components/ViewedProducts";
-import imgTemp from "./../../assets/stan-smith-shoes-white-m20605-01-standard.jpg";
+import imgTemp from "./../../assets/logo.png";
 import {
   alertNotification,
   isObjectEmpty,
@@ -20,8 +21,8 @@ import {
   setError,
 } from "./../../redux/actions/uiActions";
 import "./style.scss";
-import { PRODUCT_STATUSES } from "../../commons/constant";
-import BreadScrumb from "../../components/BreadScrumb";
+import Slider from "react-slick";
+
 function ProductDetail(props) {
   const history = useHistory();
   const [product, setProduct] = useState({});
@@ -30,7 +31,8 @@ function ProductDetail(props) {
   const [quanOfProduct, setQuanOfProduct] = useState(1);
   const [sizee, setSizee] = useState(null);
   const [specification_id, setSpecification_id] = useState(null);
-
+  const [specName, setSpecName] = useState(null);
+  const [settings, setSettings] = useState(null);
   const fetchProductDetails = useCallback(async () => {
     props.fetchingData();
     let data = await props.fetchProductDetail(props.match.params.maSP, history);
@@ -65,6 +67,10 @@ function ProductDetail(props) {
       .sort()
       .reverse();
     let quanOfProduct = mapSize.reduce((acc, cur) => acc + cur.quantity, 0);
+    let img =
+      images.length > 0
+        ? images
+        : [{ id: 1, image_avatar_url: imgTemp, is_main: true }];
     const dataShow = {
       id,
       name,
@@ -74,16 +80,30 @@ function ProductDetail(props) {
       description: description,
       discount: discount_rate,
       price,
-      img: images.filter((img) => img.is_main === true)?.image_large || imgTemp,
-      rel_img: images.filter((img) => img.is_main !== true),
+      img,
       size: mapSize,
       status,
     };
     const { images: recentProducts } = setAndGetViewedProducts(dataShow);
+    setSettings({
+      customPaging: function (i) {
+        return (
+          <a>
+            <img src={img[i].image_avatar_url} alt="" />
+          </a>
+        );
+      },
+      dots: true,
+      dotsClass: "slick-dots",
+      infinite: true,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+    });
     setViewedProducts(recentProducts);
     setQuanOfProduct(quanOfProduct);
     setProduct(dataShow);
-  }, []);
+  }, [props.match.params.maSP]);
 
   useEffect(() => {
     fetchProductDetails();
@@ -94,15 +114,14 @@ function ProductDetail(props) {
     let quanOfProductShow = product.size.filter(
       (ele) => ele.id === parseInt(e.target.name)
     )[0].quantity;
+    setQuanity(1);
     setSizee(e.target.value);
     setSpecification_id(e.target.name);
+    setSpecName(e.target.value);
     setQuanOfProduct(quanOfProductShow);
   };
 
   const handleChangeQuan = (quan) => {
-    if (quan === -1 && quantity === 1) {
-      return;
-    }
     let newQuan = quantity + quan;
     setQuanity(newQuan);
   };
@@ -113,18 +132,21 @@ function ProductDetail(props) {
       props.setError("Vui lòng chọn size !!!");
       return;
     }
+    const img_url = img.filter((img) => img.is_main)[0].image_avatar_url;
     const data = {
       product_id: id,
       name,
       slug,
       brand,
       specification_id,
-      img: img,
+      specName,
+      img: img_url,
       quantity,
       price: Math.ceil(price - price * (parseInt(discount || 0) / 100)),
       total:
         quantity * Math.ceil(price - price * (parseInt(discount || 0) / 100)),
       size: sizee,
+      quanOfProduct,
     };
     props.addToCart(data);
     alertNotification(
@@ -145,7 +167,18 @@ function ProductDetail(props) {
       <div className="product-detail-main flex">
         <div className="pro-image-list">
           <div className="image-large">
-            <img src={img} alt="" />
+            {settings && (
+              <Slider {...settings}>
+                {img.map((img) => (
+                  <img
+                    className="slider-img-item"
+                    key={"show-img-slider" + img.id}
+                    src={img.image_avatar_url}
+                    alt=""
+                  />
+                ))}
+              </Slider>
+            )}
           </div>
         </div>
         <div className="pro-details">
@@ -216,6 +249,7 @@ function ProductDetail(props) {
                 quantity={quantity}
                 handleIncre={() => handleChangeQuan(1)}
                 handleDescre={() => handleChangeQuan(-1)}
+                quanOfProduct={quanOfProduct}
               />
             </div>
             <div className="button-actions">
@@ -246,7 +280,6 @@ function ProductDetail(props) {
     slug,
     price,
     img,
-    // rel_img,
     size,
     status,
   } = product;
@@ -269,8 +302,8 @@ function ProductDetail(props) {
             renderUiProductDetailMain()
           )}
         </div>
+        <ViewedProducts products={viewedProducts} />
       </section>
-      <ViewedProducts products={viewedProducts} />
     </>
   );
 }

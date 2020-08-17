@@ -64,7 +64,7 @@ function NavBar(props) {
   //   e.preventDefault();
   //   e.stopPropagation();
   //   const subMenu = document.getElementById(id);
-  //   subMenu.classList.toggle("active");
+  //   subMenu.classList.toggle("active");o
   // };
 
   const handleChangeTab = (e, tabName) => {
@@ -92,17 +92,14 @@ function NavBar(props) {
       return (
         <li
           className="cart-mini-list-item"
-          key={"cartMiniListItem" + item.product_id}
+          key={"cartMiniListItem" + item.product_id + item.specName}
         >
-          <Link
-            className="product-img"
-            to={"/product-detail/" + item.product_id}
-          >
+          <Link className="product-img" to={"/product-detail/" + item.slug}>
             <img src={item.img} alt="" />
           </Link>
           <div className="product-info-detail">
             <p className="product-name">
-              <Link to={"/product-detail/" + item.product_id}>{item.name}</Link>
+              <Link to={"/product-detail/" + item.slug}>{item.name}</Link>
             </p>
             <div className="product-price-box">
               <div className="product-price flex jf-al-center">
@@ -122,7 +119,9 @@ function NavBar(props) {
               </div>
             </div>
             <button
-              onClick={() => props.removeItemFromCart(item.product_id)}
+              onClick={() =>
+                props.removeItemFromCart(item.product_id, item.specification_id)
+              }
               className="btn-remove-item-product"
               type="button"
             >
@@ -526,7 +525,7 @@ function NavBar(props) {
                 <ul className="flex">
                   <li>Miễn phí vận chuyển với đơn hàng trên 2 triệu</li>
                   <li>
-                    Hotline: <span>0983 151 780</span>
+                    Hotline: <span>0703 239 783</span>
                   </li>
                 </ul>
               </div>

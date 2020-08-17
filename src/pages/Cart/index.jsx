@@ -1,17 +1,20 @@
-import React from "react";
 import PropTypes from "prop-types";
-import "./style.scss";
-import { Link, useHistory } from "react-router-dom";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
+import BreadScrumb from "../../components/BreadScrumb";
 import CartItem from "../../components/CartItem";
 import { formatCurrency } from "./../../commons/utils";
 import {
-  removeItemFromCart,
   changeQuantityItemCart,
   removeAllItemCart,
+  removeItemFromCart,
 } from "./../../redux/actions/cartActions";
-import BreadScrumb from "../../components/BreadScrumb";
+import "./style.scss";
 function Cart(props) {
+  useEffect(() => {
+    JSON.parse(localStorage.getItem("your_cart"));
+  }, [JSON.parse(localStorage.getItem("your_cart")).toString()]);
   const { cart } = props;
   const history = useHistory();
   const totalPrice = cart
@@ -20,20 +23,23 @@ function Cart(props) {
       }, 0)
     : null;
 
-  const removeItem = (id) => {
-    props.removeItemFromCart(id);
+  const removeItem = (id, specification_id) => {
+    props.removeItemFromCart(id, specification_id);
   };
   const mapCartToUI = (mobile) => {
     return cart.cart.map((ele) => {
       return (
         <CartItem
-          key={"cartItem" + ele.product_id}
+          key={"cartItem" + ele.product_id + ele.specName}
           id={ele.product_id}
           img={ele.img}
           slug={ele.slug}
           name={ele.name}
+          specification_id={ele.specification_id}
+          specName={ele.specName}
           price={ele.price}
           quantity={ele.quantity}
+          quanOfProduct={ele.quanOfProduct}
           removeItem={removeItem}
           changeQuantity={props.changeQuantityItemCart}
           mobile={mobile}
@@ -42,19 +48,13 @@ function Cart(props) {
     });
   };
 
-  const disabledLink = (e) => {
-    if (cart.cart.length <= 0) {
-      e.preventDefault();
-    }
-  };
-
   const showSummaryCart = () => {
     if (cart.cart.length <= 0) {
       return (
         <div className="container-fluid">
           <span>
             Không có sản phẩm nào trong giỏ hàng. Quay lại{" "}
-            <Link style={{ color: "#3dc8f6" }} to="/">
+            <Link style={{ color: "#3dc8f6" }} to="/collections/discount">
               cửa hàng
             </Link>{" "}
             để tiếp tục mua sắm.
@@ -93,7 +93,6 @@ function Cart(props) {
                 className="btn-proceed-checkout libra-sport___button"
                 title="Tiến hành đặt hàng"
                 to="/checkout"
-                onClick={disabledLink}
               >
                 <span>Tiến hành đặt hàng</span>
               </Link>
@@ -122,7 +121,6 @@ function Cart(props) {
                 className="btn-proceed btn-checkout"
                 title="Tiến hành đặt hàng"
                 to="/checkout"
-                onClick={disabledLink}
               >
                 <span>Tiến hành thanh toán</span>
               </Link>

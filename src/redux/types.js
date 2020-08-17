@@ -14,4 +14,3 @@ export const SET_ERRORS = 'SET_ERRORS';
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 export const FETCHING_DATA = 'FETCHING_DATA';
 export const SET_ROUTE_NAVBAR = 'SET_ROUTE_NAVBAR';
-export const SET_CATEGORY_ID_LIST = 'SET_CATEGORY_ID_LIST';

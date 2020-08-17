@@ -48,6 +48,11 @@ const userApi = {
     const url = `/order/${code_order}`;
     return axiosClient.get(url);
   },
+  cancelOrder: (code_order) => {
+    const params = { status: 'canceled' }
+    const url = `/order/${code_order}`;
+    return axiosClient.put(url, params);
+  },
 }
 
 export default userApi; 

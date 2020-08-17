@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import BreadScrumb from "../../components/BreadScrumb";
 import ProductItem from "../../components/ProductItem";
-import imgTemp from "./../../assets/domba.jpg";
+import imgTemp from "./../../assets/logo.png";
 import { fetchingData, fetchListProduct } from "../../redux/actions/uiActions";
 import "./style.scss";
 import { alertNotification } from "../../commons/utils";

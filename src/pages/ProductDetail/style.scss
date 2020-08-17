@@ -1,11 +1,35 @@
 @import "./../../commons/style.scss";
-
+.slick-dots {
+  position: initial;
+  display: block;
+  width: 100%;
+  margin: 15px;
+  li {
+    position: relative;
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    margin: 0 5px;
+    padding: 0;
+    cursor: pointer;
+  }
+}
 .product-detail-tempalte {
   padding: 30px 0 0;
   .product-detail-main {
     .pro-image-list {
       width: 41.66666667%;
       margin-right: 15px;
+      .slider-img-item {
+        user-select: none;
+      }
+      .dots-img-slider-item {
+        width: 100px;
+        height: 100px;
+        cursor: pointer;
+        margin: 10px;
+        display: flex;
+      }
     }
     .pro-details {
       width: 58.33333333%;
@@ -118,6 +142,7 @@
             border: none;
             line-height: 50px;
             padding: 0 35px;
+            margin-bottom: 20px;
             outline: none;
             @include transform(translateZ(0));
             -webkit-user-select: none;

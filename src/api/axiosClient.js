@@ -4,9 +4,7 @@ import store from './../redux/store';
 import { logoutUser } from './../redux/actions/userActions';
 const axiosClient = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
-  // headers: {
-  //   'Content-Type': 'application/json; charset=utf-8',
-  // },
+
   paramsSerializer: params => queryString.stringify(params),
 });
 
@@ -17,10 +15,8 @@ axiosClient.interceptors.request.use(async (config) => {
   if (token) {
     config.headers['Authorization'] = 'Bearer ' + token;
   }
-  // config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
   config.headers['Accept'] = 'application/json';
   config.headers['Content-Type'] = 'application/json';
-  // config.headers['Access-Control-Allow-Origin'] = '*';
   return config;
 });
 

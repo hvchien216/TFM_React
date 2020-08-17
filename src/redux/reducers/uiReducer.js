@@ -1,14 +1,12 @@
 import {
-	SET_ERRORS,
 	CLEAR_ERRORS,
-	FETCHING_DATA,
-	SET_ROUTE_NAVBAR,
-	SET_CATEGORY_ID_LIST
+	FETCHING_DATA, SET_ERRORS,
+
+
+	SET_ROUTE_NAVBAR
 } from '../types';
-import { CONVERT_SLUG_CATEGORY_TO_ID } from './../../commons/constant';
 import { alertError, uppercaseFirstCharater } from './../../commons/utils';
 const initialState = {
-	categoryIdList: [],
 	routeNavbar: [],
 	isFetchingData: false,
 	errors: null
@@ -41,11 +39,6 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				routeNavbar: action.payload
-			}
-		case SET_CATEGORY_ID_LIST:
-			return {
-				...state,
-				categoryIdList: action.payload
 			}
 		default:
 			return state;

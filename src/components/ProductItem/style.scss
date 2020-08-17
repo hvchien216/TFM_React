@@ -11,6 +11,9 @@
     background: #fff;
     margin-bottom: 30px;
     .product-thumbnail {
+      overflow: hidden;
+      position: relative;
+      width: 100%;
       &:hover a img {
         @include transform(scale(1.2));
       }
@@ -18,9 +21,6 @@
         left: 15px;
         bottom: 15px;
       }
-      overflow: hidden;
-      position: relative;
-      width: 100%;
       .tag-sale {
         height: 35px;
         width: 35px;

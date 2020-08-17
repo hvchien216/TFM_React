@@ -50,7 +50,6 @@ function InputField(props) {
         InputProps={{
           className: classes.input,
         }}
-        // autoFocus
       />
     </>
   );

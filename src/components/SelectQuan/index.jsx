@@ -1,12 +1,13 @@
 import React from "react";
 import "./style.scss";
 function SelectQuan(props) {
-  const { handleIncre, handleDescre, quantity, detail } = props;
-
+  const { handleIncre, handleDescre, quantity, detail, quanOfProduct } = props;
   if (detail) {
     return (
       <div className="box-pick-quan flex">
         <button
+          style={{ cursor: quantity === 1 && "not-allowed" }}
+          disabled={quantity === 1}
           onClick={handleDescre}
           className="items-change-quan btn-descre"
           type="button"
@@ -22,6 +23,8 @@ function SelectQuan(props) {
           value={quantity}
         />
         <button
+          style={{ cursor: quantity === quanOfProduct && "not-allowed" }}
+          disabled={quantity === quanOfProduct}
           onClick={handleIncre}
           className="items-change-quan btn-increase"
           type="button"
@@ -51,6 +54,8 @@ function SelectQuan(props) {
           value={quantity}
         />
         <button
+          style={{ cursor: quantity === quanOfProduct && "not-allowed" }}
+          disabled={quantity === quanOfProduct}
           onClick={handleIncre}
           className="items-count btn-plus"
           type="button"

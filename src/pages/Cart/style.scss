@@ -1,34 +1,12 @@
 @import "./../../commons/style.scss";
 
 .cart {
-  // &-nav {
-  //   background: #fff;
-  //   border-top: #ebebeb 1px dashed;
-  //   border-bottom: #ebebeb 1px dashed;
-  //   &-list {
-  //     max-width: 1170px;
-  //     padding: 10px 0;
-  //     margin: 0 auto;
-  //     background: transparent;
-  //     li:not(:last-child)::after {
-  //       content: "\00BB	" !important;
-  //       position: relative;
-  //       width: 20px;
-  //       display: inline-flex;
-  //       justify-content: center;
-  //       align-items: center;
-  //       margin: 0 5px;
-  //       color: #5b5b5b66;
-  //     }
-  //   }
-  // }
   .main-cart-page {
     min-height: 300px;
     width: 100%;
     .cart-main {
       margin-top: 20px;
       .list-product-of-cart {
-        // border-left: #ebebeb 1px solid;
         border: #ebebeb 1px solid;
         .cart-thead {
           border-bottom: #ebebeb 1px solid;

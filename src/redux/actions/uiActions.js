@@ -1,13 +1,11 @@
-import {
-	FETCHING_DATA,
-	CLEAR_ERRORS,
-	SET_ERRORS,
-	SET_ROUTE_NAVBAR,
-	SET_CATEGORY_ID_LIST
-} from '../types';
-import productApi from '../../api/productApi';
-import categoryApi from '../../api/categoryApi';
 import categorytApi from '../../api/categoryApi';
+import productApi from '../../api/productApi';
+import {
+	CLEAR_ERRORS,
+	FETCHING_DATA,
+	SET_ERRORS,
+	SET_ROUTE_NAVBAR
+} from '../types';
 
 export const fetchingData = () => dispatch => {
 	dispatch({
@@ -60,10 +58,9 @@ export const fetchListProduct = (query, history) => async dispatch => {
 	}
 }
 
-export const fetchCategory = (history) => async dispatch => {
+export const fetchCategory = () => async dispatch => {
 	try {
 		let categoryParent = [];
-		let categoryIdObjList = [];
 		const res = await categorytApi.parentList();
 		const { success, error_message, data, error_code } = res;
 		dispatch({ type: CLEAR_ERRORS });
@@ -82,13 +79,6 @@ export const fetchCategory = (history) => async dispatch => {
 			]
 		}));
 
-		categoryIdObjList = data
-			.filter(e => e.is_leaf)
-			.map(ele => ({ id: ele.id, name: ele.slug }));
-		console.log(categoryIdObjList)
-		//convert to Object
-		// categoryIdList = { ...categoryIdObjList };
-
 		let categoryChild = Promise.all(data
 			.filter(ele => !ele.is_leaf)
 			.map(el => categorytApi.childList(el.id))
@@ -106,23 +96,11 @@ export const fetchCategory = (history) => async dispatch => {
 						to: `/collections/${el.slug}`,
 					}))
 				})
-
-				//map to categoryIdObjList
-				res.map(({ data }) => data.map(el => categoryIdObjList.push({ id: el.id, name: el.slug })));
-
-				// console.log(categoryIdObjList)
-				// categoryIdObjList = [...cate]
-
 			})
 			.then(() => {
 				dispatch({
 					type: SET_ROUTE_NAVBAR,
 					payload: categoryParent
-				});
-
-				dispatch({
-					type: SET_CATEGORY_ID_LIST,
-					payload: categoryIdObjList
 				});
 			})
 			.catch(err => console.log(err))

@@ -1,16 +1,14 @@
-import { ADD_TO_CART, REMOVE_FROM_CART, UPDATE_CART_ITEM, REMOVE_ALL_CART } from './../types';
 import { savedYourCard } from './../../commons/utils';
+import { ADD_TO_CART, REMOVE_ALL_CART, REMOVE_FROM_CART, UPDATE_CART_ITEM } from './../types';
 const initialState = {
-	cart: JSON.parse(localStorage.getItem('your_cart')) || [
-		// { product_id: 1, img: thumb, name: "Domba - Trắng/Đen", quantity: 2, price: 990000, total: 100000, specification_id: 2 },
-	],
+	cart: JSON.parse(localStorage.getItem('your_cart')) || [],
 }
 
 export default function (state = initialState, action) {
 	switch (action.type) {
 		case ADD_TO_CART: {
 			const indexOfProduct = state.cart.findIndex(ele => {
-				return ele.product_id === action.payload.product_id;
+				return ele.product_id === action.payload.product_id && ele.specification_id === action.payload.specification_id;
 			});
 			// -1 hoac 0=>99999
 			if (indexOfProduct >= 0) {
@@ -33,24 +31,35 @@ export default function (state = initialState, action) {
 			}
 		}
 		case REMOVE_FROM_CART: {
-			const newCartState = state.cart.filter(item => {
-				return item.product_id !== action.product_id;
+			const indexOfProduct = [...state.cart].findIndex(ele => {
+				return ele.product_id === action.product_id && ele.specification_id === action.specification_id;
 			});
-			savedYourCard(newCartState);
+			if (indexOfProduct !== -1) {
+				const newList = [
+					...state.cart.slice(0, indexOfProduct),
+					...state.cart.slice(indexOfProduct + 1),
+				]
+				savedYourCard(newList);
+				return {
+					...state,
+					cart: newList,
+				}
+			}
+
 			return {
-				...state,
-				cart: newCartState
-			};
+				...state
+			}
 		}
 		case UPDATE_CART_ITEM: {
 			const newCartState = [...state.cart];
 			const indexOfProduct = state.cart.findIndex(ele => {
-				return ele.product_id === action.product_id;
+				return ele.product_id === action.product_id && ele.specification_id === action.specification_id;
 			});
+
 			newCartState[indexOfProduct].quantity = newCartState[indexOfProduct].quantity + action.quan;
 			if (newCartState[indexOfProduct].quantity === 0) {
 				const newCart = newCartState.filter(item => {
-					return item.product_id !== action.product_id;
+					return item.product_id !== action.product_id && item.specification_id === action.specification_id;
 				});
 				savedYourCard(newCart);
 				return {
@@ -58,6 +67,7 @@ export default function (state = initialState, action) {
 					cart: newCart
 				};
 			}
+
 			savedYourCard(newCartState);
 			return {
 				...state,

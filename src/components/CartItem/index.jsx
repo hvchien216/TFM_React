@@ -1,7 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { formatCurrency } from "../../commons/utils";
 import SelectQuan from "../SelectQuan";
-import { Link } from "react-router-dom";
 import "./style.scss";
 function CartItem(props) {
   const {
@@ -10,6 +10,9 @@ function CartItem(props) {
     name,
     slug,
     quantity,
+    quanOfProduct,
+    specification_id,
+    specName,
     price,
     variantInfo,
     removeItem,
@@ -35,6 +38,7 @@ function CartItem(props) {
               <Link to={`/product-detail/${slug}`} title={name}>
                 {name}
               </Link>
+              <span> size: {specName}</span>
             </h3>
             <p className="price">
               Giá: <span>{formatCurrency(price, "₫")}</span>
@@ -43,8 +47,9 @@ function CartItem(props) {
           <div className="product-item-mb-select-quan">
             <SelectQuan
               quantity={quantity}
-              handleIncre={() => changeQuantity(id, 1)}
-              handleDescre={() => changeQuantity(id, -1)}
+              handleIncre={() => changeQuantity(id, 1, specification_id)}
+              handleDescre={() => changeQuantity(id, -1, specification_id)}
+              quanOfProduct={quanOfProduct}
             />
           </div>
         </div>
@@ -64,6 +69,7 @@ function CartItem(props) {
           </div>
           <div className="product-item-checkout-title">
             <h4>{name}</h4>
+            <span>size: {specName}</span>
           </div>
           <div className="product-item-checkout-price">
             <p>{formatCurrency(price, "₫")}</p>
@@ -86,7 +92,9 @@ function CartItem(props) {
       </div>
       <div style={{ width: "28%" }} className="flex jf-al-center">
         <h2 className="product-name">
-          <Link to={`/product-detail/${slug}`}>{name}</Link>
+          <Link to={`/product-detail/${slug}`}>
+            {name} <span>size: {specName}</span>
+          </Link>
           <span className="variant-title">{variantInfo}</span>
         </h2>
       </div>
@@ -96,8 +104,9 @@ function CartItem(props) {
       <div style={{ width: "14%" }} className="flex jf-al-center">
         <SelectQuan
           quantity={quantity}
-          handleIncre={() => changeQuantity(id, 1)}
-          handleDescre={() => changeQuantity(id, -1)}
+          handleIncre={() => changeQuantity(id, 1, specification_id)}
+          handleDescre={() => changeQuantity(id, -1, specification_id)}
+          quanOfProduct={quanOfProduct}
         />
       </div>
       <div style={{ width: "20%" }} className="flex jf-al-center">
@@ -106,7 +115,7 @@ function CartItem(props) {
         </span>
       </div>
       <div
-        onClick={() => removeItem(id)}
+        onClick={() => removeItem(id, specification_id)}
         style={{ width: "5%" }}
         className="flex jf-al-center"
       >

@@ -1,6 +1,5 @@
 @import "./../../commons/style.scss";
 .nav-mb {
-  // display: none;
   width: 0;
   overflow: hidden;
   height: 100vh;
@@ -131,7 +130,6 @@
               display: block;
               font-size: 14px;
               color: $commonColor1;
-              // display: flex;
               .has-submenu {
                 position: absolute;
                 top: 0;
@@ -187,7 +185,6 @@
     }
   }
   &#nav-mobile.active {
-    // display: block;
     left: -80%;
     width: 100%;
     background: rgba(179, 179, 179, 0.4);
@@ -629,7 +626,6 @@
           justify-content: flex-start;
           margin-left: 0px;
           &-contain {
-            // width: 100%;
             .input-control {
               padding: 14px 75px 14px 30px;
             }
@@ -730,27 +726,12 @@
     }
     &__main {
       &__content {
-        // display: flex;
-        // flex-wrap: wrap;
         .logo,
         .search-bar {
           width: 100%;
           position: relative;
         }
-        .search-bar {
-          // margin-left: 0;
-          // padding: 20px;
-          &-contain {
-            // width: 100%;
-            .input-control {
-              // width: 100%;
-              // padding: 14px 55px 14px 30px;
-            }
-          }
-        }
-        .menu-pc {
-          // display: none;
-        }
+
         .menu-bar {
           display: block;
           top: 20%;

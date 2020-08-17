@@ -11,18 +11,20 @@ export const addToCart = (data) => (dispatch) => {
 	})
 }
 
-export const removeItemFromCart = (product_id) => (dispatch) => {
+export const removeItemFromCart = (product_id, specification_id) => (dispatch) => {
 	dispatch({
 		type: REMOVE_FROM_CART,
-		product_id
+		product_id,
+		specification_id
 	})
 }
 
-export const changeQuantityItemCart = (product_id, quan) => dispatch => {
+export const changeQuantityItemCart = (product_id, quan, specification_id) => dispatch => {
 	dispatch({
 		type: UPDATE_CART_ITEM,
 		product_id,
-		quan
+		quan,
+		specification_id
 	})
 }
 

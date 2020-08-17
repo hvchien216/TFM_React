@@ -25,6 +25,7 @@ import SignUp from './pages/SignUp';
 import store from './redux/store';
 import { fetchCategory } from './redux/actions/uiActions';
 function App() {
+
   useEffect(() => {
     store.dispatch(fetchCategory());
   }, []);

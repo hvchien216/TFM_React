@@ -26,7 +26,23 @@ function ProductItem(props) {
               </div>
             ) : null}
             <Link to={"/product-detail/" + id} title={name}>
-              <img className="img-responsive" src={img} alt={name} />
+              <img
+                style={
+                  isCarouselItem
+                    ? {
+                        objectFit: "inherit",
+                        width: "100%",
+                        userSelect: "none",
+                      }
+                    : {
+                        objectFit: "contain",
+                        width: "100%",
+                      }
+                }
+                className="img-responsive"
+                src={img}
+                alt={name}
+              />
             </Link>
             <div className="product-action">
               <Link

@@ -1,7 +1,9 @@
 @import "./../../commons/style.scss";
 
 .recent-products {
-  margin: 30px auto !important;
+  margin: 0 auto 30px !important;
+  max-width: 1920px;
+  user-select: none;
   .module-header {
     border: none;
     background: #ebebeb;
@@ -15,6 +17,10 @@
     width: 100%;
     padding: 10px 0px;
     margin: 0px 5px;
+    &-box {
+      width: 100%;
+      flex-wrap: wrap;
+    }
     .bs-btn {
       position: absolute;
       top: 40%;

@@ -8,12 +8,8 @@ import { useHistory, useParams } from "react-router-dom";
 import BreadScrumb from "../../components/BreadScrumb";
 import ProductItem from "../../components/ProductItem";
 import RadioButton from "../../components/RadioBtn";
-import imgTemp from "./../../assets/domba.jpg";
-import {
-  CONVERT_SLUG_CATEGORY_TO_ID,
-  FILTER_BY,
-  SORT_PAGI,
-} from "./../../commons/constant";
+import imgTemp from "./../../assets/logo.png";
+import { FILTER_BY, SORT_PAGI } from "./../../commons/constant";
 import {
   fetchingData,
   fetchListProduct,
@@ -39,13 +35,7 @@ function Products(props) {
     if (params.category_id === "discount") {
       query.status = "on_sale";
     } else {
-      const category_id = props.categoryIdList.filter(
-        (el) => el.name === params.category_id.toLowerCase()
-      );
-
-      if (category_id.length <= 0) return;
-
-      query.category = category_id[0].id;
+      query.category = params.category_id.toLowerCase();
     }
 
     //tránh sai current_page khi chuyển route = nút BACK
@@ -284,11 +274,13 @@ Products.propTypes = {
   fetchingData: PropTypes.func.isRequired,
   fetchListProduct: PropTypes.func.isRequired,
   categoryIdList: PropTypes.array,
+  readyCategoryId: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => {
   return {
     categoryIdList: state.ui.categoryIdList,
+    readyCategoryId: state.ui.readyCategoryId,
     isFetchingData: state.ui.isFetchingData,
   };
 };

@@ -1,15 +1,19 @@
-import { Container, Grid, CircularProgress } from "@material-ui/core";
+import { Container, Grid, CircularProgress, Button } from "@material-ui/core";
 import PropTypes from "prop-types";
 import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { formatCurrency } from "../../commons/utils";
-import { fetchYourOrderDetail } from "../../redux/actions/userActions";
+import {
+  fetchYourOrderDetail,
+  cancelOrder,
+} from "../../redux/actions/userActions";
 import { fetchingData } from "./../../redux/actions/uiActions";
-import imgTemp from "./../../assets/stan-smith-shoes-white-m20605-01-standard.jpg";
+import imgTemp from "./../../assets/logo.png";
 import { ORDER_DETAIL_COLUMNS } from "./../../commons/constant";
 import "./style.scss";
-
+import { Form, Formik } from "formik";
+import { TRANSPORT_STATUSES } from "./../../commons/constant";
 function OrderDetail(props) {
   const [orderDetail, setOrderDetail] = useState({});
   const history = useHistory();
@@ -27,9 +31,11 @@ function OrderDetail(props) {
       created,
       lines,
       note,
+      status,
       shipping_address: { address, full_name, phone },
       total,
       subtotal,
+      tax_amount,
     } = data;
     const infoOrderDetail = {
       code,
@@ -37,10 +43,12 @@ function OrderDetail(props) {
       lines,
       note,
       address,
+      status,
       full_name,
       phone,
       total,
       subtotal,
+      tax_amount,
     };
     setOrderDetail(infoOrderDetail);
   }, [history]);
@@ -57,8 +65,14 @@ function OrderDetail(props) {
   const mapDataRowTable = () => {
     return (
       orderDetail.hasOwnProperty("lines") &&
-      orderDetail.lines.map(
-        ({ price, quantity, id, product: { default_image, slug, name } }) => {
+      orderDetail?.lines.map(
+        ({
+          price,
+          quantity,
+          id,
+          product: { default_image, slug, name },
+          specs: { attribute_item },
+        }) => {
           return (
             <tr key={"row-order-" + id}>
               <td className="flex">
@@ -70,7 +84,7 @@ function OrderDetail(props) {
                     alt=""
                   />
                 </Link>
-                <p>{name}</p>
+                <p>{`${name} - Size: ${attribute_item.name}`}</p>
               </td>
               <td>{formatCurrency(price, "₫")}</td>
               <td>{quantity}</td>
@@ -88,7 +102,6 @@ function OrderDetail(props) {
       </div>
     );
   }
-
   return (
     <>
       {/* <BreadScrumb path={history.location} /> */}
@@ -105,6 +118,8 @@ function OrderDetail(props) {
             </div>
           </Grid>
           <Grid item md={7}>
+            <h1>THÔNG TIN SẢN PHẨM</h1>
+            <br />
             <table className="table-order">
               <thead className="table-order-thead">
                 <tr>{mapHeadingTable()}</tr>
@@ -128,12 +143,60 @@ function OrderDetail(props) {
             </p>
             <br />
             <p>
+              Tạm tính:{" "}
+              <strong>
+                {orderDetail.hasOwnProperty("subtotal") &&
+                  formatCurrency(orderDetail.subtotal, "₫")}
+              </strong>
+            </p>
+            <br />
+            <p>
+              Thuế:{" "}
+              <strong>
+                {orderDetail.hasOwnProperty("tax_amount") &&
+                  formatCurrency(orderDetail.tax_amount, "₫")}
+              </strong>
+            </p>
+            <br />
+            <p>
               Tổng tiền:{" "}
               <strong>
                 {orderDetail.hasOwnProperty("total") &&
                   formatCurrency(orderDetail.total, "₫")}
               </strong>
             </p>
+            <br />
+            <h1>TÌNH TRẠNG ĐƠN HÀNG</h1>
+            <h3>Đơn hàng: {TRANSPORT_STATUSES[orderDetail.status]}</h3>
+            <br />
+            {orderDetail.status !== "completed" &&
+              orderDetail.status !== "canceled" && (
+                <Formik
+                  initialValues={{}}
+                  onSubmit={() => props.cancelOrder(orderDetail.code, history)}
+                >
+                  {(formikProps) => {
+                    const { isSubmitting } = formikProps;
+
+                    return (
+                      <Form>
+                        <Button
+                          type="submit"
+                          disabled={isSubmitting}
+                          variant="contained"
+                          color="secondary"
+                        >
+                          {isSubmitting ? (
+                            <CircularProgress size={23} color="primary" />
+                          ) : (
+                            "Hủy đơn hàng"
+                          )}
+                        </Button>
+                      </Form>
+                    );
+                  }}
+                </Formik>
+              )}
           </Grid>
         </Grid>
       </Container>
@@ -146,6 +209,7 @@ OrderDetail.propTypes = {
   userInfo: PropTypes.object,
   fetchingData: PropTypes.func,
   isFetchingData: PropTypes.bool,
+  cancelOrder: PropTypes.func,
 };
 
 const mapStateToProps = (state) => {
@@ -158,5 +222,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   fetchYourOrderDetail,
   fetchingData,
+  cancelOrder,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(OrderDetail);

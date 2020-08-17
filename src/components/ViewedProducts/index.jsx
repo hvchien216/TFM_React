@@ -3,20 +3,31 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import ProductItem from "../ProductItem";
-import imgTemp from "./../../assets/stan-smith-shoes-white-m20605-01-standard.jpg";
 import "./style.scss";
 const settings = {
-  dots: true,
   infinite: true,
-  // lazyLoad: true,
-  // autoplay: true,
-  autoplaySpeed: 2000,
+  lazyLoad: true,
   speed: 500,
   slidesToShow: 4,
   slidesToScroll: 4,
-  initialSlide: 0,
   nextArrow: <SampleNextArrow />,
   prevArrow: <SamplePrevArrow />,
+  responsive: [
+    {
+      breakpoint: 768,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2,
+      },
+    },
+    {
+      breakpoint: 550,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+      },
+    },
+  ],
 };
 
 function SampleNextArrow(props) {
@@ -42,17 +53,18 @@ function ViewedProducts(props) {
   const mapProductItem = (isCarouselItem) => {
     return (
       products &&
-      products.map((item, index) => {
+      products.map((item) => {
         let price = Math.ceil(
           item?.price - item?.price * (parseInt(item?.discount || 0) / 100)
         );
+        let img = item.img.filter((ele) => ele.is_main)[0].image_avatar_url;
         return (
           <ProductItem
             isCarouselItem={isCarouselItem}
             key={"recent-product-" + item.id}
             id={item.slug}
             name={item.name}
-            img={item?.default_image || imgTemp}
+            img={img}
             price={price || 0}
             discount={0}
           />

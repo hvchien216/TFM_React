@@ -1,4 +1,5 @@
 import userApi from './../../api/userApi';
+import React from 'react';
 import { alertNotification } from './../../commons/utils';
 import {
 	CLEAR_ERRORS,
@@ -22,7 +23,7 @@ export const signInAndUp = (userData, history, isSignUp) => async dispatch => {
 			return;
 		}
 		let resInfo = await userApi.getInfo(data.access);
-		const { email, first_name, last_name, phone, default_shipping_address: { address }, avatar } = resInfo?.data;
+		const { email, first_name, last_name, phone, default_shipping_address: { address }, default_avatar } = resInfo?.data;
 		let user = {
 			name: first_name + ' ' + last_name,
 			first_name,
@@ -30,7 +31,7 @@ export const signInAndUp = (userData, history, isSignUp) => async dispatch => {
 			email,
 			phone,
 			address,
-			avatar
+			avatar: default_avatar
 		}
 		savedToLocal({ user, token: data.access });
 		dispatch({
@@ -79,7 +80,7 @@ export const editProfile = (dataInfoUser, history) => async dispatch => {
 			return;
 		}
 		const token = getTokenFromLocal();
-		const { email, first_name, last_name, phone, default_shipping_address: { address }, avatar } = data;
+		const { email, first_name, last_name, phone, default_shipping_address: { address }, default_avatar } = data;
 		let user = {
 			name: first_name + ' ' + last_name,
 			first_name,
@@ -87,9 +88,8 @@ export const editProfile = (dataInfoUser, history) => async dispatch => {
 			email,
 			phone,
 			address,
-			avatar
+			avatar: default_avatar
 		}
-		console.log("user===>", user);
 		savedToLocal({ user, token });
 		dispatch({
 			type: SET_USER,
@@ -170,6 +170,34 @@ export const fetchYourOrderDetail = (code, history) => async dispatch => {
 			return;
 		}
 		return data;
+
+	} catch (error) {
+		console.log("Err==>", error);
+	}
+}
+
+export const cancelOrder = (code_order, history) => async dispatch => {
+	try {
+		const res = await userApi.cancelOrder(code_order);
+		const { success, error_message, error_code } = res;
+		dispatch({ type: CLEAR_ERRORS });
+		if (!success) {
+			dispatch({
+				type: SET_ERRORS,
+				payload: { error_message, error_code }
+			});
+			return;
+		}
+		history.push('/account');
+		alertNotification(
+			<span>
+				{`Bạn đã hủy `}
+				<span
+					style={{ color: "red" }}
+				>{`[${code_order}]`}</span>
+				{` thành công.`}
+			</span>
+		);
 
 	} catch (error) {
 		console.log("Err==>", error);
