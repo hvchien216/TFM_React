@@ -172,7 +172,6 @@ function CheckOut(props) {
       );
     });
   };
-  console.log(cart.cart);
   const handleSubmitOrder = (values) => {
     const {
       name,
@@ -197,6 +196,7 @@ function CheckOut(props) {
       data.phone = phoneReceive;
       data.address = addressReceive;
     }
+    // console.log("data==>", data);
     props.orderAndCheckout(data, history);
   };
   const renderFields = (inputs, valuesOfFormik) => {
@@ -265,9 +265,13 @@ function CheckOut(props) {
               initialValues={stateForm}
               validationSchema={validationSchema}
               onSubmit={(values) => handleSubmitOrder(values)}
+              // onSubmit={(values) =>
+              //   console.log("cc===>", JSON.string(values, null, 4))
+              // }
             >
               {(formikProps) => {
                 const { values: valuesOfFormik, isSubmitting } = formikProps;
+                // console.log(valuesOfFormik);
                 return (
                   <Form className={classes.form}>
                     <Grid container>
@@ -308,16 +312,25 @@ function CheckOut(props) {
                       <Grid item xs={12} md={4}>
                         <div className="panel-order">
                           <div className="panel-order__header">
-                            <h2>Đơn hàng (2 sản phẩm )</h2>
+                            <h2>Đơn hàng ({cart.cart.length} sản phẩm )</h2>
                           </div>
                           <div className="panel-order__content">
                             <div className="panel-order__list">
                               {mapCartToUI(true)}
                             </div>
                             <div className="panel-order__temp-price__content">
+                              <br />
+
                               <p>
                                 <span>Tạm tính:</span>
                                 <span>{formatCurrency(totalPrice, "₫")}</span>
+                              </p>
+                              <br />
+                              <p>
+                                <span>Thuế VAT 10%:</span>
+                                <span>
+                                  {formatCurrency(totalPrice * 0.1, "₫")}
+                                </span>
                               </p>
                               <br />
                               <p>
@@ -330,7 +343,12 @@ function CheckOut(props) {
 
                             <p className="panel-order__total-price">
                               <span>Tổng cộng:</span>
-                              <span>{formatCurrency(totalPrice, "₫")}</span>
+                              <span>
+                                {formatCurrency(
+                                  totalPrice + totalPrice * 0.1,
+                                  "₫"
+                                )}
+                              </span>
                             </p>
                             <br />
 

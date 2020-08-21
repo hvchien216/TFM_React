@@ -26,14 +26,16 @@ function Products(props) {
   const { results: productList, total_page } = products;
 
   const fetchProductList = useCallback(async () => {
+    let isDiscount = false;
     let query = qs.parse(history.location.search);
     for (let key in query) {
       if (!query[key]) {
         delete query[key];
       }
     }
-    if (params.category_id === "discount") {
-      query.status = "on_sale";
+    if (params.category_id === "giam-gia") {
+      // query.status = "on_sale";
+      isDiscount = true;
     } else {
       query.category = params.category_id.toLowerCase();
     }
@@ -44,7 +46,7 @@ function Products(props) {
     }
 
     props.fetchingData();
-    const data = await props.fetchListProduct(query, history);
+    const data = await props.fetchListProduct(query, history, isDiscount);
     props.fetchingData();
 
     setProducts(data);
@@ -110,7 +112,8 @@ function Products(props) {
           );
       }
     };
-    let filterProduct = filterArr(category);
+    // let filterProduct = filterArr(category);
+    let filterProduct = FILTER_BY;
     return filterProduct.map((item) => {
       return (
         <div className="sidebar-item" key={"sibebarItem" + item.id}>

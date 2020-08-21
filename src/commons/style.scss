@@ -159,14 +159,6 @@ ul {
   margin: 0 auto;
   padding: 0 15px;
 }
-@media (min-width: 426px) {
-  .fb-customerchat {
-    & > span > iframe {
-      bottom: 80px;
-      right: 5px;
-    }
-  }
-}
 
 @media (min-width: 768px) {
   .container-fluid {

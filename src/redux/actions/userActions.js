@@ -1,6 +1,6 @@
 import userApi from './../../api/userApi';
 import React from 'react';
-import { alertNotification } from './../../commons/utils';
+import { alertNotification, alertError } from './../../commons/utils';
 import {
 	CLEAR_ERRORS,
 	SET_ERRORS,
@@ -23,14 +23,14 @@ export const signInAndUp = (userData, history, isSignUp) => async dispatch => {
 			return;
 		}
 		let resInfo = await userApi.getInfo(data.access);
-		const { email, first_name, last_name, phone, default_shipping_address: { address }, default_avatar } = resInfo?.data;
+		const { email, first_name, last_name, phone, default_shipping_address, default_avatar } = resInfo?.data;
 		let user = {
 			name: first_name + ' ' + last_name,
 			first_name,
 			last_name,
 			email,
 			phone,
-			address,
+			address: default_shipping_address.address || null,
 			avatar: default_avatar
 		}
 		savedToLocal({ user, token: data.access });
@@ -133,6 +133,7 @@ export const resetPassword = (data) => async dispatch => {
 			});
 			return;
 		}
+		alertNotification('Mật khẩu mới đã được gửi vào email của bạn!')
 	} catch (error) {
 		console.log("Err==>", error);
 	}

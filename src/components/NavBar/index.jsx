@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import qs from "query-string";
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { connect } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { formatCurrency } from "../../commons/utils";
@@ -251,40 +251,37 @@ function NavBar(props) {
   const renderNavItem = () => {
     return props.routeNavbar.map((nav) => {
       return (
-        <li className="nav-item  has-mega" key={nav.id}>
-          <Link
-            to={nav.to || "/"}
-            onClick={(e) => {
-              nav.nav_nested.length > 0 && e.preventDefault();
-            }}
-            className="nav-link"
-            style={{ cursor: nav.to ? "pointer" : "default" }}
-          >
-            {nav.label}{" "}
-            {nav.nav_nested.length > 0 && <i className="fa fa-angle-down"></i>}
-          </Link>
+        <Fragment key={nav.id}>
+          <li className="nav-item  has-mega">
+            <Link to={nav.to || "/"} className="nav-link">
+              {nav.label}{" "}
+              {nav.nav_nested.length > 0 && (
+                <i className="fa fa-angle-down"></i>
+              )}
+            </Link>
 
-          {nav.nav_nested.length > 0 && (
-            <div className="mega-content">
-              <ul className="flex f-wrap">
-                {nav.nav_nested.map((item) => {
-                  return (
-                    <li
-                      className="mega-item flex jf-al-center col-3"
-                      key={item.id}
-                    >
-                      <h4 className="mega-item-title">
-                        <Link className="mega-item-url" to={item.to}>
-                          <span>{item.label}</span>
-                        </Link>
-                      </h4>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          )}
-        </li>
+            {nav.nav_nested.length > 0 && (
+              <div className="mega-content">
+                <ul className="flex f-wrap">
+                  {nav.nav_nested.map((item) => {
+                    return (
+                      <li
+                        className="mega-item flex jf-al-center col-3"
+                        key={item.id}
+                      >
+                        <h4 className="mega-item-title">
+                          <Link className="mega-item-url" to={item.to}>
+                            <span>{item.label}</span>
+                          </Link>
+                        </h4>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
+          </li>
+        </Fragment>
       );
     });
   };
@@ -295,7 +292,7 @@ function NavBar(props) {
       <section className="bottom-nav">
         <Link
           className="bottom-nav__item"
-          to="/collections/discount"
+          to="/collections/giam-gia"
           style={{
             color: "#f12c2c",
           }}
@@ -329,16 +326,13 @@ function NavBar(props) {
     );
     return xhtml;
   };
-  const handleToggleNavItemMobile = (e, disableLink) => {
+  const handleToggleNavItemMobile = (e) => {
+    let linkEle = e.target.children[0];
+    if (!linkEle) return;
+    linkEle.classList.toggle("active");
     e.stopPropagation();
-    if (disableLink) {
-      e.preventDefault();
-    }
-    e.target.classList.toggle("active");
     let nextELe = e.target.nextElementSibling;
-    if (!nextELe) {
-      return;
-    }
+    if (!nextELe) return;
     if (nextELe.style.maxHeight) {
       nextELe.style.maxHeight = null;
     } else {
@@ -353,21 +347,18 @@ function NavBar(props) {
         {props.routeNavbar.map((nav) => {
           const { nav_nested, to, label, id } = nav;
           return (
-            <li
-              className="nav-mobile-parent-item"
-              key={"link parent " + id + label}
-            >
-              <Link
-                to={to || "/"}
-                onClick={(e) =>
-                  handleToggleNavItemMobile(e, nav_nested.length > 0)
-                }
+            <Fragment key={"link parent " + id + label}>
+              <li
+                className="nav-mobile-parent-item"
+                onClick={handleToggleNavItemMobile}
               >
-                <span>{label}</span>
-                {nav_nested.length > 0 && (
-                  <i className="fas fa-chevron-right"></i>
-                )}
-              </Link>
+                <Link className="nav-mobile-parent-item-link" to={to || "/"}>
+                  <span>{label}</span>
+                  {nav_nested.length > 0 && (
+                    <i className="fas fa-chevron-right"></i>
+                  )}
+                </Link>
+              </li>
               {nav_nested.length > 0 && (
                 <ul
                   className="nav-mobile-list-child"
@@ -385,9 +376,14 @@ function NavBar(props) {
                   })}
                 </ul>
               )}
-            </li>
+            </Fragment>
           );
         })}
+        <li className="nav-mobile-parent-item">
+          <Link to="/collections/giam-gia">
+            <span>Giảm giá</span>
+          </Link>
+        </li>
       </ul>
     );
     return xhtml;
@@ -413,100 +409,6 @@ function NavBar(props) {
           <div className="nav-mb__panel">
             <div className="tab-content" id="panel-menu">
               {renderNavMobile()}
-
-              {/* <ul className="mm-listview">
-                <li className="mm-listitem" onClick={handleToggleMenuMobile}>
-                  <Link
-                    to={"/"}
-                    onClick={(e) => {
-                      e.preventDefault();
-                    }}
-                  >
-                    TFM CLOTHING
-                    <span
-                      onClick={(e) =>
-                        handleToggleSubMenuMobile(e, "sub-tfm-clothing")
-                      }
-                      className="has-submenu"
-                    >
-                      <i className="fas fa-chevron-right"></i>
-                    </span>
-                  </Link>
-                  <ul className="mm-listview" id="sub-tfm-clothing">
-                    <li
-                      className="mm-listitem"
-                      onClick={(e) =>
-                        handleToggleSubMenuMobile(e, "sub-tfm-clothing")
-                      }
-                    >
-                      <i className="fas fa-chevron-left"></i> TFM CLOTHING
-                    </li>
-                    {NAV_ITEM[0].nav_nested.map((nav) => {
-                      return (
-                        <li
-                          key={"nav-item-mb" + nav.id}
-                          className="mm-listitem"
-                          onClick={handleToggleMenuMobile}
-                        >
-                          <Link to={nav.to}>{nav.label}</Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </li>
-
-                <li className="mm-listitem" onClick={handleToggleMenuMobile}>
-                  <Link
-                    to={"/"}
-                    onClick={(e) => {
-                      e.preventDefault();
-                    }}
-                  >
-                    Sneakers
-                    <span
-                      onClick={(e) =>
-                        handleToggleSubMenuMobile(e, "sub-tfm-sneaker")
-                      }
-                      className="has-submenu"
-                    >
-                      <i className="fas fa-chevron-right"></i>
-                    </span>
-                  </Link>
-                  <ul className="mm-listview" id="sub-tfm-sneaker">
-                    <li
-                      className="mm-listitem"
-                      onClick={(e) =>
-                        handleToggleSubMenuMobile(e, "sub-tfm-sneaker")
-                      }
-                    >
-                      <i className="fas fa-chevron-left"></i> Sneaker
-                    </li>
-                    {NAV_ITEM[1].nav_nested.map((nav) => {
-                      return (
-                        <li
-                          key={"nav-item-mb" + nav.id}
-                          className="mm-listitem"
-                          onClick={handleToggleMenuMobile}
-                        >
-                          <Link to={nav.to}>{nav.label}</Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </li>
-
-                <li className="mm-listitem" onClick={handleToggleMenuMobile}>
-                  <Link to="/collections/champion">Champion</Link>
-                </li>
-
-                <li className="mm-listitem" onClick={handleToggleMenuMobile}>
-                  <Link to="/collections/giam-gia">Giảm Giá</Link>
-                </li>
-
-                <li className="mm-listitem" onClick={handleToggleMenuMobile}>
-                  <Link to="/news">Tin Tức</Link>
-                </li>
-              </ul> */}
             </div>
             <div className="tab-content" id="panel-account">
               {renderBoxCredentials(true)}
@@ -618,6 +520,13 @@ function NavBar(props) {
               <nav>
                 <ul id="nav" className="nav flex jf-al-center">
                   {renderNavItem()}
+                  {props.routeNavbar.length > 0 && (
+                    <li className="nav-item  has-mega">
+                      <Link to="/collections/giam-gia" className="nav-link">
+                        Giảm giá
+                      </Link>
+                    </li>
+                  )}
                 </ul>
               </nav>
             </div>

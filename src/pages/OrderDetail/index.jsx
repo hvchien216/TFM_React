@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
-import { formatCurrency } from "../../commons/utils";
+import { formatCurrency, alertNotification } from "../../commons/utils";
 import {
   fetchYourOrderDetail,
   cancelOrder,
@@ -32,7 +32,8 @@ function OrderDetail(props) {
       lines,
       note,
       status,
-      shipping_address: { address, full_name, phone },
+      // shipping_address: { address, full_name, phone },
+      shipping_address,
       total,
       subtotal,
       tax_amount,
@@ -42,10 +43,10 @@ function OrderDetail(props) {
       created,
       lines,
       note,
-      address,
+      address: shipping_address?.address,
       status,
-      full_name,
-      phone,
+      full_name: shipping_address?.full_name,
+      phone: shipping_address?.phone,
       total,
       subtotal,
       tax_amount,
@@ -56,6 +57,17 @@ function OrderDetail(props) {
   useEffect(() => {
     fetchYourOrderDetail();
   }, [fetchYourOrderDetail]);
+
+  const handleCancelOrder = async () => {
+    let willDel = await alertNotification(
+      "Bạn có muốn hủy đơn hàng này không!",
+      "warning",
+      ["Không hủy", "Chắn chắn"]
+    );
+    if (willDel) {
+      props.cancelOrder(orderDetail.code, history);
+    }
+  };
 
   const mapHeadingTable = () => {
     return ORDER_DETAIL_COLUMNS.map(({ label }) => {
@@ -171,10 +183,7 @@ function OrderDetail(props) {
             <br />
             {orderDetail.status !== "completed" &&
               orderDetail.status !== "canceled" && (
-                <Formik
-                  initialValues={{}}
-                  onSubmit={() => props.cancelOrder(orderDetail.code, history)}
-                >
+                <Formik initialValues={{}} onSubmit={handleCancelOrder}>
                   {(formikProps) => {
                     const { isSubmitting } = formikProps;
 

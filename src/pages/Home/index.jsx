@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Slider from "react-slick";
 import banner1 from "./../../assets/index_banner_medium_1___1_image.jpg";
 import banner2 from "./../../assets/index_banner_medium_1___2_image.jpg";
-import "./style.scss";
-import Slider from "react-slick";
-import { LOGO_BRAND_LIST } from "./../../commons/constant";
 import promoImg from "./../../assets/slider_1_image.png";
+import { LOGO_BRAND_LIST } from "./../../commons/constant";
+import "./style.scss";
 
 function SampleNextArrow(props) {
   const { onClick } = props;

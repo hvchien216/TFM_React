@@ -13,7 +13,14 @@ function DashBoardOrder(props) {
 
   const mapHeadingTable = () => {
     return SUMMARY_ORDER_COLUMNS.map(({ label }) => {
-      return <th key={"thead-" + label}>{label}</th>;
+      return (
+        <th
+          className={label === "TT người nhận" ? "visible-mb" : ""}
+          key={"thead-" + label}
+        >
+          {label}
+        </th>
+      );
     });
   };
   const mapDataRowTable = () => {
@@ -21,19 +28,22 @@ function DashBoardOrder(props) {
     if (order.length > 0) {
       xhtml = order.map(
         ({ code, created, shipping_address, total, status, subtotal }) => {
-          const { full_name, phone, address } = shipping_address;
+          // const { full_name, phone, address } = shipping_address;
+          console.log(shipping_address);
           return (
             <tr key={"row-order-" + code}>
               <td>
-                <Link to={`/order-detail/${code}`}>{code}</Link>
+                <Link to={`/order-detail/${code}`}>
+                  <span>{code}</span>
+                </Link>
               </td>
               <td>{created}</td>
               {/* <td>{address}</td> */}
               <td>{formatCurrency(total, "₫")}</td>
-              <td>
-                <p>{full_name}</p>
-                <p>{phone}</p>
-                <p>{address}</p>
+              <td className="visible-mb">
+                <p>{shipping_address?.full_name}</p>
+                <p>{shipping_address?.phone}</p>
+                <p>{shipping_address?.address}</p>
               </td>
               <td>{status && TRANSPORT_STATUSES[status]}</td>
             </tr>

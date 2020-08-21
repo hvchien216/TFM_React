@@ -38,7 +38,7 @@ export const FILTER_BY = [
 		id: 2, name: 'brand', title: "HÃNG", items: [
 			{ id: 1, name: 'Tất cả hãng', value: { supplier: null } },
 			{ id: 2, name: 'Adidas', value: { supplier: 'adidas' } },
-			{ id: 3, name: 'Asics', value: { supplier: 'asics' } },
+			{ id: 3, name: 'Asics', value: { supplier: 'asic' } },
 			{ id: 4, name: 'Champion', value: { supplier: 'champion' } },
 			{ id: 5, name: 'Converse', value: { supplier: 'converse' } },
 			{ id: 6, name: 'Domba', value: { supplier: 'domba' } },
@@ -128,10 +128,13 @@ export let BREADBRUMBS = {
 	'cart': { label: 'Giỏ hàng', to: '/cart' },
 	'signin': { label: 'Đăng nhập tài khoản', to: '/signin' },
 	'signup': { label: 'Đăng ký tài khoản', to: '/signup' },
+	'sneakers': { label: 'Sneaker', to: 'collections/sneakers' },
+	'tfm-clothing': { label: 'TFM-Clothing', to: 'collections/tfm-clothing' },
 	'champion': { label: 'Champion', to: '/collections/champion' },
 	'dasc': { label: 'Dasc', to: '/collections/dasc' },
 	'adidas': { label: 'Adidas', to: '/collections/adidas' },
 	'nike': { label: 'Nike', to: '/collections/nike' },
+	'mlb': { label: 'MLB', to: '/collections/mlb' },
 	'vans': { label: 'Vans', to: '/collections/vans' },
 	'converse': { label: 'Converse', to: '/collections/converse' },
 	'fila': { label: 'Fila', to: '/collections/fila' },
@@ -144,7 +147,7 @@ export let BREADBRUMBS = {
 	'ao': { label: 'Áo', to: '/collections/ao' },
 	'quan': { label: 'Quần', to: '/collections/quan' },
 	'search': { label: 'Tìm kiếm', to: '/search' },
-	'discount': { label: 'Giảm giá', to: '/collections/giam-gia' },
+	'giam-gia': { label: 'Giảm giá', to: '/collections/giam-gia' },
 	'edit': { label: 'Chỉnh sửa thông tin khách hàng', to: '/account/edit' },
 	'change-password': { label: 'Đổi mật khẩu', to: '/account/change-password' },
 	'order-detail': { label: 'Chi tiết đơn hàng', to: '/order-detail' },
@@ -152,9 +155,9 @@ export let BREADBRUMBS = {
 }
 
 export const SUMMARY_ORDER_COLUMNS = [
-	{ label: 'Đơn hàng', width: '10%' },
+	{ label: 'Mã ĐH', width: '10%' },
 	{ label: 'Ngày', width: '10%' },
-	{ label: 'Giá trị đơn hàng', width: '10%' },
+	{ label: 'Giá trị ĐH', width: '10%' },
 	{ label: 'TT người nhận', width: '10%' },
 	{ label: 'TT đơn hàng', width: '10%' },
 ]

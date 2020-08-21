@@ -4,6 +4,9 @@
   width: 100%;
   max-width: 100%;
   margin-bottom: 20px;
+  .visible-mb {
+    display: block;
+  }
   &-thead {
     text-align: left;
     th {
@@ -30,6 +33,14 @@
       td {
         padding: 8px;
       }
+    }
+  }
+}
+
+@media only screen and (max-width: 512px) {
+  .table-order {
+    .visible-mb {
+      display: none;
     }
   }
 }

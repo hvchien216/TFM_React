@@ -53,19 +53,25 @@ export const uppercaseFirstCharater = (text) => {
 	return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
-export const alertNotification = (text, icon = "success") => {
+export const alertNotification = (text, icon = "success", btn = "OK") => {
+	console.log(btn)
 	let settings = {
 		title: "Thông báo",
 		text: text,
 		icon: icon,
-		button: "OK",
+		buttons: btn,
 		timer: 3000,
+	}
+	if (Array.isArray(btn)) {
+		settings.dangerMode = true;
+		settings.timer = false;
 	}
 	if (typeof text !== "string") {
 		delete settings["text"];
 		settings.content = text;
 	}
-	swal(settings);
+
+	return swal(settings);
 }
 
 export const alertError = (text) => {

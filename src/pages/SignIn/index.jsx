@@ -32,9 +32,7 @@ function SignIn(props) {
   });
 
   const validationSchemaForgetPwd = Yup.object().shape({
-    emailForgotPwd: Yup.string().required(
-      "Vui lòng nhập email để lấy mật khẩu"
-    ),
+    email: Yup.string().required("Vui lòng nhập email để lấy mật khẩu"),
   });
 
   return (
@@ -101,17 +99,17 @@ function SignIn(props) {
               email.
             </span>
             <Formik
-              initialValues={{ emailForgotPwd: "" }}
+              initialValues={{ email: "" }}
               validationSchema={validationSchemaForgetPwd}
               onSubmit={(values) => props.resetPassword(values)}
             >
               {(formikProps) => {
-                const { isSubmitting } = formikProps;
-
+                const { isSubmitting, values } = formikProps;
+                console.log(values);
                 return (
                   <Form className={classes.form}>
                     <FastField
-                      name="emailForgotPwd"
+                      name="email"
                       component={InputField}
                       label="Email"
                     />

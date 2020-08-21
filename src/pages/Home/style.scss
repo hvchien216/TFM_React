@@ -1,5 +1,7 @@
 @import "./../../commons/style.scss";
 .home {
+  text-align: center;
+
   .title__banner {
     text-align: center;
     font-size: 28px;
@@ -56,9 +58,36 @@
     user-select: none;
     margin: 0 auto;
     .carousel-logo-item {
+      display: block;
+      position: relative;
+      overflow: hidden;
       img {
+        margin: 0 auto;
+        @include transition(all 0.4s ease);
+        @include transform(scale3d(1.05, 1.05, 1));
+      }
+      &:hover:before {
+        transform: scale3d(1.9, 1.4, 1) rotate3d(0, 0, 1, 45deg)
+          translate3d(0, 120%, 0);
+      }
+
+      &:hover img {
+        transform: scale3d(1, 1, 1);
+      }
+
+      &:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
-        object-fit: none;
+        height: 100%;
+        z-index: 10;
+        background-color: rgba(255, 255, 255, 0.5);
+        @include transform(
+          scale3d(1.9, 1.4, 1) rotate3d(0, 0, 1, 45deg) translate3d(0, -120%, 0)
+        );
+        @include transition(all 0.6s ease);
       }
     }
     .bs-btn {

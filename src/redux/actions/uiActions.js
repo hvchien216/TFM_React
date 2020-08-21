@@ -39,9 +39,9 @@ export const fetchProductDetail = (code, history) => async dispatch => {
 	}
 }
 
-export const fetchListProduct = (query, history) => async dispatch => {
+export const fetchListProduct = (query, history, isDiscount) => async dispatch => {
 	try {
-		const res = await productApi.list(query);
+		const res = isDiscount ? await productApi.discountProductList(query) : await productApi.list(query);
 		const { success, error_message, error_code, data } = res;
 		dispatch({ type: CLEAR_ERRORS });
 		if (!success) {
